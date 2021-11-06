@@ -5,20 +5,7 @@
 #ifndef HAMMING_COMMON_H
 #define HAMMING_COMMON_H
 
-#define PARITY_EVEN "even"
-#define BIT_LENGTH_8 8
-#define NUM_PARITY_BITS 4
-#define BIT_OFFSET_8 7
-#define FILE_EXT ".hamming"
-#define BUFFER_SIZE 1024
-#define MAX_BITS 8
-#define BIT_LENGTH_12 12
-#define BIT_ELEVEN 2048
-#define BIT_LENGTH_16 16
-#define FILE_PATH_BUFFER 100
-#define NUM_PARITY_BITS 4
-#define BIT_OFFSET_16 15
-#define BIT_LENGTH_8 8
+
 
 #include <dc_application/command_line.h>
 #include <dc_application/options.h>
