@@ -6,7 +6,7 @@
 #define IBEACON_HTTP_H
 
 #include <common.h>
-#include <http_constants.h>
+#include <http/http_constants.h>
 
 
 typedef void (*parse_http) (char * http_message);
