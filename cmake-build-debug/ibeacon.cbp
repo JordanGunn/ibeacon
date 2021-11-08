@@ -381,8 +381,6 @@
 			<Option target="client"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/client.h">
-			<Option target="ibeacon"/>
-			<Option target="db"/>
 			<Option target="client"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/common.c">
@@ -401,13 +399,21 @@
 			<Option target="http"/>
 			<Option target="template_test"/>
 		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/db.h">
+			<Option target="db"/>
+		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/http.h">
+			<Option target="http"/>
+		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/ibeacon.h">
+			<Option target="ibeacon"/>
+		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/server.c">
 			<Option target="server"/>
 			<Option target="http"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/server.h">
 			<Option target="server"/>
-			<Option target="http"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/tests/main.c">
 			<Option target="template_test"/>

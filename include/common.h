@@ -1,29 +1,65 @@
-#ifndef TEMPLATE_COMMON_H
-#define TEMPLATE_COMMON_H
+//
+// Created by jordan on 2021-10-28.
+//
 
-/*
- * This file is part of dc_dump.
- *
- *  dc_dump is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  Foobar is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with dc_dump.  If not, see <https://www.gnu.org/licenses/>.
- */
+#ifndef HAMMING_COMMON_H
+#define HAMMING_COMMON_H
+
+
+
+#include <dc_application/command_line.h>
+#include <dc_application/options.h>
+#include <dc_application/config.h>
+#include <dc_posix/sys/dc_stat.h>
+#include <dc_posix/dc_stdlib.h>
+#include <dc_posix/dc_string.h>
+#include <dc_posix/dc_unistd.h>
+#include <dc_posix/dc_fcntl.h>
+#include <dc_util/streams.h>
+#include <dc_util/types.h>
+#include <dc_util/dump.h>
+#include <dc_util/bits.h>
+#include <sys/fcntl.h>
+#include <getopt.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+
+struct application_settings
+{
+    struct dc_opt_settings opts;
+    struct dc_setting_string *parity;
+    struct dc_setting_string *prefix;
+};
+
 
 /**
- * A function to be documented.
+ * Create
  *
- * @param str a parameter to be documented.
- * @return a return value to be documented.
+ * @param env
+ * @param err
+ * @return
  */
-int display(const char *str);
+static struct dc_application_settings *create_settings(
+        const struct dc_posix_env *env, struct dc_error *err
+);
 
-#endif // TEMPLATE_COMMON_H
+static int destroy_settings(
+        const struct dc_posix_env *env, struct dc_error *err,
+        struct dc_application_settings **psettings
+);
+
+static int run(
+        const struct dc_posix_env *env, struct dc_error *err,
+        struct dc_application_settings *settings
+);
+
+static void error_reporter(const struct dc_error *err);
+
+static void trace_reporter(
+        const struct dc_posix_env *env, const char *file_name, const char *function_name, size_t line_number
+);
+
+#endif //HAMMING_COMMON_H

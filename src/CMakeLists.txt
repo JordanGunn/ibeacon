@@ -10,11 +10,11 @@ IF (LINT)
 ENDIF ()
 
 # Make an executable
-add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST})
-add_executable(server ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST})
-add_executable(db ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST})
-add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST})
-add_executable(ibeacon ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST})
+add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/client.h)
+add_executable(server ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/server.h)
+add_executable(db ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/db.h)
+add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/http.h)
+add_executable(ibeacon ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/ibeacon.h)
 
 # We need this directory, and users of our library will need it too
 target_include_directories(client PRIVATE ../include)
