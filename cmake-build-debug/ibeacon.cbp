@@ -384,6 +384,9 @@
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/http.h">
 			<Option target="http"/>
 		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/http_constants.h">
+			<Option target="template_test"/>
+		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/ibeacon.h">
 			<Option target="ibeacon"/>
 		</Unit>

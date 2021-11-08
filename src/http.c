@@ -9,7 +9,7 @@
 //// =================================================================
 ////    1. Figure out where dc_posix env/err will be required
 ////    2. Change necessary function prototypes to include dc_posix
-////    3. Move parsing function to seperate header/source file ????
+////    3. Move parsing function to separate header/source file ????
 ////    4. *** IMPLEMENT PARSING FUNCTIONS ***
 //// =================================================================
 
