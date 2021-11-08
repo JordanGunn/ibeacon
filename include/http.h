@@ -5,9 +5,24 @@
 #ifndef IBEACON_HTTP_H
 #define IBEACON_HTTP_H
 
+#include <common.h>
+
+typedef void (*parse_http) (char * http_message);
 typedef struct HttpResponse * HttpResponsePtr;
 typedef struct HttpRequest * HttpRequestPtr;
 typedef struct Http * HttpPtr;
+
+static const char response_okay[4] = "200";
+static const char response_file_not_found[4] = "404";
+static const char response_bad_request[4] = "400";
+static const char response_server_error[4] = "500";
+static const char response_version_not_supported[4] = "505";
+
+static const char response_msg_okay[3] = "OK";
+static const char response_msg_file_not_found[15] = "File Not Found";
+static const char response_msg_bad_request[12] = "Bad Request";
+static const char response_msg_server_error[27] = "HTTP Internal Server Error";
+static const char response_msg_version_not_supported[27] = "HTTP Version Not Supported";
 
 
 enum HTTP_METHODS {
@@ -23,129 +38,140 @@ enum HTTP_TYPE {
     RESPONSE
 };
 
-typedef struct status_code_pair {
-    char * code;
-    char * status;
+typedef struct {
+    const char * code;
+    const char * status;
 } status_code_pair;
 
 
-typedef status_code_pair status_code_map[] {
-    { "200", "OK" },
-    { "404", "File Not Found" },
-    { "400", "Bad Request" },
-    { "500", "HTTP Internal Server Error" },
-    { "505", "HTTP Version Not Supported" }
-} status_code_map;
 
+status_code_pair status_code_map[] = {
+        { response_okay,                  response_msg_okay                  },
+        { response_file_not_found,        response_msg_file_not_found        },
+        { response_bad_request,           response_msg_bad_request           },
+        { response_server_error,          response_msg_server_error          },
+        { response_version_not_supported, response_msg_version_not_supported }
+};
 
 
 // ==========================
 // PARENT HTTP CLASS
 // ==========================
+/*
+ * Constructor
+ */
+HttpPtr http_constructor(enum HTTP_TYPE, char * version, char * connection, parse_http);
 
-typedef struct Http {
-    enum HTTP_TYPE type;    // REQUEST or RESPONSE
-    char * version;         // http version
-    char * connection;      // connection type
-} Http;
+    /*
+     * Destructor
+     */
+    void destroy_http(HttpPtr);
 
-// constructor
-HttpPtr http_constructor(enum HTTP_TYPE, char * version, char * connection);
+    /*
+     * Getters
+     */
+    enum HTTP_TYPE get_http_type(HttpPtr http);
+    char * get_version(HttpPtr http);
+    char * get_connection(HttpPtr http);
 
-// getters
-enum HTTP_TYPE get_http_type(void);
-char * get_version(void);
-char * get_connection(void);
-
-// setters
-void set_http_type(HttpPtr http, enum HTTP_TYPE http_type);
-void set_version(HttpPtr http, char * version);
-void set_connection(HttpPtr http, char * connection)
-
+    /*
+     * Setters
+     */
+    void set_http_type(HttpPtr http, enum HTTP_TYPE http_type);
+    void set_version(HttpPtr http, char * version);
+    void set_connection(HttpPtr http, char * connection);
 
 
 // ============================
 // CHILD HTTP RESPONSE CLASS
 // ============================
 
-typedef struct HttpResponse {
-    Http super;
-    char * status;          // response status
-    char * status_code;     // response status code
-    char * date;            // e.g. Th, 08 Aug 2013 23:54:35 GMT
-    char * server;          // Server software spec (e.g. Apache/2.4.39 (CentOS))
-    char * last_modified;   // e.g. Th, 08 Aug 2013 23:54:35 GMT
-    ssize_t content_length; // Length of object in bytes
-    char * content_type;    // e.g. "text/html"
-} HttpResponse;
-
 /*
- * constructor
+ * CONSTRUCTOR
  */
 HttpResponsePtr http_response_constructor(HttpPtr);
 
-/*
- * getters
- */
-char *  get_status(void);
-char *  get_status_code(void);
-char *  get_date(void);
-char *  get_server(void);
-char *  get_last_modified(void);
-char *  get_content_type(void);
-ssize_t get_content_length(void);
+    /*
+     * destructor
+     */
+    void destroy_http_response(HttpResponsePtr);
 
-/*
- * setters
- */
-void  set_status(char * status);
-void  set_status_code(char * status_code);
-void  set_date(char * date);
-void  set_server(char * server);
-void  set_last_modified(char * last_modified);
-void  set_content_length(ssize_t content_length);
-void  set_content_type(char * content_type);
+    /*
+     * Getters
+     */
+    char *  get_status(void);
+    char *  get_status_code(void);
+    char *  get_date(void);
+    char *  get_server(void);
+    char *  get_last_modified(void);
+    char *  get_content_type(void);
+    ssize_t get_content_length(void);
+
+    /*
+     * Setters
+     */
+    void  set_status(char * status);
+    void  set_status_code(char * status_code);
+    void  set_date(char * date);
+    void  set_server(char * server);
+    void  set_last_modified(char * last_modified);
+    void  set_content_length(ssize_t content_length);
+    void  set_content_type(char * content_type);
 
 
 // ============================
 // CHILD HTTP RESPONSE CLASS
 // ============================
-
-typedef struct HttpRequest{
-    Http super;
-    char * method;          // request method
-    char * url;             // location that HTTP is referring to
-    char * host;            // host that the request is for
-    char * user_agent;      // specifies the client
-    char * accept_language; // language that is preferred
-    char * accept;          // defines the sort of response to accept. Can be HTML files, images, audio/video, etc.
-} HttpRequest;
-
 /*
- * constructor
+ * CONSTRUCTOR
  */
 HttpRequestPtr http_request_constructor(HttpPtr);
 
-/*
- * getters
+    /*
+     * Destructor
+     */
+    void destroy_http_request(HttpRequestPtr);
+
+    /*
+     * Getters
+     */
+    char * get_method(void);
+    char * get_url(void);
+    char * get_host(void);
+    char * get_user_agent(void);
+    char * get_accept_language(void);
+    char * get_accept(void);
+
+    /*
+     * Setters
+     */
+    void set_method(char * method);
+    void set_url(char * url);
+    void set_host(char * host);
+    void set_user_agent(char * user_agent);
+    void set_accept_language(char * accept_language);
+    void set_accept(char * accept);
+
+
+
+// ==================================
+// CHILD HTTP PARSE REQUEST FUNCTIONS
+// ==================================
+/**
+ * Parse incoming HTTP Request.
+ *
+ * @param http_message
  */
-char * get_method(void);
-char * get_url(void);
-char * get_host(void);
-char * get_user_agent(void);
-char * get_accept_language(void);
-char * get_accept(void);
+void parse_http_request(char * http_message);
 
-/*
- * setters
+/**
+ * Parse incoming HTTP request.
+ *
+ * @param http_message
  */
-void  set_method(char * method);
-void  set_url(char * url);
-void  set_host(char * host);
-void  set_user_agent(char * user_agent);
-void  set_accept_language(char * accept_language);
-void  set_accept(char * accept);
+void parse_http_response(char * http_message);
 
 
 
-#endif //IBEACON_HTTP_H
+
+#endif IBEACON_HTTP_H

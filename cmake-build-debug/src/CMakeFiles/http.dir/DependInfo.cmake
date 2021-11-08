@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/home/jordan/work/protocol/projects/ibeacon/src/common.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/common.c.o"
+  "/home/jordan/work/protocol/projects/ibeacon/src/http.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http.c.o"
   "/home/jordan/work/protocol/projects/ibeacon/src/server.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/server.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

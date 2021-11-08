@@ -276,6 +276,30 @@ common.c.s:
 	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.s
 .PHONY : common.c.s
 
+http.o: http.c.o
+.PHONY : http.o
+
+# target to build an object file
+http.c.o:
+	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.o
+.PHONY : http.c.o
+
+http.i: http.c.i
+.PHONY : http.i
+
+# target to preprocess a source file
+http.c.i:
+	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.i
+.PHONY : http.c.i
+
+http.s: http.c.s
+.PHONY : http.s
+
+# target to generate assembly for a file
+http.c.s:
+	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.s
+.PHONY : http.c.s
+
 server.o: server.c.o
 .PHONY : server.o
 
@@ -324,6 +348,9 @@ help:
 	@echo "... common.o"
 	@echo "... common.i"
 	@echo "... common.s"
+	@echo "... http.o"
+	@echo "... http.i"
+	@echo "... http.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"

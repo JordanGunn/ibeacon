@@ -367,6 +367,9 @@
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/docs/mainpage.md">
 			<Option target="docs"/>
 		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/client.h">
+			<Option target="client"/>
+		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/common.h">
 			<Option target="ibeacon"/>
 			<Option target="db"/>
@@ -375,12 +378,21 @@
 			<Option target="http"/>
 			<Option target="template_test"/>
 		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/db.h">
+			<Option target="db"/>
+		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/http.h">
+			<Option target="http"/>
+		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/ibeacon.h">
+			<Option target="ibeacon"/>
+		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/include/server.h">
+			<Option target="server"/>
+		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/client.c">
 			<Option target="ibeacon"/>
 			<Option target="db"/>
-			<Option target="client"/>
-		</Unit>
-		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/client.h">
 			<Option target="client"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/common.c">
@@ -391,29 +403,12 @@
 			<Option target="http"/>
 			<Option target="template_test"/>
 		</Unit>
-		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/common.h">
-			<Option target="ibeacon"/>
-			<Option target="db"/>
-			<Option target="client"/>
-			<Option target="server"/>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/http.c">
 			<Option target="http"/>
-			<Option target="template_test"/>
-		</Unit>
-		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/db.h">
-			<Option target="db"/>
-		</Unit>
-		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/http.h">
-			<Option target="http"/>
-		</Unit>
-		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/ibeacon.h">
-			<Option target="ibeacon"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/server.c">
 			<Option target="server"/>
 			<Option target="http"/>
-		</Unit>
-		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/server.h">
-			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/tests/main.c">
 			<Option target="template_test"/>
