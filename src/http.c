@@ -4,6 +4,14 @@
 
 #include "http.h"
 
+//// =================================================================
+//// --- T O -- D O -- L I S T ---------------------------------------
+//// =================================================================
+////    1. Figure out where dc_posix env/err will be required
+////    2. Change necessary function prototypes to include dc_posix
+////    3. Move parsing function to seperate header/source file ????
+////    4. *** IMPLEMENT PARSING FUNCTIONS ***
+//// =================================================================
 
 // ===============================
 // H T T P    B A S E    C L A S S
