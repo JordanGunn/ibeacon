@@ -406,6 +406,12 @@
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/http.c">
 			<Option target="http"/>
 		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/http_parse.c">
+			<Option target="http"/>
+		</Unit>
+		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/http_parse.h">
+			<Option target="http"/>
+		</Unit>
 		<Unit filename="/home/jordan/work/protocol/projects/ibeacon/src/server.c">
 			<Option target="server"/>
 			<Option target="http"/>

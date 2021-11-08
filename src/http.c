@@ -112,86 +112,133 @@ struct HttpResponse {
 /*
  * RESPONSE CONSTRUCTOR
  */
-HttpResponsePtr http_response_constructor(HttpPtr http)
+HttpResponsePtr http_response_constructor(HttpPtr * const http, enum HTTP_TYPE http_type, char * http_version, char * connection, parse_http parse)
 {
-    return NULL;
+    HttpResponsePtr http_response = malloc(sizeof * http_response);
+    if (http_response)
+    {
+        HttpPtr super = http_constructor(RESPONSE, http_version, connection, parse);
+        http_response->super = super;
+    }
 }
 
 /*
  * Getters
  */
-    char *  get_status(void)
+    char * get_status(HttpResponsePtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->status;
+        }
     }
 
-    char *  get_status_code(void)
+    char * get_status_code(HttpResponsePtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->status;
+        }
     }
 
-    char *  get_date(void)
+    char * get_date(HttpResponsePtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->date;
+        }
     }
 
-    char *  get_server(void)
+    char * get_server(HttpResponsePtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->server;
+        }
     }
 
-    char *  get_last_modified(void)
+    char * get_last_modified(HttpResponsePtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->last_modified;
+        }
     }
 
-    char *  get_content_type(void)
+    char * get_content_type(HttpResponsePtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->content_type;
+        }
     }
 
-    ssize_t get_content_length(void)
+    ssize_t get_content_length(HttpResponsePtr http)
     {
-        return (ssize_t) NULL;
+        if (http)
+        {
+            return http->content_length;
+        }
     }
 
 
 /*
  * Setters
  */
-    void  set_status(char * status)
+    void set_status(HttpResponsePtr http, char * status)
     {
-
+        if (http)
+        {
+            http->status = status;
+        }
     }
 
-    void  set_status_code(char * status_code)
+    void set_status_code(HttpResponsePtr http, char * status_code)
     {
-
+        if (http)
+        {
+            http->status_code = status_code;
+        }
     }
 
-    void  set_date(char * date)
+    void set_date(HttpResponsePtr http, char * date)
     {
-
+        if (http)
+        {
+            http->date = date;
+        }
     }
 
-    void  set_server(char * server)
+    void set_server(HttpResponsePtr http, char * server)
     {
-
+        if (http)
+        {
+            http->server = server;
+        }
     }
 
-    void  set_last_modified(char * last_modified)
+    void set_last_modified(HttpResponsePtr http, char * last_modified)
     {
-
+        if (http)
+        {
+            http->last_modified = last_modified;
+        }
     }
 
-    void  set_content_length(ssize_t content_length)
+    void set_content_length(HttpResponsePtr http, ssize_t content_length)
     {
-
+        if (http)
+        {
+            http->content_length = content_length;
+        }
     }
 
-    void  set_content_type(char * content_type)
+    void set_content_type(HttpResponsePtr http, char * content_type)
     {
-
+        if (http)
+        {
+            http->content_type = content_type;
+        }
     }
 
 /*
@@ -199,7 +246,10 @@ HttpResponsePtr http_response_constructor(HttpPtr http)
  */
     void destroy_http_response(HttpResponsePtr http)
     {
-
+        if (http)
+        {
+            free(http);
+        }
     }
 
 
@@ -222,74 +272,127 @@ struct HttpRequest {
 /*
  * constructor
  */
-HttpRequestPtr http_request_constructor(HttpPtr http)
+HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char * connection, parse_http parse)
 {
-    return NULL;
+    HttpRequestPtr http_request = malloc(sizeof * http_request);
+    if (http_request)
+    {
+        HttpPtr super = http_constructor(REQUEST, http_version, connection, parse);
+        http_request->super = super;
+    }
 }
 
 /*
  * Getters
  */
-    char * get_method(void)
+    char * get_method(HttpRequestPtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->method;
+        }
+
     }
 
-    char * get_url(void)
+    char * get_url(HttpRequestPtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->url;
+        }
+
     }
 
-    char * get_host(void)
+    char * get_host(HttpRequestPtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->host;
+        }
+
     }
 
-    char * get_user_agent(void)
+    char * get_user_agent(HttpRequestPtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->user_agent;
+        }
+
     }
 
-    char * get_accept_language(void)
+    char * get_accept_language(HttpRequestPtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->accept_language;
+        }
+
     }
 
-    char * get_accept(void)
+    char * get_accept(HttpRequestPtr http)
     {
-        return NULL;
+        if (http)
+        {
+            return http->accept;
+        }
+
     }
 
 /*
  * Setters
  */
-    void set_method(char * method)
+    void set_method(HttpRequestPtr http, char * method)
     {
+        if (http)
+        {
+            http->method = method;
+        }
 
     }
 
-    void set_url(char * url)
+    void set_url(HttpRequestPtr http, char * url)
     {
+        if (http)
+        {
+            http->url = url;
+        }
 
     }
 
-    void set_host(char * host)
+    void set_host(HttpRequestPtr http, char * host)
     {
+        if (http)
+        {
+            http->host = host;
+        }
 
     }
 
-    void set_user_agent(char * user_agent)
+    void set_user_agent(HttpRequestPtr http, char * user_agent)
     {
+        if (http)
+        {
+            http->user_agent = user_agent;
+        }
 
     }
 
-    void set_accept_language(char * accept_language)
+    void set_accept_language(HttpRequestPtr http, char * accept_language)
     {
+        if (http)
+        {
+            http->accept_language = accept_language;
+        }
 
     }
 
-    void set_accept(char * accept)
+    void set_accept(HttpRequestPtr http, char * accept)
     {
+        if (http)
+        {
+            http->accept = accept;
+        }
 
     }
 

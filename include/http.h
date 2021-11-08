@@ -89,7 +89,8 @@ HttpPtr http_constructor(enum HTTP_TYPE, char * version, char * connection, pars
 /*
  * CONSTRUCTOR
  */
-HttpResponsePtr http_response_constructor(HttpPtr);
+HttpResponsePtr http_response_constructor(HttpPtr * , enum HTTP_TYPE, char *, char *, parse_http)
+;
 
     /*
      * destructor
@@ -99,33 +100,34 @@ HttpResponsePtr http_response_constructor(HttpPtr);
     /*
      * Getters
      */
-    char *  get_status(void);
-    char *  get_status_code(void);
-    char *  get_date(void);
-    char *  get_server(void);
-    char *  get_last_modified(void);
-    char *  get_content_type(void);
-    ssize_t get_content_length(void);
+    char *  get_status(HttpResponsePtr);
+    char *  get_status_code(HttpResponsePtr);
+    char *  get_date(HttpResponsePtr);
+    char *  get_server(HttpResponsePtr);
+    char *  get_last_modified(HttpResponsePtr);
+    char *  get_content_type(HttpResponsePtr);
+    ssize_t get_content_length(HttpResponsePtr);
 
     /*
      * Setters
      */
-    void  set_status(char * status);
-    void  set_status_code(char * status_code);
-    void  set_date(char * date);
-    void  set_server(char * server);
-    void  set_last_modified(char * last_modified);
-    void  set_content_length(ssize_t content_length);
-    void  set_content_type(char * content_type);
+    void  set_status(HttpResponsePtr, char *);
+    void  set_status_code(HttpResponsePtr, char *);
+    void  set_date(HttpResponsePtr, char *);
+    void  set_server(HttpResponsePtr, char *);
+    void  set_last_modified(HttpResponsePtr, char *);
+    void  set_content_type(HttpResponsePtr, char *);
+    void  set_content_length(HttpResponsePtr, ssize_t);
+
 
 
 // ============================
-// CHILD HTTP RESPONSE CLASS
+// CHILD HTTP REQUEST CLASS
 // ============================
 /*
  * CONSTRUCTOR
  */
-HttpRequestPtr http_request_constructor(HttpPtr);
+HttpRequestPtr http_request_constructor(HttpPtr, char *, char *, parse_http);
 
     /*
      * Destructor
@@ -135,22 +137,22 @@ HttpRequestPtr http_request_constructor(HttpPtr);
     /*
      * Getters
      */
-    char * get_method(void);
-    char * get_url(void);
-    char * get_host(void);
-    char * get_user_agent(void);
-    char * get_accept_language(void);
-    char * get_accept(void);
+    char * get_method(HttpRequestPtr);
+    char * get_url(HttpRequestPtr);
+    char * get_host(HttpRequestPtr);
+    char * get_user_agent(HttpRequestPtr);
+    char * get_accept_language(HttpRequestPtr);
+    char * get_accept(HttpRequestPtr);
 
     /*
      * Setters
      */
-    void set_method(char * method);
-    void set_url(char * url);
-    void set_host(char * host);
-    void set_user_agent(char * user_agent);
-    void set_accept_language(char * accept_language);
-    void set_accept(char * accept);
+    void set_method(HttpRequestPtr, char *);
+    void set_url(HttpRequestPtr, char *);
+    void set_host(HttpRequestPtr, char *);
+    void set_user_agent(HttpRequestPtr, char *);
+    void set_accept_language(HttpRequestPtr, char *);
+    void set_accept(HttpRequestPtr, char *);
 
 
 

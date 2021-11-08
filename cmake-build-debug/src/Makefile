@@ -300,6 +300,30 @@ http.c.s:
 	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.s
 .PHONY : http.c.s
 
+http_parse.o: http_parse.c.o
+.PHONY : http_parse.o
+
+# target to build an object file
+http_parse.c.o:
+	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http_parse.c.o
+.PHONY : http_parse.c.o
+
+http_parse.i: http_parse.c.i
+.PHONY : http_parse.i
+
+# target to preprocess a source file
+http_parse.c.i:
+	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http_parse.c.i
+.PHONY : http_parse.c.i
+
+http_parse.s: http_parse.c.s
+.PHONY : http_parse.s
+
+# target to generate assembly for a file
+http_parse.c.s:
+	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http_parse.c.s
+.PHONY : http_parse.c.s
+
 server.o: server.c.o
 .PHONY : server.o
 
@@ -351,6 +375,9 @@ help:
 	@echo "... http.o"
 	@echo "... http.i"
 	@echo "... http.s"
+	@echo "... http_parse.o"
+	@echo "... http_parse.i"
+	@echo "... http_parse.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"

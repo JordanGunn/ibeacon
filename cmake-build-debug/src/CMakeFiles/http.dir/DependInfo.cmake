@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/home/jordan/work/protocol/projects/ibeacon/src/common.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/common.c.o"
   "/home/jordan/work/protocol/projects/ibeacon/src/http.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http.c.o"
+  "/home/jordan/work/protocol/projects/ibeacon/src/http_parse.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http_parse.c.o"
   "/home/jordan/work/protocol/projects/ibeacon/src/server.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/server.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
