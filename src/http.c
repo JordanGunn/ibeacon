@@ -28,6 +28,8 @@ struct Http {
             http->connection =connection;
             http->parse = parse;
         }
+
+        return http;
     }
 
 /*
@@ -120,6 +122,8 @@ HttpResponsePtr http_response_constructor(HttpPtr * const http, enum HTTP_TYPE h
         HttpPtr super = http_constructor(RESPONSE, http_version, connection, parse);
         http_response->super = super;
     }
+
+    return http_response;
 }
 
 /*
@@ -280,6 +284,8 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         HttpPtr super = http_constructor(REQUEST, http_version, connection, parse);
         http_request->super = super;
     }
+
+    return http_request;
 }
 
 /*
@@ -291,7 +297,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             return http->method;
         }
-
     }
 
     char * get_url(HttpRequestPtr http)
@@ -300,7 +305,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             return http->url;
         }
-
     }
 
     char * get_host(HttpRequestPtr http)
@@ -309,7 +313,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             return http->host;
         }
-
     }
 
     char * get_user_agent(HttpRequestPtr http)
@@ -318,7 +321,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             return http->user_agent;
         }
-
     }
 
     char * get_accept_language(HttpRequestPtr http)
@@ -327,7 +329,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             return http->accept_language;
         }
-
     }
 
     char * get_accept(HttpRequestPtr http)
@@ -336,7 +337,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             return http->accept;
         }
-
     }
 
 /*
@@ -348,7 +348,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             http->method = method;
         }
-
     }
 
     void set_url(HttpRequestPtr http, char * url)
@@ -357,7 +356,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             http->url = url;
         }
-
     }
 
     void set_host(HttpRequestPtr http, char * host)
@@ -366,7 +364,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             http->host = host;
         }
-
     }
 
     void set_user_agent(HttpRequestPtr http, char * user_agent)
@@ -375,7 +372,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             http->user_agent = user_agent;
         }
-
     }
 
     void set_accept_language(HttpRequestPtr http, char * accept_language)
@@ -384,7 +380,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             http->accept_language = accept_language;
         }
-
     }
 
     void set_accept(HttpRequestPtr http, char * accept)
@@ -393,7 +388,6 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
         {
             http->accept = accept;
         }
-
     }
 
 // ==================================
