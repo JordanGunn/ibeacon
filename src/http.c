@@ -9,14 +9,15 @@
 // H T T P    B A S E    C L A S S
 // ===============================
 struct Http {
-    enum HTTP_TYPE type;    // REQUEST or RESPONSE
-    char * http_version;    // http version
-    char * connection;      // connection type
-    parse_http parse;
+    enum HTTP_TYPE  type;           // REQUEST or RESPONSE
+    char *          http_version;   // http version
+    char *          connection;     // connection type
+    parse_http      parse;          // pointer to parse function (for either REQUEST or RESPONSE)
 };
-    /*
-     *  HTTP CONSTRUCTOR
-     */
+
+/*
+ *  HTTP CONSTRUCTOR
+ */
     HttpPtr http_constructor(enum HTTP_TYPE http_type, char * http_version, char * connection, parse_http parse)
     {
         HttpPtr http = malloc(sizeof * http);
@@ -28,9 +29,10 @@ struct Http {
             http->parse = parse;
         }
     }
-    /*
-     * Getters
-     */
+
+/*
+ * Getters
+ */
     enum HTTP_TYPE get_http_type(HttpPtr http)
     {
         if (http)
@@ -55,9 +57,9 @@ struct Http {
         }
     }
 
-    /*
-     * Setters
-     */
+/*
+ * Setters
+ */
     void set_http_type(HttpPtr http, enum HTTP_TYPE http_type)
     {
         if (http)
@@ -82,9 +84,9 @@ struct Http {
         }
     }
 
-    /*
-    * Destructor
-    */
+/*
+* Destructor
+*/
     void destroy_http(HttpPtr http)
     {
         if (http)
@@ -92,8 +94,6 @@ struct Http {
             free(http);
         }
     }
-
-
 
 
 // ============================
@@ -116,9 +116,10 @@ HttpResponsePtr http_response_constructor(HttpPtr http)
 {
     return NULL;
 }
-    /*
-     * Getters
-     */
+
+/*
+ * Getters
+ */
     char *  get_status(void)
     {
         return NULL;
@@ -155,9 +156,9 @@ HttpResponsePtr http_response_constructor(HttpPtr http)
     }
 
 
-    /*
-     * Setters
-     */
+/*
+ * Setters
+ */
     void  set_status(char * status)
     {
 
@@ -193,9 +194,9 @@ HttpResponsePtr http_response_constructor(HttpPtr http)
 
     }
 
-    /*
-     * destructor
-     */
+/*
+ * destructor
+ */
     void destroy_http_response(HttpResponsePtr http)
     {
 
@@ -226,9 +227,9 @@ HttpRequestPtr http_request_constructor(HttpPtr http)
     return NULL;
 }
 
-    /*
-     * Getters
-     */
+/*
+ * Getters
+ */
     char * get_method(void)
     {
         return NULL;
@@ -259,9 +260,9 @@ HttpRequestPtr http_request_constructor(HttpPtr http)
         return NULL;
     }
 
-    /*
-     * Setters
-     */
+/*
+ * Setters
+ */
     void set_method(char * method)
     {
 
