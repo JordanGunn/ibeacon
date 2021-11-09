@@ -1,1 +1,0 @@
-/usr/bin/cc -g CMakeFiles/ibeacon.dir/main.c.o CMakeFiles/ibeacon.dir/ibeacon/http.c.o -o ibeacon 

@@ -8,13 +8,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/jordan/work/protocol/projects/ibeacon/src/common.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests/CMakeFiles/template_test.dir/__/src/common.c.o"
-  "/home/jordan/work/protocol/projects/ibeacon/tests/main.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests/CMakeFiles/template_test.dir/main.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests/CMakeFiles/template_test.dir/__/src/common.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/tests/main.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests/CMakeFiles/template_test.dir/main.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C
+  "_DARWIN_C_SOURCE"
   "_POSIX_C_SOURCE=200809L"
   "_XOPEN_SOURCE=700"
   )
@@ -23,6 +24,7 @@ set(CMAKE_TARGET_DEFINITIONS_C
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "."
   "../tests/../include"
+  "/usr/local/include"
   )
 
 # The set of dependency files which are needed:

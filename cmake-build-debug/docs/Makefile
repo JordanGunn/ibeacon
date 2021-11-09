@@ -48,27 +48,37 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jordan/work/protocol/projects/ibeacon
+CMAKE_SOURCE_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -78,33 +88,23 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
 edit_cache/fast: edit_cache
 .PHONY : edit_cache/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-.PHONY : test/fast
-
 # The main all target
 all: cmake_check_build_system
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/docs//CMakeFiles/progress.marks
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles 0
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/docs//CMakeFiles/progress.marks
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/clean
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/clean
 .PHONY : clean
 
 # The main clean target
@@ -113,22 +113,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/preinstall
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/preinstall
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 docs/CMakeFiles/docs.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/CMakeFiles/docs.dir/rule
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 docs/CMakeFiles/docs.dir/rule
 .PHONY : docs/CMakeFiles/docs.dir/rule
 
 # Convenience name for target.
@@ -137,7 +137,7 @@ docs: docs/CMakeFiles/docs.dir/rule
 
 # fast build rule for target.
 docs/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f docs/CMakeFiles/docs.dir/build.make docs/CMakeFiles/docs.dir/build
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f docs/CMakeFiles/docs.dir/build.make docs/CMakeFiles/docs.dir/build
 .PHONY : docs/fast
 
 # Help Target
@@ -161,6 +161,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

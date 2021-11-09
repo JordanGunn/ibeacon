@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jordan/work/protocol/projects/ibeacon
+CMAKE_SOURCE_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include tests/CMakeFiles/template_test.dir/depend.make
@@ -68,29 +68,29 @@ include tests/CMakeFiles/template_test.dir/flags.make
 
 tests/CMakeFiles/template_test.dir/main.c.o: tests/CMakeFiles/template_test.dir/flags.make
 tests/CMakeFiles/template_test.dir/main.c.o: ../tests/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object tests/CMakeFiles/template_test.dir/main.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/template_test.dir/main.c.o -c /home/jordan/work/protocol/projects/ibeacon/tests/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object tests/CMakeFiles/template_test.dir/main.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/template_test.dir/main.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/tests/main.c
 
 tests/CMakeFiles/template_test.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/template_test.dir/main.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/tests/main.c > CMakeFiles/template_test.dir/main.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/tests/main.c > CMakeFiles/template_test.dir/main.c.i
 
 tests/CMakeFiles/template_test.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/template_test.dir/main.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/tests/main.c -o CMakeFiles/template_test.dir/main.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/tests/main.c -o CMakeFiles/template_test.dir/main.c.s
 
 tests/CMakeFiles/template_test.dir/__/src/common.c.o: tests/CMakeFiles/template_test.dir/flags.make
 tests/CMakeFiles/template_test.dir/__/src/common.c.o: ../src/common.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object tests/CMakeFiles/template_test.dir/__/src/common.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/template_test.dir/__/src/common.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/common.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object tests/CMakeFiles/template_test.dir/__/src/common.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/template_test.dir/__/src/common.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c
 
 tests/CMakeFiles/template_test.dir/__/src/common.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/template_test.dir/__/src/common.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/common.c > CMakeFiles/template_test.dir/__/src/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c > CMakeFiles/template_test.dir/__/src/common.c.i
 
 tests/CMakeFiles/template_test.dir/__/src/common.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/template_test.dir/__/src/common.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/common.c -o CMakeFiles/template_test.dir/__/src/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c -o CMakeFiles/template_test.dir/__/src/common.c.s
 
 # Object files for target template_test
 template_test_OBJECTS = \
@@ -103,22 +103,22 @@ template_test_EXTERNAL_OBJECTS =
 tests/template_test: tests/CMakeFiles/template_test.dir/main.c.o
 tests/template_test: tests/CMakeFiles/template_test.dir/__/src/common.c.o
 tests/template_test: tests/CMakeFiles/template_test.dir/build.make
-tests/template_test: /usr/local/lib/libcgreen.so
-tests/template_test: /usr/local/lib/libdc_error.so
-tests/template_test: /usr/local/lib/libdc_posix.so
+tests/template_test: /usr/local/lib/libcgreen.dylib
+tests/template_test: /usr/local/lib/libdc_error.dylib
+tests/template_test: /usr/local/lib/libdc_posix.dylib
 tests/template_test: tests/CMakeFiles/template_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable template_test"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/template_test.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable template_test"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/template_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 tests/CMakeFiles/template_test.dir/build: tests/template_test
 .PHONY : tests/CMakeFiles/template_test.dir/build
 
 tests/CMakeFiles/template_test.dir/clean:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests && $(CMAKE_COMMAND) -P CMakeFiles/template_test.dir/cmake_clean.cmake
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests && $(CMAKE_COMMAND) -P CMakeFiles/template_test.dir/cmake_clean.cmake
 .PHONY : tests/CMakeFiles/template_test.dir/clean
 
 tests/CMakeFiles/template_test.dir/depend:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jordan/work/protocol/projects/ibeacon /home/jordan/work/protocol/projects/ibeacon/tests /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/tests/CMakeFiles/template_test.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/giwoun/CLionProjects/C_Networking/ibeacon /Users/giwoun/CLionProjects/C_Networking/ibeacon/tests /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/tests/CMakeFiles/template_test.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : tests/CMakeFiles/template_test.dir/depend
 

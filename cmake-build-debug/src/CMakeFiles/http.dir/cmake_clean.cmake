@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/http.dir/common.c.o"
-  "CMakeFiles/http.dir/http.c.o"
-  "CMakeFiles/http.dir/http_parse.c.o"
+  "CMakeFiles/http.dir/http/http.c.o"
+  "CMakeFiles/http.dir/http/http_parse.c.o"
   "CMakeFiles/http.dir/server.c.o"
   "http"
   "http.pdb"

@@ -48,27 +48,37 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jordan/work/protocol/projects/ibeacon
+CMAKE_SOURCE_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+.PHONY : edit_cache/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -78,33 +88,23 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/ctest --force-new-ctest-process $(ARGS)
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/ctest --force-new-ctest-process $(ARGS)
 .PHONY : test
 
 # Special rule for the target test
 test/fast: test
 .PHONY : test/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-.PHONY : edit_cache/fast
-
 # The main all target
 all: cmake_check_build_system
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src//CMakeFiles/progress.marks
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles 0
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src//CMakeFiles/progress.marks
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -113,36 +113,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/format.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/format.dir/rule
-.PHONY : src/CMakeFiles/format.dir/rule
-
-# Convenience name for target.
-format: src/CMakeFiles/format.dir/rule
-.PHONY : format
-
-# fast build rule for target.
-format/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/format.dir/build.make src/CMakeFiles/format.dir/build
-.PHONY : format/fast
-
-# Convenience name for target.
 src/CMakeFiles/ibeacon.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/ibeacon.dir/rule
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/ibeacon.dir/rule
 .PHONY : src/CMakeFiles/ibeacon.dir/rule
 
 # Convenience name for target.
@@ -151,40 +137,12 @@ ibeacon: src/CMakeFiles/ibeacon.dir/rule
 
 # fast build rule for target.
 ibeacon/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/build
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/build
 .PHONY : ibeacon/fast
 
 # Convenience name for target.
-src/CMakeFiles/db.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/db.dir/rule
-.PHONY : src/CMakeFiles/db.dir/rule
-
-# Convenience name for target.
-db: src/CMakeFiles/db.dir/rule
-.PHONY : db
-
-# fast build rule for target.
-db/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/build
-.PHONY : db/fast
-
-# Convenience name for target.
-src/CMakeFiles/client.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/rule
-.PHONY : src/CMakeFiles/client.dir/rule
-
-# Convenience name for target.
-client: src/CMakeFiles/client.dir/rule
-.PHONY : client
-
-# fast build rule for target.
-client/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
-.PHONY : client/fast
-
-# Convenience name for target.
 src/CMakeFiles/server.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/server.dir/rule
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/server.dir/rule
 .PHONY : src/CMakeFiles/server.dir/rule
 
 # Convenience name for target.
@@ -193,12 +151,12 @@ server: src/CMakeFiles/server.dir/rule
 
 # fast build rule for target.
 server/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
 .PHONY : server/fast
 
 # Convenience name for target.
 src/CMakeFiles/http.dir/rule:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/http.dir/rule
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/http.dir/rule
 .PHONY : src/CMakeFiles/http.dir/rule
 
 # Convenience name for target.
@@ -207,17 +165,59 @@ http: src/CMakeFiles/http.dir/rule
 
 # fast build rule for target.
 http/fast:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/build
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/build
 .PHONY : http/fast
+
+# Convenience name for target.
+src/CMakeFiles/format.dir/rule:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/format.dir/rule
+.PHONY : src/CMakeFiles/format.dir/rule
+
+# Convenience name for target.
+format: src/CMakeFiles/format.dir/rule
+.PHONY : format
+
+# fast build rule for target.
+format/fast:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/format.dir/build.make src/CMakeFiles/format.dir/build
+.PHONY : format/fast
+
+# Convenience name for target.
+src/CMakeFiles/db.dir/rule:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/db.dir/rule
+.PHONY : src/CMakeFiles/db.dir/rule
+
+# Convenience name for target.
+db: src/CMakeFiles/db.dir/rule
+.PHONY : db
+
+# fast build rule for target.
+db/fast:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/build
+.PHONY : db/fast
+
+# Convenience name for target.
+src/CMakeFiles/client.dir/rule:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/rule
+.PHONY : src/CMakeFiles/client.dir/rule
+
+# Convenience name for target.
+client: src/CMakeFiles/client.dir/rule
+.PHONY : client
+
+# fast build rule for target.
+client/fast:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
+.PHONY : client/fast
 
 client.o: client.c.o
 .PHONY : client.o
 
 # target to build an object file
 client.c.o:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/client.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/client.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/client.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/client.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.c.o
 .PHONY : client.c.o
 
 client.i: client.c.i
@@ -225,9 +225,9 @@ client.i: client.c.i
 
 # target to preprocess a source file
 client.c.i:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/client.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/client.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/client.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/client.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.c.i
 .PHONY : client.c.i
 
 client.s: client.c.s
@@ -235,9 +235,9 @@ client.s: client.c.s
 
 # target to generate assembly for a file
 client.c.s:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/client.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/client.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/client.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/client.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.c.s
 .PHONY : client.c.s
 
 common.o: common.c.o
@@ -245,11 +245,11 @@ common.o: common.c.o
 
 # target to build an object file
 common.c.o:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/common.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/common.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/common.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/common.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/common.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/common.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.o
 .PHONY : common.c.o
 
 common.i: common.c.i
@@ -257,11 +257,11 @@ common.i: common.c.i
 
 # target to preprocess a source file
 common.c.i:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/common.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/common.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/common.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.i
 .PHONY : common.c.i
 
 common.s: common.c.s
@@ -269,68 +269,68 @@ common.s: common.c.s
 
 # target to generate assembly for a file
 common.c.s:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/common.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/common.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/common.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ibeacon.dir/build.make src/CMakeFiles/ibeacon.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.s
 .PHONY : common.c.s
 
-http.o: http.c.o
-.PHONY : http.o
+http/http.o: http/http.c.o
+.PHONY : http/http.o
 
 # target to build an object file
-http.c.o:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.o
-.PHONY : http.c.o
+http/http.c.o:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http/http.c.o
+.PHONY : http/http.c.o
 
-http.i: http.c.i
-.PHONY : http.i
+http/http.i: http/http.c.i
+.PHONY : http/http.i
 
 # target to preprocess a source file
-http.c.i:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.i
-.PHONY : http.c.i
+http/http.c.i:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http/http.c.i
+.PHONY : http/http.c.i
 
-http.s: http.c.s
-.PHONY : http.s
+http/http.s: http/http.c.s
+.PHONY : http/http.s
 
 # target to generate assembly for a file
-http.c.s:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http.c.s
-.PHONY : http.c.s
+http/http.c.s:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http/http.c.s
+.PHONY : http/http.c.s
 
-http_parse.o: http_parse.c.o
-.PHONY : http_parse.o
+http/http_parse.o: http/http_parse.c.o
+.PHONY : http/http_parse.o
 
 # target to build an object file
-http_parse.c.o:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http_parse.c.o
-.PHONY : http_parse.c.o
+http/http_parse.c.o:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http/http_parse.c.o
+.PHONY : http/http_parse.c.o
 
-http_parse.i: http_parse.c.i
-.PHONY : http_parse.i
+http/http_parse.i: http/http_parse.c.i
+.PHONY : http/http_parse.i
 
 # target to preprocess a source file
-http_parse.c.i:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http_parse.c.i
-.PHONY : http_parse.c.i
+http/http_parse.c.i:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http/http_parse.c.i
+.PHONY : http/http_parse.c.i
 
-http_parse.s: http_parse.c.s
-.PHONY : http_parse.s
+http/http_parse.s: http/http_parse.c.s
+.PHONY : http/http_parse.s
 
 # target to generate assembly for a file
-http_parse.c.s:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http_parse.c.s
-.PHONY : http_parse.c.s
+http/http_parse.c.s:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/http/http_parse.c.s
+.PHONY : http/http_parse.c.s
 
 server.o: server.c.o
 .PHONY : server.o
 
 # target to build an object file
 server.c.o:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.c.o
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/server.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.c.o
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/server.c.o
 .PHONY : server.c.o
 
 server.i: server.c.i
@@ -338,8 +338,8 @@ server.i: server.c.i
 
 # target to preprocess a source file
 server.c.i:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.c.i
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/server.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/server.c.i
 .PHONY : server.c.i
 
 server.s: server.c.s
@@ -347,8 +347,8 @@ server.s: server.c.s
 
 # target to generate assembly for a file
 server.c.s:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.c.s
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/server.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/http.dir/build.make src/CMakeFiles/http.dir/server.c.s
 .PHONY : server.c.s
 
 # Help Target
@@ -372,12 +372,12 @@ help:
 	@echo "... common.o"
 	@echo "... common.i"
 	@echo "... common.s"
-	@echo "... http.o"
-	@echo "... http.i"
-	@echo "... http.s"
-	@echo "... http_parse.o"
-	@echo "... http_parse.i"
-	@echo "... http_parse.s"
+	@echo "... http/http.o"
+	@echo "... http/http.i"
+	@echo "... http/http.s"
+	@echo "... http/http_parse.o"
+	@echo "... http/http_parse.i"
+	@echo "... http/http_parse.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"
@@ -392,6 +392,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

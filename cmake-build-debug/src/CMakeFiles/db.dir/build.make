@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jordan/work/protocol/projects/ibeacon
+CMAKE_SOURCE_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include src/CMakeFiles/db.dir/depend.make
@@ -68,29 +68,29 @@ include src/CMakeFiles/db.dir/flags.make
 
 src/CMakeFiles/db.dir/common.c.o: src/CMakeFiles/db.dir/flags.make
 src/CMakeFiles/db.dir/common.c.o: ../src/common.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/CMakeFiles/db.dir/common.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E __run_co_compile --tidy="clang-tidy;-checks=*,-llvmlibc-restrict-system-libc-headers,-cppcoreguidelines-init-variables,-clang-analyzer-security.insecureAPI.strcpy,-concurrency-mt-unsafe,-android-cloexec-accept,-android-cloexec-dup,-google-readability-todo,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cert-dcl03-c,-hicpp-static-assert,-misc-static-assert,-altera-struct-pack-align,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling;--quiet;--extra-arg-before=--driver-mode=gcc" --source=/home/jordan/work/protocol/projects/ibeacon/src/common.c -- /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/db.dir/common.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/common.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/CMakeFiles/db.dir/common.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/db.dir/common.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c
 
 src/CMakeFiles/db.dir/common.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/db.dir/common.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/common.c > CMakeFiles/db.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c > CMakeFiles/db.dir/common.c.i
 
 src/CMakeFiles/db.dir/common.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/db.dir/common.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/common.c -o CMakeFiles/db.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c -o CMakeFiles/db.dir/common.c.s
 
 src/CMakeFiles/db.dir/client.c.o: src/CMakeFiles/db.dir/flags.make
 src/CMakeFiles/db.dir/client.c.o: ../src/client.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/CMakeFiles/db.dir/client.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E __run_co_compile --tidy="clang-tidy;-checks=*,-llvmlibc-restrict-system-libc-headers,-cppcoreguidelines-init-variables,-clang-analyzer-security.insecureAPI.strcpy,-concurrency-mt-unsafe,-android-cloexec-accept,-android-cloexec-dup,-google-readability-todo,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cert-dcl03-c,-hicpp-static-assert,-misc-static-assert,-altera-struct-pack-align,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling;--quiet;--extra-arg-before=--driver-mode=gcc" --source=/home/jordan/work/protocol/projects/ibeacon/src/client.c -- /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/db.dir/client.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/client.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/CMakeFiles/db.dir/client.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/db.dir/client.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/client.c
 
 src/CMakeFiles/db.dir/client.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/db.dir/client.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/client.c > CMakeFiles/db.dir/client.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/client.c > CMakeFiles/db.dir/client.c.i
 
 src/CMakeFiles/db.dir/client.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/db.dir/client.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/client.c -o CMakeFiles/db.dir/client.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/client.c -o CMakeFiles/db.dir/client.c.s
 
 # Object files for target db
 db_OBJECTS = \
@@ -103,24 +103,24 @@ db_EXTERNAL_OBJECTS =
 src/db: src/CMakeFiles/db.dir/common.c.o
 src/db: src/CMakeFiles/db.dir/client.c.o
 src/db: src/CMakeFiles/db.dir/build.make
-src/db: /usr/lib/x86_64-linux-gnu/libm.so
-src/db: /usr/local/lib/libdc_util.so
-src/db: /usr/local/lib/libdc_error.so
-src/db: /usr/local/lib/libdc_posix.so
-src/db: /usr/local/lib/libdc_application.so
+src/db: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.0.sdk/usr/lib/libm.tbd
+src/db: /usr/local/lib/libdc_util.dylib
+src/db: /usr/local/lib/libdc_error.dylib
+src/db: /usr/local/lib/libdc_posix.dylib
+src/db: /usr/local/lib/libdc_application.dylib
 src/db: src/CMakeFiles/db.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable db"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/db.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable db"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/db.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/CMakeFiles/db.dir/build: src/db
 .PHONY : src/CMakeFiles/db.dir/build
 
 src/CMakeFiles/db.dir/clean:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -P CMakeFiles/db.dir/cmake_clean.cmake
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -P CMakeFiles/db.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/db.dir/clean
 
 src/CMakeFiles/db.dir/depend:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jordan/work/protocol/projects/ibeacon /home/jordan/work/protocol/projects/ibeacon/src /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/db.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/giwoun/CLionProjects/C_Networking/ibeacon /Users/giwoun/CLionProjects/C_Networking/ibeacon/src /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/db.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/CMakeFiles/db.dir/depend
 

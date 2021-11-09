@@ -4,17 +4,17 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/jordan/work/protocol/projects/ibeacon
-BuildDirectory: /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+SourceDirectory: /Users/giwoun/CLionProjects/C_Networking/ibeacon
+BuildDirectory: /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: jordan-Nitro-AN515-44
+Site: Giwouns-MacBook-Pro.local
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
-BuildName: Linux-cc
+BuildName: Darwin-g++-11
 
 # Subprojects
 LabelsForSubprojects: 
@@ -26,8 +26,8 @@ SubmitURL: http://
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake" "/home/jordan/work/protocol/projects/ibeacon"
-MakeCommand: /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
+ConfigureCommand: "/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake" "/Users/giwoun/CLionProjects/C_Networking/ibeacon"
+MakeCommand: /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
 # version control
@@ -62,7 +62,7 @@ UpdateOptions:
 UpdateType: git
 
 # Compiler info
-Compiler: 
+Compiler: /usr/local/bin/g++-11
 CompilerVersion: 
 
 # Dynamic analysis (MemCheck)
@@ -75,7 +75,7 @@ CudaSanitizerCommand:
 CudaSanitizerCommandOptions: 
 MemoryCheckType: 
 MemoryCheckSanitizerOptions: 
-MemoryCheckCommand: /usr/bin/valgrind
+MemoryCheckCommand: /usr/local/bin/valgrind
 MemoryCheckCommandOptions: 
 MemoryCheckSuppressionFile: 
 

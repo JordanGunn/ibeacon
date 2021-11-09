@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jordan/work/protocol/projects/ibeacon
+CMAKE_SOURCE_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include src/CMakeFiles/http.dir/depend.make
@@ -68,89 +68,89 @@ include src/CMakeFiles/http.dir/flags.make
 
 src/CMakeFiles/http.dir/common.c.o: src/CMakeFiles/http.dir/flags.make
 src/CMakeFiles/http.dir/common.c.o: ../src/common.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/CMakeFiles/http.dir/common.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E __run_co_compile --tidy="clang-tidy;-checks=*,-llvmlibc-restrict-system-libc-headers,-cppcoreguidelines-init-variables,-clang-analyzer-security.insecureAPI.strcpy,-concurrency-mt-unsafe,-android-cloexec-accept,-android-cloexec-dup,-google-readability-todo,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cert-dcl03-c,-hicpp-static-assert,-misc-static-assert,-altera-struct-pack-align,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling;--quiet;--extra-arg-before=--driver-mode=gcc" --source=/home/jordan/work/protocol/projects/ibeacon/src/common.c -- /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/common.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/common.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/CMakeFiles/http.dir/common.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/common.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c
 
 src/CMakeFiles/http.dir/common.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/http.dir/common.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/common.c > CMakeFiles/http.dir/common.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c > CMakeFiles/http.dir/common.c.i
 
 src/CMakeFiles/http.dir/common.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/http.dir/common.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/common.c -o CMakeFiles/http.dir/common.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c -o CMakeFiles/http.dir/common.c.s
 
 src/CMakeFiles/http.dir/server.c.o: src/CMakeFiles/http.dir/flags.make
 src/CMakeFiles/http.dir/server.c.o: ../src/server.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/CMakeFiles/http.dir/server.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E __run_co_compile --tidy="clang-tidy;-checks=*,-llvmlibc-restrict-system-libc-headers,-cppcoreguidelines-init-variables,-clang-analyzer-security.insecureAPI.strcpy,-concurrency-mt-unsafe,-android-cloexec-accept,-android-cloexec-dup,-google-readability-todo,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cert-dcl03-c,-hicpp-static-assert,-misc-static-assert,-altera-struct-pack-align,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling;--quiet;--extra-arg-before=--driver-mode=gcc" --source=/home/jordan/work/protocol/projects/ibeacon/src/server.c -- /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/server.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/server.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/CMakeFiles/http.dir/server.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/server.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/server.c
 
 src/CMakeFiles/http.dir/server.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/http.dir/server.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/server.c > CMakeFiles/http.dir/server.c.i
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/server.c > CMakeFiles/http.dir/server.c.i
 
 src/CMakeFiles/http.dir/server.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/http.dir/server.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/server.c -o CMakeFiles/http.dir/server.c.s
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/server.c -o CMakeFiles/http.dir/server.c.s
 
-src/CMakeFiles/http.dir/http.c.o: src/CMakeFiles/http.dir/flags.make
-src/CMakeFiles/http.dir/http.c.o: ../src/http.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object src/CMakeFiles/http.dir/http.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E __run_co_compile --tidy="clang-tidy;-checks=*,-llvmlibc-restrict-system-libc-headers,-cppcoreguidelines-init-variables,-clang-analyzer-security.insecureAPI.strcpy,-concurrency-mt-unsafe,-android-cloexec-accept,-android-cloexec-dup,-google-readability-todo,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cert-dcl03-c,-hicpp-static-assert,-misc-static-assert,-altera-struct-pack-align,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling;--quiet;--extra-arg-before=--driver-mode=gcc" --source=/home/jordan/work/protocol/projects/ibeacon/src/http.c -- /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/http.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/http.c
+src/CMakeFiles/http.dir/http/http.c.o: src/CMakeFiles/http.dir/flags.make
+src/CMakeFiles/http.dir/http/http.c.o: ../src/http/http.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object src/CMakeFiles/http.dir/http/http.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/http/http.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http.c
 
-src/CMakeFiles/http.dir/http.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/http.dir/http.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/http.c > CMakeFiles/http.dir/http.c.i
+src/CMakeFiles/http.dir/http/http.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/http.dir/http/http.c.i"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http.c > CMakeFiles/http.dir/http/http.c.i
 
-src/CMakeFiles/http.dir/http.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/http.dir/http.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/http.c -o CMakeFiles/http.dir/http.c.s
+src/CMakeFiles/http.dir/http/http.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/http.dir/http/http.c.s"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http.c -o CMakeFiles/http.dir/http/http.c.s
 
-src/CMakeFiles/http.dir/http_parse.c.o: src/CMakeFiles/http.dir/flags.make
-src/CMakeFiles/http.dir/http_parse.c.o: ../src/http_parse.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object src/CMakeFiles/http.dir/http_parse.c.o"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E __run_co_compile --tidy="clang-tidy;-checks=*,-llvmlibc-restrict-system-libc-headers,-cppcoreguidelines-init-variables,-clang-analyzer-security.insecureAPI.strcpy,-concurrency-mt-unsafe,-android-cloexec-accept,-android-cloexec-dup,-google-readability-todo,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cert-dcl03-c,-hicpp-static-assert,-misc-static-assert,-altera-struct-pack-align,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling;--quiet;--extra-arg-before=--driver-mode=gcc" --source=/home/jordan/work/protocol/projects/ibeacon/src/http_parse.c -- /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/http_parse.c.o -c /home/jordan/work/protocol/projects/ibeacon/src/http_parse.c
+src/CMakeFiles/http.dir/http/http_parse.c.o: src/CMakeFiles/http.dir/flags.make
+src/CMakeFiles/http.dir/http/http_parse.c.o: ../src/http/http_parse.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object src/CMakeFiles/http.dir/http/http_parse.c.o"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/http.dir/http/http_parse.c.o -c /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http_parse.c
 
-src/CMakeFiles/http.dir/http_parse.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/http.dir/http_parse.c.i"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/jordan/work/protocol/projects/ibeacon/src/http_parse.c > CMakeFiles/http.dir/http_parse.c.i
+src/CMakeFiles/http.dir/http/http_parse.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/http.dir/http/http_parse.c.i"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http_parse.c > CMakeFiles/http.dir/http/http_parse.c.i
 
-src/CMakeFiles/http.dir/http_parse.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/http.dir/http_parse.c.s"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/jordan/work/protocol/projects/ibeacon/src/http_parse.c -o CMakeFiles/http.dir/http_parse.c.s
+src/CMakeFiles/http.dir/http/http_parse.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/http.dir/http/http_parse.c.s"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http_parse.c -o CMakeFiles/http.dir/http/http_parse.c.s
 
 # Object files for target http
 http_OBJECTS = \
 "CMakeFiles/http.dir/common.c.o" \
 "CMakeFiles/http.dir/server.c.o" \
-"CMakeFiles/http.dir/http.c.o" \
-"CMakeFiles/http.dir/http_parse.c.o"
+"CMakeFiles/http.dir/http/http.c.o" \
+"CMakeFiles/http.dir/http/http_parse.c.o"
 
 # External object files for target http
 http_EXTERNAL_OBJECTS =
 
 src/http: src/CMakeFiles/http.dir/common.c.o
 src/http: src/CMakeFiles/http.dir/server.c.o
-src/http: src/CMakeFiles/http.dir/http.c.o
-src/http: src/CMakeFiles/http.dir/http_parse.c.o
+src/http: src/CMakeFiles/http.dir/http/http.c.o
+src/http: src/CMakeFiles/http.dir/http/http_parse.c.o
 src/http: src/CMakeFiles/http.dir/build.make
-src/http: /usr/lib/x86_64-linux-gnu/libm.so
-src/http: /usr/local/lib/libdc_util.so
-src/http: /usr/local/lib/libdc_error.so
-src/http: /usr/local/lib/libdc_posix.so
-src/http: /usr/local/lib/libdc_application.so
+src/http: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.0.sdk/usr/lib/libm.tbd
+src/http: /usr/local/lib/libdc_util.dylib
+src/http: /usr/local/lib/libdc_error.dylib
+src/http: /usr/local/lib/libdc_posix.dylib
+src/http: /usr/local/lib/libdc_application.dylib
 src/http: src/CMakeFiles/http.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable http"
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/http.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable http"
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/http.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/CMakeFiles/http.dir/build: src/http
 .PHONY : src/CMakeFiles/http.dir/build
 
 src/CMakeFiles/http.dir/clean:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -P CMakeFiles/http.dir/cmake_clean.cmake
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src && $(CMAKE_COMMAND) -P CMakeFiles/http.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/http.dir/clean
 
 src/CMakeFiles/http.dir/depend:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jordan/work/protocol/projects/ibeacon /home/jordan/work/protocol/projects/ibeacon/src /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/giwoun/CLionProjects/C_Networking/ibeacon /Users/giwoun/CLionProjects/C_Networking/ibeacon/src /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/CMakeFiles/http.dir/depend
 

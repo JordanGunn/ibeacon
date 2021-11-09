@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jordan/work/protocol/projects/ibeacon
+CMAKE_SOURCE_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug
 
 # Utility rule file for NightlyStart.
 
@@ -67,7 +67,7 @@ include CMakeFiles/NightlyStart.dir/compiler_depend.make
 include CMakeFiles/NightlyStart.dir/progress.make
 
 CMakeFiles/NightlyStart:
-	/home/jordan/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5284.51/bin/cmake/linux/bin/ctest -D NightlyStart
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/ctest -D NightlyStart
 
 NightlyStart: CMakeFiles/NightlyStart
 NightlyStart: CMakeFiles/NightlyStart.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/NightlyStart.dir/clean:
 .PHONY : CMakeFiles/NightlyStart.dir/clean
 
 CMakeFiles/NightlyStart.dir/depend:
-	cd /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jordan/work/protocol/projects/ibeacon /home/jordan/work/protocol/projects/ibeacon /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug /home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/CMakeFiles/NightlyStart.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/giwoun/CLionProjects/C_Networking/ibeacon /Users/giwoun/CLionProjects/C_Networking/ibeacon /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/CMakeFiles/NightlyStart.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/NightlyStart.dir/depend
 

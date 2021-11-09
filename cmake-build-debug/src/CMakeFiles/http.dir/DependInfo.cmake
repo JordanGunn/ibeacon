@@ -8,15 +8,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/jordan/work/protocol/projects/ibeacon/src/common.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/common.c.o"
-  "/home/jordan/work/protocol/projects/ibeacon/src/http.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http.c.o"
-  "/home/jordan/work/protocol/projects/ibeacon/src/http_parse.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http_parse.c.o"
-  "/home/jordan/work/protocol/projects/ibeacon/src/server.c" "/home/jordan/work/protocol/projects/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/server.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/common.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http/http.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http_parse.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/http/http_parse.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/server.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/http.dir/server.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C
+  "_DARWIN_C_SOURCE"
   "_POSIX_C_SOURCE=200809L"
   "_XOPEN_SOURCE=700"
   )
@@ -24,6 +25,7 @@ set(CMAKE_TARGET_DEFINITIONS_C
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "../src/../include"
+  "/usr/local/include"
   )
 
 # The set of dependency files which are needed:
