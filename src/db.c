@@ -131,24 +131,27 @@ static int run(const struct dc_posix_env *env, struct dc_error *err, struct dc_a
     printf("prog1 says \"%s\"\n", message);
 
     // Open the database and store the record
-    db = dc_dbm_open(env, err, DB_NAME, O_RDWR | O_CREAT, 0600);
-    ret_code = EXIT_SUCCESS;
+//    db = dc_dbm_open(env, err, DB_NAME, O_RDWR | O_CREAT, 0600);
+//    ret_code = EXIT_SUCCESS;
+    struct Database *database;
+    database = initialize_database(env,err,DB_NAME);
     //making these after we are able to open it.
     if (dc_error_has_no_error(err)) {
-        store_data(env, err, db, "foo", "123-4567", DBM_REPLACE);
-        store_data(env, err, db, "BAE", "444-5555", DBM_REPLACE);
-        store_data(env, err, db, "BAE", "666-7777", DBM_REPLACE);
-        content = fetch_data(env, err, db, "foo");
+        store_data(env, err, database->dbmPtr, "foo", "123-4567", DBM_REPLACE);
+        store_data(env, err, database->dbmPtr, "BAE", "444-5555", DBM_REPLACE);
+        store_data(env, err, database->dbmPtr, "BAE", "666-7777", DBM_REPLACE);
+        content = fetch_data(env, err, database->dbmPtr, "foo");
         test_display("foo", &content);
-        content = fetch_data(env, err, db, "Bae");
+        content = fetch_data(env, err, database->dbmPtr, "Bae");
         test_display("Bae", &content);
-        content = fetch_data(env, err, db, "BAE");
+        content = fetch_data(env, err, database->dbmPtr, "BAE");
         test_display("BAE", &content);
-        delete_data(env, err, db, "BAE");
-        content = fetch_data(env, err, db, "BAE");
+        delete_data(env, err, database->dbmPtr, "BAE");
+        content = fetch_data(env, err, database->dbmPtr, "BAE");
         test_display("BAE", &content);
 
-        dc_dbm_close(env, err, db);
+//        dc_dbm_close(env, err, db);
+        deinitialize_database(env, err, database);
     } else {
         ret_code = EXIT_FAILURE;
     }
@@ -156,19 +159,19 @@ static int run(const struct dc_posix_env *env, struct dc_error *err, struct dc_a
     return ret_code;
 }
 
-int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *phone_number, uint8_t type)
+int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *value, uint8_t type)
 {
     int ret_val;
-    datum key = {name, strlen(name)};
-    datum value = {phone_number, strlen(phone_number)};
+    datum key = {name, strlen(name) + 1};
+    datum value_to_add = {value, strlen(value) + 1};
 
-    ret_val = dc_dbm_store(env, err, db, key, value, type);
-    return ret_val;
+    ret_val = dc_dbm_store(env, err, db, key, value_to_add, type);
+    return ret_val; //returns 0 if successful, negative value if failed.
 }
 
 datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name)
 {
-    datum key = {(void*)name, strlen(name)};
+    datum key = {(void*)name, strlen(name)}; //This should not have additional new line.
     datum content;
     content = dc_dbm_fetch(env, err, db, key);
     return content;
@@ -179,8 +182,34 @@ int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, c
     int ret_val;
     datum key = {(void*)name, strlen(name)};
     ret_val = dc_dbm_delete(env, err, db, key);
-    return ret_val;
+    return ret_val; //returns 0 if successful, negative value if failed.
 }
+
+struct Database* initialize_database(const struct dc_posix_env *env, struct dc_error *err, char* fileName)
+{
+    struct Database *databasePtr;
+    databasePtr = dc_malloc(env, err, sizeof(struct Database));
+
+    if (databasePtr == NULL) {
+        return NULL;
+    }
+    databasePtr->dbmPtr = dc_dbm_open(env, err, fileName, O_RDWR | O_CREAT, 0600);
+
+    if (dc_error_has_error(err)) {
+        exit(1);
+    }
+
+    return databasePtr;
+}
+
+void deinitialize_database(const struct dc_posix_env *env, struct dc_error *err, void* database)
+{
+    struct Database *databasePtr;
+    databasePtr = (struct Database*)database;
+    dc_dbm_close(env, err, databasePtr->dbmPtr);
+    free(databasePtr);
+}
+
 
 void test_display(const char *name, datum *content)
 {
