@@ -5,6 +5,8 @@
 #ifndef IBEACON_HTTP_CONSTANTS_H
 #define IBEACON_HTTP_CONSTANTS_H
 
+static const char test_request_message[400] = "GET /path/to/file/index.html HTTP/1.1\n\rHost: www.educative.io\n\rConnection: close\n\rUser-agent: Mozilla/5.0\n\rAccept-language: fr\n\rAccept: text/html\n\r";
+
 static const char response_okay[4] = "200";
 static const char response_file_not_found[4] = "404";
 static const char response_bad_request[4] = "400";
@@ -16,7 +18,6 @@ static const char response_msg_file_not_found[15] = "File Not Found";
 static const char response_msg_bad_request[12] = "Bad Request";
 static const char response_msg_server_error[27] = "HTTP Internal Server Error";
 static const char response_msg_version_not_supported[27] = "HTTP Version Not Supported";
-
 
 enum HTTP_METHODS {
     GET,
