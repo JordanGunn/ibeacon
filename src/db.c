@@ -6,8 +6,6 @@ struct application_settings
     struct dc_setting_string *message;
 };
 
-
-
 static struct dc_application_settings *create_settings(const struct dc_posix_env *env, struct dc_error *err);
 static int destroy_settings(const struct dc_posix_env *env,
                             struct dc_error *err,
@@ -18,7 +16,6 @@ static void trace_reporter(const struct dc_posix_env *env,
                            const char *file_name,
                            const char *function_name,
                            size_t line_number);
-
 
 int main(int argc, char *argv[])
 {
@@ -184,7 +181,7 @@ int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, c
     ret_val = dc_dbm_delete(env, err, db, key);
     return ret_val; //returns 0 if successful, negative value if failed.
 }
-
+#define EXIT_CODE_INITIALIZE_FAIL 5
 struct Database* initialize_database(const struct dc_posix_env *env, struct dc_error *err, char* fileName)
 {
     struct Database *databasePtr;
@@ -196,7 +193,7 @@ struct Database* initialize_database(const struct dc_posix_env *env, struct dc_e
     databasePtr->dbmPtr = dc_dbm_open(env, err, fileName, O_RDWR | O_CREAT, 0600);
 
     if (dc_error_has_error(err)) {
-        exit(1);
+        exit(EXIT_CODE_INITIALIZE_FAIL);
     }
 
     return databasePtr;

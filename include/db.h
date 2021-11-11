@@ -33,18 +33,71 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+/**
+ * Database struct.
+ */
 struct Database {
     DBM * dbmPtr;
 };
 
-//initialize database.
-//save the dbmPtr to Database struct.
+/**
+ * Initialize the database
+ * @param env
+ * @param err
+ * @param fileName database name
+ * @return struct Database pointer.
+ */
 struct Database* initialize_database(const struct dc_posix_env *env, struct dc_error *err, char* fileName);
+
+/**
+ * Denitializes the database
+ * @param env
+ * @param err
+ * @param database
+ */
 void deinitialize_database(const struct dc_posix_env *env, struct dc_error *err, void* database);
 
+/**
+ * Stores string to the data base
+ *
+ * @param env
+ * @param err
+ * @param db DBM pointer
+ * @param name key
+ * @param value value
+ * @param type REPLACE or INSERT
+ * @return 0 if successful
+ */
 int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *value, uint8_t type);
+
+/**
+ * Returns a datum for the key.
+ *
+ * @param env
+ * @param err
+ * @param db
+ * @param name key
+ * @return NULL if none found.
+ */
 datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
+
+/**
+ * Helper function to print out the content.
+ *
+ * @param name
+ * @param content
+ */
 void test_display(const char *name, datum *content);
+
+/**
+ * Deletes the value for the key
+ * @param env
+ * @param err
+ * @param db
+ * @param name key
+ * @return 0 if successful.
+ */
 int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
 
 #endif //IBEACON_DB_H
