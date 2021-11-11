@@ -5,19 +5,6 @@
 #ifndef IBEACON_DB_H //what's this??
 #define IBEACON_DB_H
 
-#include <dc_application/command_line.h>
-#include <dc_application/config.h>
-#include <dc_application/defaults.h>
-#include <dc_application/environment.h>
-#include <dc_application/options.h>
-#include <dc_posix/dc_stdlib.h>
-#include <dc_posix/dc_string.h>
-#include <dc_posix/dc_ndbm.h>
-#include <getopt.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 //Main purpose of this thing is: to handle HTTP requests, and responses.
 //This is to interact with DB.
 //use the ndbm.
@@ -33,23 +20,22 @@
 //struct parent {int type;}
 //struct ndbm.c //struct ndbm_db {struct parent super;}
 
+#include <dc_application/command_line.h>
+#include <dc_application/config.h>
+#include <dc_application/defaults.h>
+#include <dc_application/environment.h>
+#include <dc_application/options.h>
+#include <dc_posix/dc_stdlib.h>
+#include <dc_posix/dc_string.h>
+#include <dc_posix/dc_ndbm.h>
+#include <getopt.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-/**
- * Stores the data to the database
- *
- * @param env
- * @param err
- * @param db DBM pointer
- * @param key Major + Minor
- * @param value GPS location and the time.
- * @param type REPLACE or INSERT
- * @return int value
- */
-int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *key, const char *value, uint8_t type);
-
+int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *phone_number, uint8_t type);
 datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
-
-int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
+void test_display(const char *name, datum *content);
 
 
 #endif //IBEACON_DB_H
