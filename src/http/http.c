@@ -26,7 +26,7 @@ struct Http {
 /*
  *  HTTP CONSTRUCTOR
  */
-    HttpPtr http_constructor(enum HTTP_TYPE http_type, char * http_version, char * connection, parse_http parse)
+    HttpPtr http_constructor(enum HTTP_TYPE http_type, char * http_version, char * connection)
     {
         HttpPtr http = malloc(sizeof * http);
         if (http)
@@ -34,7 +34,6 @@ struct Http {
             http->type = http_type;
             http->http_version = http_version;
             http->connection =connection;
-            http->parse = parse;
         }
 
         return http;
@@ -122,12 +121,12 @@ struct HttpResponse {
 /*
  * RESPONSE CONSTRUCTOR
  */
-HttpResponsePtr http_response_constructor(HttpPtr * const http, enum HTTP_TYPE http_type, char * http_version, char * connection, parse_http parse)
+HttpResponsePtr http_response_constructor(enum HTTP_TYPE http_type, char * http_version, char * connection)
 {
     HttpResponsePtr http_response = malloc(sizeof * http_response);
     if (http_response)
     {
-        HttpPtr super = http_constructor(RESPONSE, http_version, connection, parse);
+        HttpPtr super = http_constructor(RESPONSE, http_version, connection);
         http_response->super = super;
     }
 
@@ -284,12 +283,12 @@ struct HttpRequest {
 /*
  * constructor
  */
-HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char * connection, parse_http parse)
+HttpRequestPtr http_request_constructor(char * http_version, char * connection)
 {
     HttpRequestPtr http_request = malloc(sizeof * http_request);
     if (http_request)
     {
-        HttpPtr super = http_constructor(REQUEST, http_version, connection, parse);
+        HttpPtr super = http_constructor(REQUEST, http_version, connection);
         http_request->super = super;
     }
 
@@ -402,14 +401,15 @@ HttpRequestPtr http_request_constructor(HttpPtr http, char * http_version, char 
 // CHILD HTTP PARSE REQUEST FUNCTIONS
 // ==================================
 
-void parse_http_request(char * http_message)
+void parse_http_request(HttpRequestPtr http, char * http_message)
 {
-
+        //we are only querying by major and minor, time, location?
+        //we can hard code the buffer size for the incoming http_message.
 }
 
-void parse_http_response(char * http_message)
+void parse_http_response(HttpResponsePtr http, char * http_message)
 {
-
+    //even the response, we may be able to just use hardcoded messages.
 }
 
 
