@@ -13,7 +13,7 @@ ENDIF ()
 add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/client.h)
 add_executable(server ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/server.h)
 add_executable(db ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/db.h ../src/db.c)
-add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/http/http.h http/http.c http/http_parse.c ../include/http/http_parse.h)
+add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/http/http.h ../include/http/http_request.h ../include/http/http_response.h http/http_request.c http/http_response.c http/http.c)
 add_executable(ibeacon ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/ibeacon.h)
 
 # We need this directory, and users of our library will need it too

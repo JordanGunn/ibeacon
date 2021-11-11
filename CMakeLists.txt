@@ -21,7 +21,7 @@ set(IBEACON_SOURCE
         )
 
 set(HTTP_SOURCE
-        "${ibeacon_SOURCE_DIR}/src/http.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http.c"
         )
 
 set(DB_SOURCE
