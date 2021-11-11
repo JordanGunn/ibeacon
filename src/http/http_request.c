@@ -171,6 +171,14 @@ void set_accept(HttpRequestPtr http, char * accept)
     }
 }
 
+void destroy_http_request(HttpRequestPtr http)
+{
+    if (http)
+    {
+        free(http);
+    }
+}
+
 // ==================================
 // CHILD HTTP PARSE REQUEST FUNCTIONS
 // ==================================
@@ -186,6 +194,8 @@ HttpRequestPtr parse_http_request(const char * http_message)
 
     char * header_lines = request_line_end + 1;
     parse_header_lines(http, header_lines);
+
+    return http;
 }
 
 
@@ -200,7 +210,8 @@ void parse_header_lines(HttpRequestPtr http, char *header_lines)
 
 
 char * parse_header_line(HttpRequestPtr http, char * header_line, void (setter)(HttpRequestPtr, char *)) {
-    char * attr_start, * attr_end;
+    char * attr_start = NULL;
+    char * attr_end = NULL;
 
     attr_start = strchr(header_line, ' ');
     attr_end = strchr(attr_start, '\r');

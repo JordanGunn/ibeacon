@@ -2,7 +2,9 @@
 // Created by jordan on 2021-11-07.
 //
 
-#include "http/http_request.h"
+//#include "http/http_request.h"
+
+#include "http/http_response.h"
 
 //// =================================================================
 //// --- T O -- D O -- L I S T ---------------------------------------
@@ -15,7 +17,9 @@
 
 int main(void)
 {
-    parse_http_request(test_request_message);
+//    HttpRequestPtr http = parse_http_request(test_request_message);
+//    destroy_http_request(http);
+    parse_http_response(test_response_message);
 }
 //// ===============================
 //// H T T P    B A S E    C L A S S

@@ -5,7 +5,6 @@
 #ifndef IBEACON_HTTP_REQUEST_H
 #define IBEACON_HTTP_REQUEST_H
 
-#include "http_constants.h"
 #include "common.h"
 
 typedef struct HttpRequest * HttpRequestPtr;

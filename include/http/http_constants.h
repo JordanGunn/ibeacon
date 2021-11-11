@@ -6,6 +6,7 @@
 #define IBEACON_HTTP_CONSTANTS_H
 
 static const char test_request_message[400] = "GET /path/to/file/index.html HTTP/1.1\n\rHost: www.educative.io\n\rConnection: close\n\rUser-agent: Mozilla/5.0\n\rAccept-language: fr\n\rAccept: text/html\n\r";
+static const char test_response_message[400] = "HTTP/1.1 200 OK\n\rConnection: close\n\rDate: Tue, 18 Aug 2015 15: 44 : 04\n\rServer: Apache/2.2.3 (CentOS)\n\rLast-Modified: Tue, 18 Aug 2015 15:11:03 GMT \n\rContent-Length: 303\n\rContent-Type: text/html\n\r\n[The object that was requested]afsdfa\nadfasdfasdfasd\nadfasdfasdfafsda\nadsfasdfasd\n";
 
 static const char response_okay[4] = "200";
 static const char response_file_not_found[4] = "404";
