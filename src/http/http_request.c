@@ -171,6 +171,20 @@ void set_accept(HttpRequestPtr http, char * accept)
     }
 }
 
+void destroy_http_request(HttpRequestPtr http)
+{
+    if (http->version)          { free(http->version);          }
+    if (http->connection)       { free(http->connection);       }
+    if (http->method)           { free(http->method);           }
+    if (http->url)              { free(http->url);              }
+    if (http->host)             { free(http->host);             }
+    if (http->user_agent)       { free(http->user_agent);       }
+    if (http->accept_language)  { free(http->accept_language);  }
+    if (http->accept)           { free(http->accept);           }
+
+    free(http);
+}
+
 // ==================================
 // CHILD HTTP PARSE REQUEST FUNCTIONS
 // ==================================
@@ -186,6 +200,8 @@ HttpRequestPtr parse_http_request(const char * http_message)
 
     char * header_lines = request_line_end + 1;
     parse_header_lines(http, header_lines);
+
+    return http;
 }
 
 
@@ -200,12 +216,14 @@ void parse_header_lines(HttpRequestPtr http, char *header_lines)
 
 
 char * parse_header_line(HttpRequestPtr http, char * header_line, void (setter)(HttpRequestPtr, char *)) {
-    char * attr_start, * attr_end;
+
+    char * attr_start = NULL;
+    char * attr_end = NULL;
 
     attr_start = strchr(header_line, ' ');
     attr_end = strchr(attr_start, '\r');
-    char attr[(attr_end - attr_start) + 1];
-    strncpy(attr, attr_start, (unsigned long) (attr_end - attr_start) + 1);
+    char * attr = malloc((unsigned long) ((attr_end - attr_start) + 1));
+    memmove(attr, attr_start, (unsigned long) (attr_end - attr_start));
     setter(http, attr);
 
     return (attr_end + 1);
@@ -223,13 +241,13 @@ HttpRequestPtr parse_request_line(char * request_line)
     const char * version_start = url_end + 1;
     const char * version_end = strchr(version_start, '\r');
 
-    char method[(method_end - method_start) + 1];
-    char url[(url_end - url_start) + 1];
-    char version[(version_end - version_start) + 1];
+    char * method = malloc((unsigned long) ((method_end - method_start) + 1));
+    char * url = malloc((unsigned long) ((url_end - url_start) + 1));
+    char * version = malloc((unsigned long) ((version_end - version_start) + 1));
 
-    strncpy(method, method_start, (unsigned long) (method_end - method_start) + 1);
-    strncpy(url, url_start, (unsigned long) (url_end - url_start) + 1);
-    strncpy(version, version_start, (unsigned long) (version_end - version_start) + 1);
+    memmove(method, method_start, (unsigned long) (method_end - method_start));
+    memmove(url, url_start, (unsigned long) (url_end - url_start));
+    memmove(version, version_start, (unsigned long) (version_end - version_start));
 
     return http_request_constructor(method, url, version);
 }
