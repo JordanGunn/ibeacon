@@ -36,6 +36,7 @@
 int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *phone_number, uint8_t type);
 datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
 void test_display(const char *name, datum *content);
+int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
 
 
 #endif //IBEACON_DB_H

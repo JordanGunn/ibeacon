@@ -144,6 +144,9 @@ static int run(const struct dc_posix_env *env, struct dc_error *err, struct dc_a
         test_display("Bae", &content);
         content = fetch_data(env, err, db, "BAE");
         test_display("BAE", &content);
+        delete_data(env, err, db, "BAE");
+        content = fetch_data(env, err, db, "BAE");
+        test_display("BAE", &content);
 
         dc_dbm_close(env, err, db);
     } else {
@@ -169,6 +172,14 @@ datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, 
     datum content;
     content = dc_dbm_fetch(env, err, db, key);
     return content;
+}
+
+int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name)
+{
+    int ret_val;
+    datum key = {(void*)name, strlen(name)};
+    ret_val = dc_dbm_delete(env, err, db, key);
+    return ret_val;
 }
 
 void test_display(const char *name, datum *content)
