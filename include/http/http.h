@@ -21,7 +21,7 @@ typedef struct Http * HttpPtr;
 /*
  * Constructor
  */
-HttpPtr http_constructor(enum HTTP_TYPE, char * version, char * connection, parse_http);
+HttpPtr http_constructor(enum HTTP_TYPE, char * version, char * connection);
 
     /*
      * Destructor
@@ -50,7 +50,7 @@ HttpPtr http_constructor(enum HTTP_TYPE, char * version, char * connection, pars
 /*
  * CONSTRUCTOR
  */
-HttpResponsePtr http_response_constructor(HttpPtr * , enum HTTP_TYPE, char *, char *, parse_http)
+HttpResponsePtr http_response_constructor(enum HTTP_TYPE, char *, char *)
 ;
 
     /*
@@ -88,7 +88,7 @@ HttpResponsePtr http_response_constructor(HttpPtr * , enum HTTP_TYPE, char *, ch
 /*
  * CONSTRUCTOR
  */
-HttpRequestPtr http_request_constructor(HttpPtr, char *, char *, parse_http);
+HttpRequestPtr http_request_constructor(char *, char *);
 
     /*
      * Destructor
@@ -125,14 +125,14 @@ HttpRequestPtr http_request_constructor(HttpPtr, char *, char *, parse_http);
  *
  * @param http_message
  */
-void parse_http_request(char * http_message);
+void parse_http_request(HttpRequestPtr, char *);
 
 /**
  * Parse incoming HTTP request.
  *
  * @param http_message
  */
-void parse_http_response(char * http_message);
+void parse_http_response(HttpResponsePtr, char *);
 
 
 

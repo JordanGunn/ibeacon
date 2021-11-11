@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/db.dir/client.c.o"
   "CMakeFiles/db.dir/common.c.o"
+  "CMakeFiles/db.dir/db.c.o"
   "db"
   "db.pdb"
 )

@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/client.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/db.dir/client.c.o"
   "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/common.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/db.dir/common.c.o"
+  "/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/db.c" "/Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug/src/CMakeFiles/db.dir/db.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

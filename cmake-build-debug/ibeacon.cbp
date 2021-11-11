@@ -433,6 +433,9 @@
 			<Option target="client"/>
 			<Option target="template_test"/>
 		</Unit>
+		<Unit filename="/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/db.c">
+			<Option target="db"/>
+		</Unit>
 		<Unit filename="/Users/giwoun/CLionProjects/C_Networking/ibeacon/src/http/http.c">
 			<Option target="http"/>
 		</Unit>

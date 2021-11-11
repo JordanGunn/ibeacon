@@ -276,6 +276,30 @@ common.c.s:
 	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/common.c.s
 .PHONY : common.c.s
 
+db.o: db.c.o
+.PHONY : db.o
+
+# target to build an object file
+db.c.o:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/db.c.o
+.PHONY : db.c.o
+
+db.i: db.c.i
+.PHONY : db.i
+
+# target to preprocess a source file
+db.c.i:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/db.c.i
+.PHONY : db.c.i
+
+db.s: db.c.s
+.PHONY : db.s
+
+# target to generate assembly for a file
+db.c.s:
+	cd /Users/giwoun/CLionProjects/C_Networking/ibeacon/cmake-build-debug && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/db.dir/build.make src/CMakeFiles/db.dir/db.c.s
+.PHONY : db.c.s
+
 http/http.o: http/http.c.o
 .PHONY : http/http.o
 
@@ -372,6 +396,9 @@ help:
 	@echo "... common.o"
 	@echo "... common.i"
 	@echo "... common.s"
+	@echo "... db.o"
+	@echo "... db.i"
+	@echo "... db.s"
 	@echo "... http/http.o"
 	@echo "... http/http.i"
 	@echo "... http/http.s"
