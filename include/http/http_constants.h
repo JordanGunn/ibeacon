@@ -27,22 +27,17 @@ enum HTTP_METHODS {
     DELETE
 };
 
-enum HTTP_TYPE {
-    REQUEST,
-    RESPONSE
-};
-
 typedef struct {
     const char * code;
     const char * status;
 } status_code_pair;
 
-status_code_pair status_code_map[] = {
-        { response_okay,                  response_msg_okay                  },
-        { response_file_not_found,        response_msg_file_not_found        },
-        { response_bad_request,           response_msg_bad_request           },
-        { response_server_error,          response_msg_server_error          },
-        { response_version_not_supported, response_msg_version_not_supported }
-};
+//status_code_pair status_code_map[] = {
+//        { response_okay,                  response_msg_okay                  },
+//        { response_file_not_found,        response_msg_file_not_found        },
+//        { response_bad_request,           response_msg_bad_request           },
+//        { response_server_error,          response_msg_server_error          },
+//        { response_version_not_supported, response_msg_version_not_supported }
+//};
 
-#endif //IBEACON_HTTP_CONSTANTS_H
+#endif IBEACON_HTTP_CONSTANTS_H

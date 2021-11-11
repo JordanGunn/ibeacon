@@ -5,7 +5,7 @@
 #ifndef IBEACON_HTTP_RESPONSE_H
 #define IBEACON_HTTP_RESPONSE_H
 
-#include "http.h"
+#include "common.h"
 
 typedef struct HttpResponse * HttpResponsePtr;
 
@@ -16,7 +16,7 @@ typedef struct HttpResponse * HttpResponsePtr;
 /*
  * CONSTRUCTOR
  */
-HttpResponsePtr http_response_constructor(enum HTTP_TYPE, char *, char *);
+HttpResponsePtr http_response_constructor(char *, char *);
 
 /*
  * destructor
@@ -53,4 +53,4 @@ void  set_content_length(HttpResponsePtr, ssize_t);
  */
 void parse_http_response(HttpResponsePtr, char *);
 
-#endif //IBEACON_HTTP_RESPONSE_H
+#endif IBEACON_HTTP_RESPONSE_H

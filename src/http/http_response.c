@@ -9,7 +9,8 @@
 // R E S P O N S E    C L A S S
 // ============================
 struct HttpResponse {
-    HttpPtr super;
+    char *  version;
+    char * connection;
     char *  status;          // response status
     char *  status_code;     // response status code
     char *  date;            // e.g. Th, 08 Aug 2013 23:54:35 GMT
@@ -22,13 +23,14 @@ struct HttpResponse {
 /*
  * RESPONSE CONSTRUCTOR
  */
-HttpResponsePtr http_response_constructor(enum HTTP_TYPE http_type, char * http_version, char * connection)
+HttpResponsePtr http_response_constructor(char * version, char * connection)
 {
     HttpResponsePtr http_response = malloc(sizeof * http_response);
     if (http_response)
     {
-        HttpPtr super = http_constructor(RESPONSE, http_version, connection);
-        http_response->super = super;
+        http_response->version = version;
+        http_response->connection = connection;
+
     }
 
     return http_response;
@@ -43,6 +45,7 @@ char * get_status(HttpResponsePtr http)
     {
         return http->status;
     }
+    return NULL;
 }
 
 char * get_status_code(HttpResponsePtr http)
@@ -51,6 +54,7 @@ char * get_status_code(HttpResponsePtr http)
     {
         return http->status_code;
     }
+    return NULL;
 }
 
 char * get_date(HttpResponsePtr http)
@@ -59,6 +63,7 @@ char * get_date(HttpResponsePtr http)
     {
         return http->date;
     }
+    return NULL;
 }
 
 char * get_server(HttpResponsePtr http)
@@ -67,6 +72,7 @@ char * get_server(HttpResponsePtr http)
     {
         return http->server;
     }
+    return NULL;
 }
 
 char * get_last_modified(HttpResponsePtr http)
@@ -75,6 +81,7 @@ char * get_last_modified(HttpResponsePtr http)
     {
         return http->last_modified;
     }
+    return NULL;
 }
 
 char * get_content_type(HttpResponsePtr http)
@@ -83,6 +90,7 @@ char * get_content_type(HttpResponsePtr http)
     {
         return http->content_type;
     }
+    return NULL;
 }
 
 ssize_t get_content_length(HttpResponsePtr http)
@@ -91,6 +99,7 @@ ssize_t get_content_length(HttpResponsePtr http)
     {
         return http->content_length;
     }
+    return 0;
 }
 
 
