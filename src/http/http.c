@@ -5,6 +5,7 @@
 //#include "http/http_request.h"
 
 #include "http/http_response.h"
+#include "http/http_request.h"
 
 //// =================================================================
 //// --- T O -- D O -- L I S T ---------------------------------------
@@ -17,9 +18,9 @@
 
 int main(void)
 {
-//    HttpRequestPtr http = parse_http_request(test_request_message);
+    parse_http_request(test_request_message);
 //    destroy_http_request(http);
-    parse_http_response(test_response_message);
+//    parse_http_response(test_response_message);
 }
 //// ===============================
 //// H T T P    B A S E    C L A S S

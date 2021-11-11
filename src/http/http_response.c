@@ -9,16 +9,16 @@
 // R E S P O N S E    C L A S S
 // ============================
 struct HttpResponse {
-    char *version;
-    char *status_code;
-    char *status;
-    char *res_connection;// response status
-    char *date;            // e.g. Th, 08 Aug 2013 23:54:35 GMT
-    char *server;          // Server software spec (e.g. Apache/2.4.39 (CentOS))
-    char *last_modified;   // e.g. Th, 08 Aug 2013 23:54:35 GMT
-    char *content_length;
-    char *content_type;  // Length of object in bytes
-    char *content;
+    char * version;
+    char * status_code;
+    char * status;
+    char * res_connection;// response status
+    char * date;            // e.g. Th, 08 Aug 2013 23:54:35 GMT
+    char * server;          // Server software spec (e.g. Apache/2.4.39 (CentOS))
+    char * last_modified;   // e.g. Th, 08 Aug 2013 23:54:35 GMT
+    char * content_length;
+    char * content_type;  // Length of object in bytes
+    char * content;
 
 };
 
@@ -214,10 +214,18 @@ void set_content(HttpResponsePtr http, char * content)
  */
 void destroy_http_response(HttpResponsePtr http)
 {
-    if (http)
-    {
-        free(http);
-    }
+    if (http->version)        { free(http->version);        }
+    if (http->status_code)    { free(http->status_code);    }
+    if (http->status)         { free(http->status);         }
+    if (http->res_connection) { free(http->res_connection); }
+    if (http->date)           { free(http->date);           }
+    if (http->server)         { free(http->server);         }
+    if (http->last_modified)  { free(http->last_modified);  }
+    if (http->content_length) { free(http->content_length); }
+    if (http->content_type)   { free(http->content_type);   }
+    if (http->content)        { free(http->content);        }
+
+    free(http);
 }
 
 HttpResponsePtr parse_http_response(const char * http_message)
