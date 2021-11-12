@@ -19,13 +19,14 @@ int main() {
     initscr();
     clear();
     cbreak();
+    noecho();
 
     showWelcomePage();
     WINDOW *win = createWindowInTheMiddle();
     showOptions(win);
     gettingInput(win);
 
-    getch();
+//    getch();
     //waits for user input, returns in value of the key.
     endwin();
 
@@ -118,10 +119,14 @@ void gettingInput(WINDOW *win) {
             case '1':
                 wclear(inputWindow);
                 mvwprintw(inputWindow, 1, 1, "You have selected to find your ibeacon.");
+                //press to confirm.
+
                 break;
             case '2':
                 wclear(inputWindow);
                 mvwprintw(inputWindow, 1, 1, "You have selected to find add your ibeacon.");
+                //press to confirm.
+
                 break;
             default:
                 wclear(inputWindow);
