@@ -356,13 +356,12 @@ int http_post(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 int build_response(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
 
-    char * res_connection;
-    char * res_date;
-    char * res_server;
-    char * res_last_modified;
-    char * res_content_type;
-    char * res_content_length;
-    char content_length[12];
+    char *  res_date;
+    char *  res_server;
+    char *  res_last_modified;
+    char *  res_content_type;
+    char *  res_content_length;
+    char    content_length[12];
 
     struct server_params * serv;
     serv = (struct server_params *) arg;
@@ -371,26 +370,23 @@ int build_response(const struct dc_posix_env *env, struct dc_error *err, void *a
 
     response_construct_handler(err, serv);
 
-    res_connection = malloc(sizeof(connection));
-    res_date = malloc(sizeof(date));
-    res_server = malloc(sizeof(server));
-    res_last_modified = malloc(sizeof(last_modified));
-    res_content_length = malloc(sizeof(content_length));
-    res_content_type = malloc(sizeof(content_type));
+    res_date            = malloc( sizeof(date)           );
+    res_server          = malloc( sizeof(server)         );
+    res_last_modified   = malloc( sizeof(last_modified)  );
+    res_content_length  = malloc( sizeof(content_length) );
+    res_content_type    = malloc( sizeof(content_type)   );
 
-    memmove(res_connection,     connection,     sizeof(connection)      );
-    memmove(res_date,           date,           sizeof(date)            );
-    memmove(res_server,         server,         sizeof(server)          );
-    memmove(res_last_modified,  last_modified,  sizeof(last_modified)   );
-    memmove(res_content_length, content_length, sizeof(content_length)  );
-    memmove(res_content_type,   content_type,   sizeof(content_type)    );
+    memmove(res_date,           date,           sizeof(date)           );
+    memmove(res_server,         server,         sizeof(server)         );
+    memmove(res_last_modified,  last_modified,  sizeof(last_modified)  );
+    memmove(res_content_length, content_length, sizeof(content_length) );
+    memmove(res_content_type,   content_type,   sizeof(content_type)   );
 
-    set_res_connection( serv->response, res_connection      );
-    set_date(           serv->response, res_date            );
-    set_server(         serv->response, res_server          );
-    set_last_modified(  serv->response, res_last_modified   );
-    set_content_length( serv->response, res_content_length  );
-    set_content_type(   serv->response, res_content_type    );
+    set_date(           serv->response, res_date           );
+    set_server(         serv->response, res_server         );
+    set_last_modified(  serv->response, res_last_modified  );
+    set_content_length( serv->response, res_content_length );
+    set_content_type(   serv->response, res_content_type   );
 
     return SEND_RESPONSE;
 }
@@ -404,26 +400,25 @@ void response_construct_handler(const struct dc_error *err, struct server_params
         if (serv->error == ERROR_500)
         {
             // server error
-            response_code = status_code_map[SERVER_ERROR].code;
-            response_status = status_code_map[SERVER_ERROR].status;
+            response_code   = status_code_map[ SERVER_ERROR ].code;
+            response_status = status_code_map[ SERVER_ERROR ].status;
         }
         else if (serv->error == ERROR_404)
         {
             // file not found
-            response_code = status_code_map[FILE_NOT_FOUND].code;
-            response_status = status_code_map[FILE_NOT_FOUND].status;
+            response_code   = status_code_map[ FILE_NOT_FOUND ].code;
+            response_status = status_code_map[ FILE_NOT_FOUND ].status;
         }
         else
         {
             // OK :)
-            response_code = status_code_map[OK].code;
-            response_status = status_code_map[OK].status;
+            response_code   = status_code_map[ OK ].code;
+            response_status = status_code_map[ OK ].status;
         }
 
-        serv->response = http_response_constructor(
-                get_version(serv->request),
-                (char *)response_code,
-                (char *)response_status
+        serv->response = http_response_constructor
+        (
+            get_version(serv->request), response_code, response_status
         );
     }
 }
@@ -437,22 +432,23 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
     if (dc_error_has_no_error(err))
     {
         char response[
-                dc_strlen(env, get_res_version(http)) + dc_strlen(env, get_status_code(http)) +
-                dc_strlen(env, get_status(http)) + 4 +
-
-                dc_strlen(env, get_res_connection(http)) + 3 +
-                dc_strlen(env, get_date(http)) + 3 +
-                dc_strlen(env, get_server(http)) + 3 +
-                dc_strlen(env, get_last_modified(http)) + 3 +
-                dc_strlen(env, get_content_length_str(http)) +
-                dc_strlen(env, get_content_type(http)) + 3 + 2 +
+                // ================================================================
+                dc_strlen(env, get_res_version(http)) +             // REQUEST LINE
+                dc_strlen(env, get_status_code(http)) +             // REQUEST LINE
+                dc_strlen(env, get_status(http)) + 4 +              // REQUEST LINE
+                // ================================================================
+                dc_strlen(env, get_date(http)) + 3 +                // HEADER LINES
+                dc_strlen(env, get_server(http)) + 3 +              // HEADER LINES
+                dc_strlen(env, get_last_modified(http)) + 3 +       // HEADER LINES
+                dc_strlen(env, get_content_length_str(http)) +      // HEADER LINES
+                dc_strlen(env, get_content_type(http)) + 3 + 2 +    // HEADER LINES
+                // ================================================================
 
                 get_content_length_long(http)
             ];
 
         sprintf(response,
                 "%s %s %s\n\r" \
-                      "Connection: %s\n\r" \
                       "Date: %s\n\r" \
                       "Server: %s\n\r" \
                       "Last-Modified: %s\n\r" \
@@ -461,16 +457,15 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
                       "\n\r" \
                       "%s",
 
-                    get_res_version(http),
-                    get_status_code(http),
-                    get_status(http),
-                    get_res_connection(http),
-                    get_date(http),
-                    get_server(http),
-                    get_last_modified(http),
-                    get_content_length_str(http),
-                    get_content_type(http),
-                    get_content(http)
+                    get_res_version         ( http ),
+                    get_status_code         ( http ),
+                    get_status              ( http ),
+                    get_date                ( http ),
+                    get_server              ( http ),
+                    get_last_modified       ( http ),
+                    get_content_length_str  ( http ),
+                    get_content_type        ( http ),
+                    get_content             ( http )
         );
 
         dc_write(env, err, serv->client_socket_fd, response, sizeof(response));

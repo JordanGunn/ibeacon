@@ -11,12 +11,10 @@
 
 struct HttpRequest {
     char *  version;
-    char *  connection;
     char *  method;          // request method
     char *  url;             // location that HTTP is referring to
     char *  host;            // host that the request is for
     char *  user_agent;      // specifies the client
-    char *  accept_language; // language that is preferred
     char *  accept;          // defines the sort of response to accept. Can be HTML files, images, audio/video, etc.
 };
 
@@ -39,13 +37,6 @@ HttpRequestPtr http_request_constructor(char * method, char * url, char * versio
 /*
  * Getters
  */
-char * get_connection(HttpRequestPtr http)
-{
-    if (http)
-    {
-        return http->connection;
-    }
-}
 
 char * get_version(HttpRequestPtr http)
 {
@@ -87,14 +78,6 @@ char * get_user_agent(HttpRequestPtr http)
     }
 }
 
-char * get_accept_language(HttpRequestPtr http)
-{
-    if (http)
-    {
-        return http->accept_language;
-    }
-}
-
 char * get_accept(HttpRequestPtr http)
 {
     if (http)
@@ -106,14 +89,6 @@ char * get_accept(HttpRequestPtr http)
 /*
  * Setters
  */
-
-void set_connection(HttpRequestPtr http, char * connection)
-{
-    if (http)
-    {
-        http->connection = connection;
-    }
-}
 
 void set_version(HttpRequestPtr http, char * version)
 {
@@ -155,14 +130,6 @@ void set_user_agent(HttpRequestPtr http, char * user_agent)
     }
 }
 
-void set_accept_language(HttpRequestPtr http, char * accept_language)
-{
-    if (http)
-    {
-        http->accept_language = accept_language;
-    }
-}
-
 void set_accept(HttpRequestPtr http, char * accept)
 {
     if (http)
@@ -174,12 +141,10 @@ void set_accept(HttpRequestPtr http, char * accept)
 void destroy_http_request(HttpRequestPtr http)
 {
     if (http->version)          { free(http->version);          }
-    if (http->connection)       { free(http->connection);       }
     if (http->method)           { free(http->method);           }
     if (http->url)              { free(http->url);              }
     if (http->host)             { free(http->host);             }
     if (http->user_agent)       { free(http->user_agent);       }
-    if (http->accept_language)  { free(http->accept_language);  }
     if (http->accept)           { free(http->accept);           }
 
     free(http);
@@ -208,9 +173,7 @@ HttpRequestPtr parse_http_request(char * http_message)
 void parse_header_lines(HttpRequestPtr http, char *header_lines)
 {
     header_lines = parse_header_line(http, header_lines, set_host);
-    header_lines = parse_header_line(http, header_lines, set_connection);
     header_lines = parse_header_line(http, header_lines, set_user_agent);
-    header_lines = parse_header_line(http, header_lines, set_accept_language);
     parse_header_line(http, header_lines, set_accept);
 }
 
