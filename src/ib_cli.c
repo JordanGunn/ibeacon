@@ -75,7 +75,7 @@ void showOptions(WINDOW *win) {
     getbegyx(win, yBeg, xBeg);
 
     int posX, posY;
-    posX = xBeg + 2;
+    posX = xBeg + 5;
     posY = (yMax - yBeg)/2;
     WINDOW *optionWindow = newwin(10, xMax-xBeg, posY, posX);
     box(optionWindow, 0, 0);
@@ -118,18 +118,21 @@ void gettingInput(WINDOW *win) {
         switch(choice) {
             case '1':
                 wclear(inputWindow);
+                box(inputWindow, 0, 0);
                 mvwprintw(inputWindow, 1, 1, "You have selected to find your ibeacon.");
                 //press to confirm.
 
                 break;
             case '2':
                 wclear(inputWindow);
+                box(inputWindow, 0, 0);
                 mvwprintw(inputWindow, 1, 1, "You have selected to find add your ibeacon.");
                 //press to confirm.
 
                 break;
             default:
                 wclear(inputWindow);
+                box(inputWindow, 0, 0);
                 mvwprintw(inputWindow, 1, 1, "It is not a valid respond.");
                 break;
         }
