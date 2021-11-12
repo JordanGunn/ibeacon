@@ -105,7 +105,7 @@ char * get_content_type(HttpResponsePtr http)
     }
 }
 
-ssize_t get_content_length(HttpResponsePtr http)
+ssize_t get_content_length_long(HttpResponsePtr http)
 {
     if (http)
     {
@@ -114,6 +114,15 @@ ssize_t get_content_length(HttpResponsePtr http)
         long content_length =strtol(http->content_length, &end,10);
 
         return content_length;
+    }
+}
+
+char * get_content_length_str(HttpResponsePtr http)
+{
+    if (http)
+    {
+
+        return http->content_length;
     }
 }
 
@@ -231,7 +240,7 @@ void destroy_http_response(HttpResponsePtr http)
 HttpResponsePtr parse_http_response(const char * http_message)
 {
     const char * status_line_start = http_message;
-    char * status_line_end = strchr(status_line_start, '\r');
+    char * status_line_end = strchr(status_line_start, '\n');
 
     char status_line[(status_line_end - status_line_start) + 1];
     strncpy(status_line, status_line_start, (unsigned long)(status_line_end - status_line_start) + 1);
@@ -272,8 +281,8 @@ char * parse_response_line(HttpResponsePtr http, char * header_line, void (sette
 
 void parse_content(HttpResponsePtr http, char * header_line)
 {
-    char * content = malloc((unsigned long) (get_content_length(http) + 1));
-    memmove(content, header_line, (unsigned long) get_content_length(http));
+    char * content = malloc((unsigned long) (get_content_length_long(http) + 1));
+    memmove(content, header_line, (unsigned long) get_content_length_long(http));
     set_content(http, content);
 }
 
@@ -290,7 +299,7 @@ HttpResponsePtr parse_status_line(char * request_line)
 
     // get status start end
     const char * status_start = status_code_end + 1;
-    const char * status_end = strchr(status_start, '\r');
+    const char * status_end = strchr(status_start, '\n');
 
     char * version = malloc((unsigned long) ((version_end - version_start) + 1));
     char * status_code = malloc((unsigned long) ((status_code_end - status_code_start) + 1));

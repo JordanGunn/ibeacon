@@ -189,10 +189,10 @@ void destroy_http_request(HttpRequestPtr http)
 // CHILD HTTP PARSE REQUEST FUNCTIONS
 // ==================================
 
-HttpRequestPtr parse_http_request(const char * http_message)
+HttpRequestPtr parse_http_request(char * http_message)
 {
     const char * request_line_start = http_message;
-    char * request_line_end = strchr(http_message, '\r');
+    char * request_line_end = strchr(http_message, '\n');
 
     char request_line[(request_line_end - request_line_start) + 1];
     strncpy(request_line, request_line_start, (unsigned long)(request_line_end - request_line_start) + 1);
@@ -221,9 +221,9 @@ char * parse_header_line(HttpRequestPtr http, char * header_line, void (setter)(
     char * attr_end = NULL;
 
     attr_start = strchr(header_line, ' ');
-    attr_end = strchr(attr_start, '\r');
+    attr_end = strchr(attr_start, '\n');
     char * attr = malloc((unsigned long) ((attr_end - attr_start) + 1));
-    memmove(attr, attr_start, (unsigned long) (attr_end - attr_start));
+    memmove(attr, attr_start, (unsigned long) ((attr_end - attr_start) - 1));
     setter(http, attr);
 
     return (attr_end + 1);
@@ -239,7 +239,7 @@ HttpRequestPtr parse_request_line(char * request_line)
     const char * url_end = strchr(url_start, ' ');
 
     const char * version_start = url_end + 1;
-    const char * version_end = strchr(version_start, '\r');
+    const char * version_end = strchr(version_start, '\n');
 
     char * method = malloc((unsigned long) ((method_end - method_start) + 1));
     char * url = malloc((unsigned long) ((url_end - url_start) + 1));

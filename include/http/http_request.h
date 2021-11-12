@@ -56,7 +56,7 @@ void set_version(HttpRequestPtr http, char * version);
  *
  * @param http_message
  */
-HttpRequestPtr parse_http_request(const char *);
+HttpRequestPtr parse_http_request(char *);
 HttpRequestPtr parse_request_line(char *);
 void parse_header_lines(HttpRequestPtr http, char *header_lines);
 char * parse_header_line(HttpRequestPtr,char *,void (setter)(HttpRequestPtr, char *));
