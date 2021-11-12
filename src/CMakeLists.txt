@@ -10,7 +10,7 @@ IF (LINT)
 ENDIF ()
 
 # Make an executable
-add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/client.h)
+add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/client.h ../src/ib_cli.c ../include/ib_cli.h)
 add_executable(server ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/server.h)
 add_executable(db ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/db.h ../src/db.c)
 add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/http/http.h ../include/http/http_request.h ../include/http/http_response.h http/http_request.c http/http_response.c http/http.c)
@@ -49,6 +49,7 @@ target_link_directories(http PRIVATE /usr/local/lib)
 
 
 # All users of this library will need at least C11
+
 target_compile_features(client PUBLIC c_std_11)
 target_compile_options(client PRIVATE -g)
 target_compile_options(client PRIVATE -fstack-protector-all -ftrapv)
@@ -86,11 +87,15 @@ find_library(LIBDC_ERROR dc_error REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
 find_library(LIBDC_APPLICATION dc_application REQUIRED)
 
+
 target_link_libraries(client PRIVATE ${LIBM})
 target_link_libraries(client PRIVATE ${LIBDC_UTIL})
 target_link_libraries(client PRIVATE ${LIBDC_ERROR})
 target_link_libraries(client PRIVATE ${LIBDC_POSIX})
 target_link_libraries(client PRIVATE ${LIBDC_APPLICATION})
+target_link_libraries(client PRIVATE ${CLIENT_SOURCE} ncurses)
+
+
 
 target_link_libraries(server PRIVATE ${LIBM})
 target_link_libraries(server PRIVATE ${LIBDC_UTIL})

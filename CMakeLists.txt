@@ -36,6 +36,10 @@ set(SERVER_SOURCE
         "${ibeacon_SOURCE_DIR}/src/server.c"
         )
 
+set(IB_CLI_SOURCE
+        "${ibeacon_SOURCE_DIR}/src/ib_cli.c"
+        )
+
 
 ### Require out-of-source builds
 # this still creates a CMakeFiles directory and CMakeCache.txt- can we delete them?
