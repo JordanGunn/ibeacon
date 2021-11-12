@@ -75,9 +75,9 @@ void showOptions(WINDOW *win) {
     getbegyx(win, yBeg, xBeg);
 
     int posX, posY;
-    posX = xBeg + 5;
+    posX = xBeg + (xMax - (xMax - xBeg))/2;
     posY = (yMax - yBeg)/2;
-    WINDOW *optionWindow = newwin(10, xMax-xBeg, posY, posX);
+    WINDOW *optionWindow = newwin((yMax - yBeg) * 0.5, xMax-xBeg, posY, posX);
     box(optionWindow, 0, 0);
     wrefresh(optionWindow);
 
