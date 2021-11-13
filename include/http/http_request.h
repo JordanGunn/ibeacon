@@ -9,6 +9,12 @@
 
 typedef struct HttpRequest * HttpRequestPtr;
 
+struct Query
+{
+    char * key;
+    char * value;
+};
+
 // ============================
 // CHILD HTTP REQUEST CLASS
 // ============================
@@ -56,6 +62,8 @@ void set_version(HttpRequestPtr http, char * version);
  *
  * @param http_message
  */
+void destroy_query(struct Query * query);
+void parse_query(char * url, struct Query *);
 HttpRequestPtr parse_http_request(char *);
 HttpRequestPtr parse_request_line(char *);
 void parse_header_lines(HttpRequestPtr http, char *header_lines);

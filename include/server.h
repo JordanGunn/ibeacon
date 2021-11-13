@@ -27,6 +27,7 @@ struct server_params
     datum fetched;
     int error;
     int client_socket_fd;
+    char * content;
 };
 
 enum application_states
@@ -49,9 +50,7 @@ int http_post(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 int build_response(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 int send_response(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
 void receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd, size_t, void * arg);
-
 
 
 #endif //IBEACON_SERVER_H

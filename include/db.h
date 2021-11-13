@@ -80,7 +80,7 @@ int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, co
  * @param name key
  * @return NULL if none found.
  */
-datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
+datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name);
 
 /**
  * Helper function to print out the content.

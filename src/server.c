@@ -283,6 +283,7 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
                                 if(dc_error_has_no_error(err))
                                 {
                                     receive_data(env, err, serv->client_socket_fd, 8192, serv);
+                                    exit_flag = 1;
                                 }
                                 else
                                 {
@@ -302,7 +303,10 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
         {
             dc_close(env, err, server_socket_fd);
         }
-        else if (!dc_strcmp(env, get_method(serv->request), REQUEST_GET))
+
+
+
+        if (!dc_strcmp(env, get_method(serv->request), REQUEST_GET))
         {
             return HTTP_GET;
         }
@@ -322,15 +326,17 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
 
 int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
-
-    char * query;
     struct server_params * serv;
     serv = (struct server_params *) arg;
 
+    struct Query query;
     if (dc_error_has_no_error(err))
     {
-        query = get_url(serv->request);
-        serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query);
+        parse_query(get_url(serv->request), &query);
+        serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query.key);
+        serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
+        memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
+        destroy_query(&query);
     }
     else
     {
@@ -343,11 +349,20 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 
 int http_post(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
-    puts("Writing to DB!");
-    if (false)
+    struct server_params * serv;
+    serv = (struct server_params *) arg;
+
+    struct Query query;
+    if (dc_error_has_no_error(err))
     {
-        puts("Error 404 :(");
-        return ERROR_500;
+        parse_query(get_url(serv->request), &query);
+        store_data(env, err, serv->db->dbmPtr, query.key, query.value, DBM_INSERT);
+        destroy_query(&query);
+    }
+    else
+    {
+        serv->error = ERROR_404;
+        return ERROR_404;
     }
 
     return BUILD_RESPONSE;
@@ -387,6 +402,7 @@ int build_response(const struct dc_posix_env *env, struct dc_error *err, void *a
     set_last_modified(  serv->response, res_last_modified  );
     set_content_length( serv->response, res_content_length );
     set_content_type(   serv->response, res_content_type   );
+    set_content(        serv->response, serv->content      );
 
     return SEND_RESPONSE;
 }
@@ -432,29 +448,29 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
     if (dc_error_has_no_error(err))
     {
         char response[
-                // ================================================================
-                dc_strlen(env, get_res_version(http)) +             // REQUEST LINE
-                dc_strlen(env, get_status_code(http)) +             // REQUEST LINE
-                dc_strlen(env, get_status(http)) + 4 +              // REQUEST LINE
-                // ================================================================
-                dc_strlen(env, get_date(http)) + 3 +                // HEADER LINES
-                dc_strlen(env, get_server(http)) + 3 +              // HEADER LINES
-                dc_strlen(env, get_last_modified(http)) + 3 +       // HEADER LINES
-                dc_strlen(env, get_content_length_str(http)) +      // HEADER LINES
-                dc_strlen(env, get_content_type(http)) + 3 + 2 +    // HEADER LINES
-                // ================================================================
+                // ============================================================================
+                dc_strlen(env, get_res_version(http)) +                         // REQUEST LINE
+                dc_strlen(env, get_status_code(http)) +                         // REQUEST LINE
+                dc_strlen(env, get_status(http)) + 4 +                          // REQUEST LINE
+                // =============================================================================
+                5  + dc_strlen(env, get_date(http))               + 3 +         // HEADER LINES
+                7  + dc_strlen(env, get_server(http))             + 3 +         // HEADER LINES
+                14 + dc_strlen(env, get_last_modified(http))      + 3 +         // HEADER LINES
+                15 + dc_strlen(env, get_content_length_str(http)) + 3 +         // HEADER LINES
+                13 + dc_strlen(env, get_content_type(http))       + 3 + 2 +     // HEADER LINES
+                // ============================================================================
 
                 get_content_length_long(http)
             ];
 
         sprintf(response,
-                "%s %s %s\n\r" \
-                      "Date: %s\n\r" \
-                      "Server: %s\n\r" \
-                      "Last-Modified: %s\n\r" \
-                      "Content-Length: %s\n\r" \
-                      "Content-Type: %s\n\r" \
-                      "\n\r" \
+                "%s %s %s\r\n" \
+                      "Date: %s\r\n" \
+                      "Server: %s\r\n" \
+                      "Last-Modified: %s\r\n" \
+                      "Content-Length: %s\r\n" \
+                      "Content-Type: %s\r\n" \
+                      "\r\n" \
                       "%s",
 
                     get_res_version         ( http ),
@@ -470,6 +486,8 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
 
         dc_write(env, err, serv->client_socket_fd, response, sizeof(response));
         dc_close(env, err, serv->client_socket_fd);
+        destroy_http_request(serv->request);
+//        destroy_http_response(serv->response);
     }
 }
 
@@ -478,12 +496,16 @@ void receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd, 
 {
     struct server_params * serv;
     serv = (struct server_params *) arg;
+    char check_end[5] = {0};
 
     char data[max_request_size];
     ssize_t count;
     while(!(exit_flag) && (count = dc_read(env, err, fd, data, max_request_size)) > 0 && dc_error_has_no_error(err))
     {
         serv->request = parse_http_request(data);
+        memcpy( check_end, &data[count - 4], 4 );
+
+        if (!dc_strcmp(env, check_end, "\r\n\r\n")) { break; }
     }
 }
 
