@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "http_constants.h"
+#include "stdio.h"
 
 
 typedef struct HttpResponse * HttpResponsePtr;
@@ -36,7 +37,8 @@ char *  get_date(HttpResponsePtr);
 char *  get_server(HttpResponsePtr);
 char *  get_last_modified(HttpResponsePtr);
 char *  get_content_type(HttpResponsePtr);
-ssize_t get_content_length(HttpResponsePtr);
+ssize_t get_content_length_long(HttpResponsePtr);
+char * get_content_length_str(HttpResponsePtr);
 char * get_content(HttpResponsePtr http);
 
 /*

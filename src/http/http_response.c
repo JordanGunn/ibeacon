@@ -12,7 +12,6 @@ struct HttpResponse {
     char * version;
     char * status_code;
     char * status;
-    char * res_connection;// response status
     char * date;            // e.g. Th, 08 Aug 2013 23:54:35 GMT
     char * server;          // Server software spec (e.g. Apache/2.4.39 (CentOS))
     char * last_modified;   // e.g. Th, 08 Aug 2013 23:54:35 GMT
@@ -46,14 +45,6 @@ char * get_res_version(HttpResponsePtr http)
     if (http)
     {
         return http->version;
-    }
-}
-
-char * get_res_connection(HttpResponsePtr http)
-{
-    if (http)
-    {
-        return http->res_connection;
     }
 }
 
@@ -105,7 +96,7 @@ char * get_content_type(HttpResponsePtr http)
     }
 }
 
-ssize_t get_content_length(HttpResponsePtr http)
+ssize_t get_content_length_long(HttpResponsePtr http)
 {
     if (http)
     {
@@ -114,6 +105,15 @@ ssize_t get_content_length(HttpResponsePtr http)
         long content_length =strtol(http->content_length, &end,10);
 
         return content_length;
+    }
+}
+
+char * get_content_length_str(HttpResponsePtr http)
+{
+    if (http)
+    {
+
+        return http->content_length;
     }
 }
 
@@ -129,13 +129,6 @@ char * get_content(HttpResponsePtr http)
 /*
  * Setters
  */
-void set_res_connection(HttpResponsePtr http, char * connection)
-{
-    if (http)
-    {
-        http->res_connection = connection;
-    }
-}
 
 void set_res_version(HttpResponsePtr http, char * version)
 {
@@ -217,7 +210,6 @@ void destroy_http_response(HttpResponsePtr http)
     if (http->version)        { free(http->version);        }
     if (http->status_code)    { free(http->status_code);    }
     if (http->status)         { free(http->status);         }
-    if (http->res_connection) { free(http->res_connection); }
     if (http->date)           { free(http->date);           }
     if (http->server)         { free(http->server);         }
     if (http->last_modified)  { free(http->last_modified);  }
@@ -231,7 +223,7 @@ void destroy_http_response(HttpResponsePtr http)
 HttpResponsePtr parse_http_response(const char * http_message)
 {
     const char * status_line_start = http_message;
-    char * status_line_end = strchr(status_line_start, '\r');
+    char * status_line_end = strchr(status_line_start, '\n');
 
     char status_line[(status_line_end - status_line_start) + 1];
     strncpy(status_line, status_line_start, (unsigned long)(status_line_end - status_line_start) + 1);
@@ -244,7 +236,6 @@ HttpResponsePtr parse_http_response(const char * http_message)
 
 void parse_response_lines(HttpResponsePtr http, char *header_lines)
 {
-    header_lines = parse_response_line(http, header_lines, set_res_connection);
     header_lines = parse_response_line(http, header_lines, set_date);
     header_lines = parse_response_line(http, header_lines, set_server);
     header_lines = parse_response_line(http, header_lines, set_last_modified);
@@ -272,8 +263,8 @@ char * parse_response_line(HttpResponsePtr http, char * header_line, void (sette
 
 void parse_content(HttpResponsePtr http, char * header_line)
 {
-    char * content = malloc((unsigned long) (get_content_length(http) + 1));
-    memmove(content, header_line, (unsigned long) get_content_length(http));
+    char * content = malloc((unsigned long) (get_content_length_long(http) + 1));
+    memmove(content, header_line, (unsigned long) get_content_length_long(http));
     set_content(http, content);
 }
 
@@ -290,7 +281,7 @@ HttpResponsePtr parse_status_line(char * request_line)
 
     // get status start end
     const char * status_start = status_code_end + 1;
-    const char * status_end = strchr(status_start, '\r');
+    const char * status_end = strchr(status_start, '\n');
 
     char * version = malloc((unsigned long) ((version_end - version_start) + 1));
     char * status_code = malloc((unsigned long) ((status_code_end - status_code_start) + 1));

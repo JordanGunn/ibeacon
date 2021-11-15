@@ -3,16 +3,16 @@
 int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *value, uint8_t type)
 {
     int ret_val;
-    datum key = {name, strlen(name) + 1};
-    datum value_to_add = {value, strlen(value) + 1};
+    datum key = {name, strlen(name)};
+    datum value_to_add = {value, strlen(value)};
 
     ret_val = dc_dbm_store(env, err, db, key, value_to_add, type);
     return ret_val; //returns 0 if successful, negative value if failed.
 }
 
-datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name)
+datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name)
 {
-    datum key = {(void*)name, strlen(name) + 1}; //This should not have additional new line.
+    datum key = {name, (int)strlen(name)}; //This should not have additional new line.
     datum content;
     content = dc_dbm_fetch(env, err, db, key);
     return content;

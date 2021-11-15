@@ -9,14 +9,13 @@
 // R E Q U E S T    C L A S S
 // ===========================
 
-struct HttpRequest {
+struct HttpRequest
+{
     char *  version;
-    char *  connection;
     char *  method;          // request method
     char *  url;             // location that HTTP is referring to
     char *  host;            // host that the request is for
     char *  user_agent;      // specifies the client
-    char *  accept_language; // language that is preferred
     char *  accept;          // defines the sort of response to accept. Can be HTML files, images, audio/video, etc.
 };
 
@@ -28,9 +27,9 @@ HttpRequestPtr http_request_constructor(char * method, char * url, char * versio
     HttpRequestPtr http_request = malloc(sizeof * http_request);
     if (http_request)
     {
-        http_request->method = method;
-        http_request->url = url;
-        http_request->version = version;
+        set_method(http_request, method);
+        set_url(http_request, url);
+        set_version(http_request, version);
 
         return http_request;
     }
@@ -39,13 +38,6 @@ HttpRequestPtr http_request_constructor(char * method, char * url, char * versio
 /*
  * Getters
  */
-char * get_connection(HttpRequestPtr http)
-{
-    if (http)
-    {
-        return http->connection;
-    }
-}
 
 char * get_version(HttpRequestPtr http)
 {
@@ -87,14 +79,6 @@ char * get_user_agent(HttpRequestPtr http)
     }
 }
 
-char * get_accept_language(HttpRequestPtr http)
-{
-    if (http)
-    {
-        return http->accept_language;
-    }
-}
-
 char * get_accept(HttpRequestPtr http)
 {
     if (http)
@@ -106,14 +90,6 @@ char * get_accept(HttpRequestPtr http)
 /*
  * Setters
  */
-
-void set_connection(HttpRequestPtr http, char * connection)
-{
-    if (http)
-    {
-        http->connection = connection;
-    }
-}
 
 void set_version(HttpRequestPtr http, char * version)
 {
@@ -155,14 +131,6 @@ void set_user_agent(HttpRequestPtr http, char * user_agent)
     }
 }
 
-void set_accept_language(HttpRequestPtr http, char * accept_language)
-{
-    if (http)
-    {
-        http->accept_language = accept_language;
-    }
-}
-
 void set_accept(HttpRequestPtr http, char * accept)
 {
     if (http)
@@ -173,26 +141,26 @@ void set_accept(HttpRequestPtr http, char * accept)
 
 void destroy_http_request(HttpRequestPtr http)
 {
-    if (http->version)          { free(http->version);          }
-    if (http->connection)       { free(http->connection);       }
-    if (http->method)           { free(http->method);           }
-    if (http->url)              { free(http->url);              }
-    if (http->host)             { free(http->host);             }
-    if (http->user_agent)       { free(http->user_agent);       }
-    if (http->accept_language)  { free(http->accept_language);  }
-    if (http->accept)           { free(http->accept);           }
+    if (http->version)          { free(http->version);    http->version = NULL;     }
+    if (http->method)           { free(http->method);     http->method = NULL;      }
+    if (http->url)              { free(http->url);        http->url = NULL;         }
+    if (http->host)             { free(http->host);       http->host = NULL;        }
+    if (http->user_agent)       { free(http->user_agent); http->user_agent = NULL;  }
+    if (http->accept)           { free(http->accept);     http->accept = NULL;      }
 
     free(http);
 }
+
+
 
 // ==================================
 // CHILD HTTP PARSE REQUEST FUNCTIONS
 // ==================================
 
-HttpRequestPtr parse_http_request(const char * http_message)
+HttpRequestPtr parse_http_request(char * http_message)
 {
     const char * request_line_start = http_message;
-    char * request_line_end = strchr(http_message, '\r');
+    char * request_line_end = strchr(http_message, '\n');
 
     char request_line[(request_line_end - request_line_start) + 1];
     strncpy(request_line, request_line_start, (unsigned long)(request_line_end - request_line_start) + 1);
@@ -205,12 +173,10 @@ HttpRequestPtr parse_http_request(const char * http_message)
 }
 
 
-void parse_header_lines(HttpRequestPtr http, char *header_lines)
+void parse_header_lines(HttpRequestPtr http, char * header_lines)
 {
     header_lines = parse_header_line(http, header_lines, set_host);
-    header_lines = parse_header_line(http, header_lines, set_connection);
     header_lines = parse_header_line(http, header_lines, set_user_agent);
-    header_lines = parse_header_line(http, header_lines, set_accept_language);
     parse_header_line(http, header_lines, set_accept);
 }
 
@@ -221,9 +187,9 @@ char * parse_header_line(HttpRequestPtr http, char * header_line, void (setter)(
     char * attr_end = NULL;
 
     attr_start = strchr(header_line, ' ');
-    attr_end = strchr(attr_start, '\r');
-    char * attr = malloc((unsigned long) ((attr_end - attr_start) + 1));
-    memmove(attr, attr_start, (unsigned long) (attr_end - attr_start));
+    attr_end = strchr(attr_start, '\n');
+    char * attr = calloc((unsigned long) ((attr_end - attr_start) + 1), sizeof(char));
+    memmove(attr, attr_start, (unsigned long) ((attr_end - attr_start) - 1));
     setter(http, attr);
 
     return (attr_end + 1);
@@ -239,15 +205,55 @@ HttpRequestPtr parse_request_line(char * request_line)
     const char * url_end = strchr(url_start, ' ');
 
     const char * version_start = url_end + 1;
-    const char * version_end = strchr(version_start, '\r');
+    const char * version_end = strchr(version_start, '\n');
 
-    char * method = malloc((unsigned long) ((method_end - method_start) + 1));
-    char * url = malloc((unsigned long) ((url_end - url_start) + 1));
-    char * version = malloc((unsigned long) ((version_end - version_start) + 1));
+    char * method = calloc((unsigned long) ((method_end - method_start) + 1), sizeof(char));
+    char * url = calloc((unsigned long) ((url_end - url_start) + 1), sizeof(char));
+    char * version = calloc((unsigned long) ((version_end - version_start) + 1), sizeof(char));
 
     memmove(method, method_start, (unsigned long) (method_end - method_start));
     memmove(url, url_start, (unsigned long) (url_end - url_start));
-    memmove(version, version_start, (unsigned long) (version_end - version_start));
+    memmove(version, version_start, (unsigned long) ((version_end - version_start) - 1));
 
     return http_request_constructor(method, url, version);
 }
+
+void parse_query(char * url, struct Query * query)
+{
+    char * key_start = NULL;
+    char * key_end = NULL;
+    char * value_start = NULL;
+    char * value_end = NULL;
+
+    key_start   = strchr(url, '?') + 1;
+    key_end     = strchr(key_start, '=');
+
+    value_start = key_end + 1;
+    value_end   = strchr(value_start, '\0');
+
+    query->key      = calloc((unsigned long) (key_end - key_start),     sizeof(char));
+    query->value    = calloc((unsigned long) (value_end - value_start), sizeof(char));
+
+    memmove(query->key,     key_start,  (unsigned long) (key_end - key_start)       );
+    memmove(query->value,   value_start,(unsigned long) (value_end - value_start)   );
+}
+
+void destroy_query(struct Query * query)
+{
+    if (query)
+    {
+        if (query->key)
+        {
+            free(query->key);
+            query->key = NULL;
+        }
+
+        if (query->value)
+        {
+            free(query->value);
+            query->value = NULL;
+        }
+    }
+}
+
+
