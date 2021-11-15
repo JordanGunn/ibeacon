@@ -337,11 +337,11 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
         serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
         memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
         destroy_query(&query);
-    }
-    else
-    {
-        serv->error = ERROR_404;
-        return ERROR_404;
+
+        if (!(*serv->content))
+        {
+            serv->error = ERROR_404;
+        }
     }
 
     return BUILD_RESPONSE;
@@ -391,11 +391,11 @@ int build_response(const struct dc_posix_env *env, struct dc_error *err, void *a
     res_content_length  = malloc( sizeof(content_length) );
     res_content_type    = malloc( sizeof(content_type)   );
 
-    memmove(res_date,           date,           sizeof(date)           );
-    memmove(res_server,         server,         sizeof(server)         );
-    memmove(res_last_modified,  last_modified,  sizeof(last_modified)  );
-    memmove(res_content_length, content_length, sizeof(content_length) );
-    memmove(res_content_type,   content_type,   sizeof(content_type)   );
+    memmove( res_date,           date,           sizeof(date)           );
+    memmove( res_server,         server,         sizeof(server)         );
+    memmove( res_last_modified,  last_modified,  sizeof(last_modified)  );
+    memmove( res_content_length, content_length, sizeof(content_length) );
+    memmove( res_content_type,   content_type,   sizeof(content_type)   );
 
     set_date(           serv->response, res_date           );
     set_server(         serv->response, res_server         );
@@ -484,8 +484,17 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
                     get_content             ( http )
         );
 
-        dc_write(env, err, serv->client_socket_fd, response, sizeof(response));
-        dc_close(env, err, serv->client_socket_fd);
+        if (dc_error_has_no_error(err))
+        {
+            dc_write(env, err, serv->client_socket_fd, response, sizeof(response));
+
+            if (dc_error_has_no_error(err))
+            {
+                dc_close(env, err, serv->client_socket_fd);
+            }
+        }
+
+
         destroy_http_request(serv->request);
 //        destroy_http_response(serv->response);
     }
