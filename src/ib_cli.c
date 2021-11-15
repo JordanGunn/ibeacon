@@ -8,32 +8,51 @@
 
 void showWelcomePage();
 void showFirstPageOptions(WINDOW *);
+
+
 void printInTheMiddle(WINDOW *win, char * msg);
 WINDOW * createWindowInTheMiddle();
-void gettingInput(WINDOW *win);
+void gettingInput_firstPage(WINDOW *win);
 static bool confirm();
 static void createInputMessage(WINDOW * inputWindow, char* msg);
 WINDOW * createOptionWindow(WINDOW *win);
 void showIbeaconsList(WINDOW *win);
+static WINDOW *createInputWindow(WINDOW * win);
+void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
+void input_with_echo_current_window(WINDOW *win);
 
+struct ibeaconInfo {
+    char* major;
+    char* minor;
+    char* location;
+    char* timestamp;
+    char* list;
+};
+
+//initialization
+//deinialization
 
 
 int main() {
     //
+    //Client-side initialization code??
+    //How to send messages??
+    // can I use those code from Client.h?
+
     initscr();
     clear();
     cbreak();
-    noecho();
+    noecho(); //does not echo the user input.
+    curs_set(0); //0- invisible
 
 //    showWelcomePage();
     WINDOW *win = createWindowInTheMiddle();
     showFirstPageOptions(win);
-    gettingInput(win);
+    gettingInput_firstPage(win);
 
-//    getch();
-    //waits for user input, returns in value of the key.
+
+
     endwin();
-
     return 0;
 }
 
@@ -76,7 +95,7 @@ void showFirstPageOptions(WINDOW *win) {
     WINDOW * optionWindow = createOptionWindow(win);
 
     //option 1: FIND_ibeacon
-    mvwprintw(optionWindow, 1, 1, "PRESS 1: FIND IBEACON");
+    mvwprintw(optionWindow, 1, 1, "PRESS 1: FIND IBEACON"); //if these options change, we also need to change the switch options.
     mvwprintw(optionWindow, 2, 1, "PRESS 2: ADD NEW IBEACON");
     //displayIbeacons
     //selectIbeacon
@@ -86,15 +105,65 @@ void showFirstPageOptions(WINDOW *win) {
 
 void showIbeaconsList(WINDOW *win) {
     WINDOW * optionWindow = createOptionWindow(win);
-
     mvwprintw(optionWindow, 1, 1, "Beacon 1");
     mvwprintw(optionWindow, 2, 1, "Beacon 2");
     //displayIbeacons
     //selectIbeacon
+    wrefresh(optionWindow);
+    WINDOW *inputWindow = createInputWindow(win);
+    createInputMessage(inputWindow, "Please select the beacon.");
+
     //ShowIbeacon
+    char selection;
+    while ((selection = (char) wgetch(inputWindow)) != 'q') {
+        //Highlight the beacons?
+        switch (selection) {
+            case 1:
+                //need to dynamically get the beacon name?? or unique key?? name?
+                createInputMessage(inputWindow, "selected beacon 1");
+                break;
+            case 2:
+                createInputMessage(inputWindow, "selected beacon 2");
+                break;
+            default:
+                createInputMessage(inputWindow, "invalid option");
+        }
+    }
     wrefresh(optionWindow);
 }
 
+void showAddPage(WINDOW * win){
+    WINDOW * optionWindow = createOptionWindow(win);
+    //Question.
+    WINDOW * inputWindow = createInputWindow(win);
+    //and get input.
+    ask_info(optionWindow, inputWindow, "Please enter MAJOR: ");
+    ask_info(optionWindow, inputWindow, "Please enter MINOR: ");
+}
+
+void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question) {
+    //ask a question an and return an answer...???? or save an answer.
+    //eventually we want to create a client's request to send to the server to save.
+    createInputMessage(optionWindow, question);
+    input_with_echo_current_window(inputWindow);
+    wrefresh(inputWindow);
+}
+
+void input_with_echo_current_window(WINDOW *win) {
+    createInputMessage(win, "");
+    char input[100];
+    int begY, begX;
+    getbegyx(win, begY, begX);
+    move(begY + 1, begX + 1);
+    refresh();
+    echo();
+    getstr(input);
+    refresh();
+    createInputMessage(win, "Saved.");
+    noecho();
+    wrefresh(win);
+    //need to save the input to a struct..?
+}
 
 WINDOW * createOptionWindow(WINDOW *win) {
     int yMax, xMax, yBeg, xBeg;
@@ -115,23 +184,9 @@ WINDOW * createOptionWindow(WINDOW *win) {
     return optionWindow;
 }
 
-void gettingInput(WINDOW *win) {
+void gettingInput_firstPage(WINDOW *win) {
     //creating a window for the input
-    int yMax, xMax, yBeg, xBeg;
-    getmaxyx(win, yMax, xMax);
-    getbegyx(win, yBeg, xBeg);
-
-    int posX, posY;
-    posX = xBeg + 2;
-    posY = yMax - 1;
-    WINDOW *inputWindow = newwin(3, xMax - 4, posY, posX);
-    box(inputWindow, 0, 0);
-    wmove(inputWindow,1, 1);
-    wrefresh(inputWindow);
-
-    //This is how you are a string.
-//    char input[BUFSIZ];
-//    wgetstr(inputWindow, input);
+    WINDOW * inputWindow = createInputWindow(win);
 
     //printout the input to the input window.
     int choice;
@@ -148,7 +203,9 @@ void gettingInput(WINDOW *win) {
             case '2':
                 createInputMessage(inputWindow, "You have selected to find add your ibeacon.");
                 //press to confirm.
-
+                if (confirm(win)) {
+                    showAddPage(win);
+                }
                 break;
             default:
                 wclear(inputWindow);
@@ -159,9 +216,22 @@ void gettingInput(WINDOW *win) {
         wrefresh(inputWindow);
     }
 
-    getbegyx(inputWindow, yBeg, xBeg);
-//    move(yBeg + 1, xBeg);
     wrefresh(win);
+}
+
+static WINDOW *createInputWindow(WINDOW * win) {
+    int yMax, xMax, yBeg, xBeg;
+    getmaxyx(win, yMax, xMax);
+    getbegyx(win, yBeg, xBeg);
+
+    int posX, posY;
+    posX = xBeg + 2;
+    posY = yMax - 1;
+    WINDOW *inputWindow = newwin(3, xMax - 4, posY, posX);
+    box(inputWindow, 0, 0);
+    wmove(inputWindow,1, 1);
+    wrefresh(inputWindow);
+    return inputWindow;
 }
 
 static void createInputMessage(WINDOW * inputWindow, char* msg) {
@@ -179,9 +249,9 @@ static bool confirm(WINDOW *parentBox) {
 
     int posX, posY;
     posX = (xMax-xBeg)/2;
-    posY = (yMax-yBeg)/2;
+    posY = (yMax-yBeg)/2 + 2;
     WINDOW *confirmationBox = newwin(3, (xMax - xBeg)/2, posY, posX);
-    box(confirmationBox, '*', '*');
+    box(confirmationBox, (int)'-', (int)'-');
     wrefresh(confirmationBox);
 
     bool response = false;
@@ -201,8 +271,6 @@ static bool confirm(WINDOW *parentBox) {
     delwin(confirmationBox);
     return response;
 }
-
-
 
 #define DELAY_MS 2000
 void showWelcomePage() {
