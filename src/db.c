@@ -18,10 +18,10 @@ datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, 
     return content;
 }
 
-int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name)
+int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name)
 {
     int ret_val;
-    datum key = {(void*)name, strlen(name)};
+    datum key = {(void*)name, strlen(name) + 1};
     ret_val = dc_dbm_delete(env, err, db, key);
     return ret_val; //returns 0 if successful, negative value if failed.
 }
@@ -49,29 +49,4 @@ void deinitialize_database(const struct dc_posix_env *env, struct dc_error *err,
     databasePtr = (struct Database*)database;
     dc_dbm_close(env, err, databasePtr->dbmPtr);
     free(databasePtr);
-}
-
-
-void test_display(const char *name, datum *content)
-{
-    if (content->dsize > 0) {
-        printf("%s: %s\n", name, (char*)content->dptr);
-    } else
-    {
-        printf("%s: NOT FOUND\n", name);
-    }
-}
-
-static void error_reporter(const struct dc_error *err)
-{
-    fprintf(stderr, "ERROR: %s : %s : @ %zu : %d\n", err->file_name, err->function_name, err->line_number, 0);
-    fprintf(stderr, "ERROR: %s\n", err->message);
-}
-
-static void trace_reporter(__attribute__((unused)) const struct dc_posix_env *env,
-                           const char *file_name,
-                           const char *function_name,
-                           size_t line_number)
-{
-    fprintf(stdout, "TRACE: %s : %s : @ %zu\n", file_name, function_name, line_number);
 }

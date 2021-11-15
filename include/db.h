@@ -98,6 +98,6 @@ void test_display(const char *name, datum *content);
  * @param name key
  * @return 0 if successful.
  */
-int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
+int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name)
 
 #endif //IBEACON_DB_H
