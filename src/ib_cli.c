@@ -12,14 +12,15 @@ void showFirstPageOptions(WINDOW *);
 
 void printInTheMiddle(WINDOW *win, char * msg);
 WINDOW * createWindowInTheMiddle();
-void gettingInput_firstPage(WINDOW *win);
+bool gettingInput_firstPage(WINDOW *win);
 static bool confirm();
 static void createInputMessage(WINDOW * inputWindow, char* msg);
 WINDOW * createOptionWindow(WINDOW *win);
-void showIbeaconsList(WINDOW *win);
+bool showIbeaconsList(WINDOW *win);
 static WINDOW *createInputWindow(WINDOW * win);
 void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
 void input_with_echo_current_window(WINDOW *win);
+void showIbeaconLocation(WINDOW *inputWindow);
 
 struct ibeaconInfo {
     char* major;
@@ -46,12 +47,13 @@ int main() {
     curs_set(0); //0- invisible
 
 //    showWelcomePage();
-    WINDOW *win = createWindowInTheMiddle();
+    WINDOW *win = createWindowInTheMiddle(); //this is the master window.
     showFirstPageOptions(win);
-    gettingInput_firstPage(win);
 
-
-
+    bool continue_application = true;
+    while (continue_application) {
+        continue_application = gettingInput_firstPage(win);
+    }
     endwin();
     return 0;
 }
@@ -101,9 +103,17 @@ void showFirstPageOptions(WINDOW *win) {
     //selectIbeacon
     //ShowIbeacon
     wrefresh(optionWindow);
+    delwin(optionWindow);
 }
 
-void showIbeaconsList(WINDOW *win) {
+/**
+ * Shows Ibeacon Lists
+ *
+ * @param win
+ * @return true if user selects b
+ */
+bool showIbeaconsList(WINDOW *win) {
+    bool cont_application = false;
     WINDOW * optionWindow = createOptionWindow(win);
     mvwprintw(optionWindow, 1, 1, "Beacon 1");
     mvwprintw(optionWindow, 2, 1, "Beacon 2");
@@ -118,19 +128,41 @@ void showIbeaconsList(WINDOW *win) {
     while ((selection = (char) wgetch(inputWindow)) != 'q') {
         //Highlight the beacons?
         switch (selection) {
-            case 1:
+            case '1':
                 //need to dynamically get the beacon name?? or unique key?? name?
+                //how to show list of ibeacons?
+                //should I keep a list somewhere in the database?
+                //or at the initializing state grab all?? //no good....
                 createInputMessage(inputWindow, "selected beacon 1");
+                if(confirm(win)) {
+                    showIbeaconLocation(win);
+                    createInputMessage(inputWindow, "IBEACON1 location.");
+                }
                 break;
-            case 2:
+            case '2':
                 createInputMessage(inputWindow, "selected beacon 2");
+                if(confirm(win)) {
+                    createInputMessage(inputWindow, "IBEACON2 location.");
+                }
                 break;
             default:
                 createInputMessage(inputWindow, "invalid option");
         }
+        wrefresh(inputWindow);
     }
+    if (selection == 'b') {
+        cont_application = true;
+    }
+    return cont_application;
+}
+
+void showIbeaconLocation(WINDOW *win) {
+    WINDOW * optionWindow = createOptionWindow(win);
+    mvwprintw(optionWindow, 1, 1, "ID: ");
+    mvwprintw(optionWindow, 2, 1, "Location: ");
     wrefresh(optionWindow);
 }
+
 
 void showAddPage(WINDOW * win){
     WINDOW * optionWindow = createOptionWindow(win);
@@ -177,20 +209,27 @@ WINDOW * createOptionWindow(WINDOW *win) {
     box(optionWindow, 0, 0);
     wrefresh(optionWindow);
 
+    char * title = "IBEACON";
     posY = 2;
-    posX = (xMax - xBeg) / 2;
-    mvwprintw(win, posY, posX, "IBEACON");
+    posX = (xMax - xBeg) / 2 + (int)strlen(title); //printing in the middle.
+    mvwprintw(win, posY, posX, title);
     wrefresh(win);
     return optionWindow;
 }
 
-void gettingInput_firstPage(WINDOW *win) {
+bool gettingInput_firstPage(WINDOW *win) {
     //creating a window for the input
     WINDOW * inputWindow = createInputWindow(win);
 
     //printout the input to the input window.
     int choice;
+    int cont_application = false;
+
+    bool input_flag = false;
     while ((choice = getch()) != 'q') {
+        if (choice == 'b') {
+            cont_application = true;
+        }
         switch(choice) {
             case '1':
                 createInputMessage(inputWindow, "You have selected to find your ibeacon.");
@@ -215,8 +254,9 @@ void gettingInput_firstPage(WINDOW *win) {
         }
         wrefresh(inputWindow);
     }
-
     wrefresh(win);
+
+    return cont_application;
 }
 
 static WINDOW *createInputWindow(WINDOW * win) {
@@ -267,7 +307,8 @@ static bool confirm(WINDOW *parentBox) {
             yes_no_flag = true;
         }
     } while (!yes_no_flag);
-
+    wclear(confirmationBox);
+    wrefresh(parentBox);
     delwin(confirmationBox);
     return response;
 }
