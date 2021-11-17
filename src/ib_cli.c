@@ -6,20 +6,21 @@
 #include <stdio.h>
 #include <string.h>
 
-static void showWelcomePage();
-static void showFirstPageOptions(WINDOW *);
-static bool gettingInput_firstPage(WINDOW *win);
+void showWelcomePage();
+void showFirstPageOptions(WINDOW *);
 
-static void printInTheMiddle(WINDOW *win, char * msg);
-static WINDOW * createWindowInTheMiddle();
-static bool confirm(WINDOW *win);
+void printInTheMiddle(WINDOW *win, char * msg);
+WINDOW * createWindowInTheMiddle();
+bool gettingInput_firstPage(WINDOW *win);
+static bool confirm();
 static void createInputMessage(WINDOW * inputWindow, char* msg);
-static WINDOW * createOptionWindow(WINDOW *win);
-static bool showIbeaconsList(WINDOW *win);
+WINDOW * createOptionWindow(WINDOW *win);
+bool showIbeaconsList(WINDOW *win);
 static WINDOW *createInputWindow(WINDOW * win);
-static void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
-static void input_with_echo_current_window(WINDOW *win);
-static void showIbeaconLocation(WINDOW *inputWindow);
+void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
+void input_with_echo_current_window(WINDOW *win);
+void showIbeaconLocation(WINDOW *inputWindow);
+static void show_nav(WINDOW *win);
 
 struct ibeaconInfo {
     char* major;
@@ -32,6 +33,8 @@ struct ibeaconInfo {
 //initialization
 //deinialization
 
+#define HOME_CHAR 'h'
+#define QUIT_CHAR 'q'
 
 int main() {
     //
@@ -43,15 +46,16 @@ int main() {
     clear();
     cbreak();
     noecho(); //does not echo the user input.
-    curs_set(0); //0- invisible for the curse.
-
-    showWelcomePage();
-    WINDOW *win = createWindowInTheMiddle(); //this is the master window.
-    showFirstPageOptions(win); //This is the home screen.
+    curs_set(0); //0- invisible
 
     bool continue_application = true;
-    while (continue_application) {
-        continue_application = gettingInput_firstPage(win); //The will keep the application open until user presses q.
+
+    showWelcomePage(); //start of the ncurses.
+    while (continue_application) { //trying this to keep the window open until quit.
+        WINDOW *win = createWindowInTheMiddle(); //this is the master window.
+        show_nav(win);
+        showFirstPageOptions(win);
+        continue_application = gettingInput_firstPage(win);
     }
     endwin();
     return 0;
@@ -79,9 +83,18 @@ WINDOW * createWindowInTheMiddle() {
 
     return win;
 }
+static void show_nav(WINDOW *win) {
+    int y, x, yBeg, xBeg, yMax, xMax;
+    getyx(win, y, x);
+    getbegyx(win, yBeg, xBeg);
+    getmaxyx(win, yMax, xMax);
+
+    mvprintw(yBeg, xBeg + 1, "q: QUIT   h: HOME");
+    wrefresh(win);
+}
 
 
-static void printInTheMiddle(WINDOW *win, char * msg) {
+void printInTheMiddle(WINDOW *win, char * msg) {
     int y, x, yBeg, xBeg, yMax, xMax;
     getyx(win, y, x);
     getbegyx(win, yBeg, xBeg);
@@ -124,8 +137,12 @@ bool showIbeaconsList(WINDOW *win) {
 
     //ShowIbeacon
     char selection;
-    while ((selection = (char) wgetch(inputWindow)) != 'q') {
+    while (((selection = (char) wgetch(inputWindow)) != QUIT_CHAR)) {
         //Highlight the beacons?
+        if (selection == HOME_CHAR) {
+            cont_application = true;
+            break;
+        }
         switch (selection) {
             case '1':
                 //need to dynamically get the beacon name?? or unique key?? name?
@@ -149,9 +166,6 @@ bool showIbeaconsList(WINDOW *win) {
         }
         wrefresh(inputWindow);
     }
-    if (selection == 'b') {
-        cont_application = true;
-    }
     return cont_application;
 }
 
@@ -163,7 +177,7 @@ void showIbeaconLocation(WINDOW *win) {
 }
 
 
-static void showAddPage(WINDOW * win){
+void showAddPage(WINDOW * win){
     WINDOW * optionWindow = createOptionWindow(win);
     //Question.
     WINDOW * inputWindow = createInputWindow(win);
@@ -210,7 +224,7 @@ WINDOW * createOptionWindow(WINDOW *win) {
 
     char * title = "IBEACON";
     posY = 2;
-    posX = (xMax - xBeg) / 2 + (int)strlen(title); //printing in the middle.
+    posX = (xMax - xBeg) / 2 - (int)strlen(title)/2; //printing in the middle.
     mvwprintw(win, posY, posX, title);
     wrefresh(win);
     return optionWindow;
@@ -225,9 +239,10 @@ bool gettingInput_firstPage(WINDOW *win) {
     int cont_application = false;
 
     bool input_flag = false;
-    while ((choice = getch()) != 'q') {
-        if (choice == 'b') {
+    while ((choice = getch()) != QUIT_CHAR) {
+        if (choice == HOME_CHAR) {
             cont_application = true;
+            break;
         }
         switch(choice) {
             case '1':
@@ -290,7 +305,7 @@ static bool confirm(WINDOW *parentBox) {
     posX = (xMax-xBeg)/2;
     posY = (yMax-yBeg)/2 + 2;
     WINDOW *confirmationBox = newwin(3, (xMax - xBeg)/2, posY, posX);
-    box(confirmationBox, (int)'-', (int)'-');
+    box(confirmationBox, (int)'-', (int)'-'); // I don't know why I cant change the border.
     wrefresh(confirmationBox);
 
     bool response = false;
