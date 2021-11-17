@@ -10,11 +10,11 @@ IF (LINT)
 ENDIF ()
 
 # Make an executable
-add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/client.h ../src/ib_cli.c ../include/ib_cli.h)
-add_executable(server ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/server.h)
-add_executable(db ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/db.h ../src/db.c)
-add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE} ${HEADER_LIST} ../include/http/http.h ../include/http/http_request.h ../include/http/http_response.h http/http_request.c http/http_response.c http/http.c)
-add_executable(ibeacon ${SOURCE_LIST} ${CLIENT_SOURCE} ${HEADER_LIST} ../include/ibeacon.h)
+add_executable(client ${SOURCE_LIST} ${CLIENT_SOURCE})
+add_executable(server ${SOURCE_LIST} ${SERVER_SOURCE})
+add_executable(db ${SOURCE_LIST} ${CLIENT_SOURCE})
+add_executable(http ${SOURCE_LIST} ${SERVER_SOURCE})
+add_executable(ibeacon ${SOURCE_LIST} ${CLIENT_SOURCE})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(client PRIVATE ../include)
@@ -86,6 +86,7 @@ find_library(LIBDC_UTIL dc_util REQUIRED)
 find_library(LIBDC_ERROR dc_error REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
 find_library(LIBDC_APPLICATION dc_application REQUIRED)
+find_library(NCURSES_LIB ncurses REQUIRED)
 
 
 target_link_libraries(client PRIVATE ${LIBM})
@@ -93,9 +94,7 @@ target_link_libraries(client PRIVATE ${LIBDC_UTIL})
 target_link_libraries(client PRIVATE ${LIBDC_ERROR})
 target_link_libraries(client PRIVATE ${LIBDC_POSIX})
 target_link_libraries(client PRIVATE ${LIBDC_APPLICATION})
-target_link_libraries(client PRIVATE ${CLIENT_SOURCE} ncurses)
-
-
+target_link_libraries(client PRIVATE ${NCURSES_LIB})
 
 target_link_libraries(server PRIVATE ${LIBM})
 target_link_libraries(server PRIVATE ${LIBDC_UTIL})
