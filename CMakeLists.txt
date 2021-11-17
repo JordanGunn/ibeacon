@@ -12,28 +12,19 @@ set(HEADER_LIST
         "${ibeacon_SOURCE_DIR}/include/common.h"
         )
 
-set(SOURCE_LIST
+set(SOURCE_LISTs
         "${ibeacon_SOURCE_DIR}/src/common.c"
-        )
-
-set(IBEACON_SOURCE
-        "${ibeacon_SOURCE_DIR}/src/ibeacon.c"
-        )
-
-set(HTTP_SOURCE
-        "${ibeacon_SOURCE_DIR}/src/http/http.c"
-        )
-
-set(DB_SOURCE
-        "${ibeacon_SOURCE_DIR}/src/db.c"
         )
 
 set(CLIENT_SOURCE
         "${ibeacon_SOURCE_DIR}/src/client.c"
+        "${ibeacon_SOURCE_DIR}/src/ib_cli.c"
         )
 
 set(SERVER_SOURCE
         "${ibeacon_SOURCE_DIR}/src/server.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http.c"
+        "${ibeacon_SOURCE_DIR}/src/db.c"
         )
 
 
