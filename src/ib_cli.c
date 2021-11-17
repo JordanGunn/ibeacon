@@ -6,21 +6,20 @@
 #include <stdio.h>
 #include <string.h>
 
-void showWelcomePage();
-void showFirstPageOptions(WINDOW *);
+static void showWelcomePage();
+static void showFirstPageOptions(WINDOW *);
+static bool gettingInput_firstPage(WINDOW *win);
 
-
-void printInTheMiddle(WINDOW *win, char * msg);
-WINDOW * createWindowInTheMiddle();
-bool gettingInput_firstPage(WINDOW *win);
-static bool confirm();
+static void printInTheMiddle(WINDOW *win, char * msg);
+static WINDOW * createWindowInTheMiddle();
+static bool confirm(WINDOW *win);
 static void createInputMessage(WINDOW * inputWindow, char* msg);
-WINDOW * createOptionWindow(WINDOW *win);
-bool showIbeaconsList(WINDOW *win);
+static WINDOW * createOptionWindow(WINDOW *win);
+static bool showIbeaconsList(WINDOW *win);
 static WINDOW *createInputWindow(WINDOW * win);
-void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
-void input_with_echo_current_window(WINDOW *win);
-void showIbeaconLocation(WINDOW *inputWindow);
+static void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
+static void input_with_echo_current_window(WINDOW *win);
+static void showIbeaconLocation(WINDOW *inputWindow);
 
 struct ibeaconInfo {
     char* major;
@@ -44,15 +43,15 @@ int main() {
     clear();
     cbreak();
     noecho(); //does not echo the user input.
-    curs_set(0); //0- invisible
+    curs_set(0); //0- invisible for the curse.
 
-//    showWelcomePage();
+    showWelcomePage();
     WINDOW *win = createWindowInTheMiddle(); //this is the master window.
-    showFirstPageOptions(win);
+    showFirstPageOptions(win); //This is the home screen.
 
     bool continue_application = true;
     while (continue_application) {
-        continue_application = gettingInput_firstPage(win);
+        continue_application = gettingInput_firstPage(win); //The will keep the application open until user presses q.
     }
     endwin();
     return 0;
@@ -82,7 +81,7 @@ WINDOW * createWindowInTheMiddle() {
 }
 
 
-void printInTheMiddle(WINDOW *win, char * msg) {
+static void printInTheMiddle(WINDOW *win, char * msg) {
     int y, x, yBeg, xBeg, yMax, xMax;
     getyx(win, y, x);
     getbegyx(win, yBeg, xBeg);
@@ -164,7 +163,7 @@ void showIbeaconLocation(WINDOW *win) {
 }
 
 
-void showAddPage(WINDOW * win){
+static void showAddPage(WINDOW * win){
     WINDOW * optionWindow = createOptionWindow(win);
     //Question.
     WINDOW * inputWindow = createInputWindow(win);
