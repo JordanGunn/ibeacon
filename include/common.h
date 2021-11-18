@@ -5,6 +5,8 @@
 #ifndef HAMMING_COMMON_H
 #define HAMMING_COMMON_H
 
+#include "http/http_response.h"
+#include "http/http_request.h"
 
 
 #include <dc_application/command_line.h>

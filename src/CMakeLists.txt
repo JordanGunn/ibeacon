@@ -84,19 +84,23 @@ find_library(LIBM m REQUIRED)
 find_library(LIBSOCKET socket)
 find_library(LIBDC_UTIL dc_util REQUIRED)
 find_library(LIBDC_ERROR dc_error REQUIRED)
+find_library(LIBDC_FSM dc_fsm REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
 find_library(LIBDC_APPLICATION dc_application REQUIRED)
 find_library(NCURSES_LIB ncurses REQUIRED)
 
 
 target_link_libraries(client PRIVATE ${LIBM})
+target_link_libraries(client PRIVATE ${LIBDC_FSM})
 target_link_libraries(client PRIVATE ${LIBDC_UTIL})
 target_link_libraries(client PRIVATE ${LIBDC_ERROR})
 target_link_libraries(client PRIVATE ${LIBDC_POSIX})
 target_link_libraries(client PRIVATE ${LIBDC_APPLICATION})
 target_link_libraries(client PRIVATE ${NCURSES_LIB})
 
+
 target_link_libraries(server PRIVATE ${LIBM})
+target_link_libraries(server PRIVATE ${LIBDC_FSM})
 target_link_libraries(server PRIVATE ${LIBDC_UTIL})
 target_link_libraries(server PRIVATE ${LIBDC_ERROR})
 target_link_libraries(server PRIVATE ${LIBDC_POSIX})

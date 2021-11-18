@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "common.h"
 
 /**
  * Database struct.
@@ -80,7 +80,7 @@ int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, co
  * @param name key
  * @return NULL if none found.
  */
-datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
+datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name);
 
 /**
  * Helper function to print out the content.
@@ -98,6 +98,6 @@ void test_display(const char *name, datum *content);
  * @param name key
  * @return 0 if successful.
  */
-int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name);
+int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name)
 
 #endif //IBEACON_DB_H
