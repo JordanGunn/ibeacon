@@ -12,10 +12,10 @@
 //4. the client code will grab whatever..?
 
 struct ibeaconInfo {
-    char * major;
-    char * minor;
-    char * location,
-    char * timeStamp;
+    char* major;
+    char* minor;
+    char* location;
+    char* timestamp;
 };
 
 //Maybe I need init_ncurses() to initialize the screen inside the client??

@@ -42,6 +42,12 @@ int main() {
     //How to send messages??
     // can I use those code from Client.h?
 
+    struct client_params;
+
+//    initializeClient(client_params);
+//  grab all the information from the database.
+
+
     initscr();
     clear();
     cbreak();
@@ -55,6 +61,7 @@ int main() {
         WINDOW *win = createWindowInTheMiddle(); //this is the master window.
         show_nav(win);
         showFirstPageOptions(win);
+
         continue_application = gettingInput_firstPage(win);
     }
     endwin();
@@ -126,7 +133,7 @@ void showFirstPageOptions(WINDOW *win) {
  */
 bool showIbeaconsList(WINDOW *win) {
     bool cont_application = false;
-    WINDOW * optionWindow = createOptionWindow(win);
+    WINDOW *optionWindow = createOptionWindow(win);
     mvwprintw(optionWindow, 1, 1, "Beacon 1");
     mvwprintw(optionWindow, 2, 1, "Beacon 2");
     //displayIbeacons
@@ -150,14 +157,17 @@ bool showIbeaconsList(WINDOW *win) {
                 //should I keep a list somewhere in the database?
                 //or at the initializing state grab all?? //no good....
                 createInputMessage(inputWindow, "selected beacon 1");
-                if(confirm(win)) {
+                if (confirm(win)) {
                     showIbeaconLocation(win);
+                    //SEND REQUEST TO GET DATA.
+//                    sendPUTrequest();
+//                    showData(client);
                     createInputMessage(inputWindow, "IBEACON1 location.");
                 }
                 break;
             case '2':
                 createInputMessage(inputWindow, "selected beacon 2");
-                if(confirm(win)) {
+                if (confirm(win)) {
                     createInputMessage(inputWindow, "IBEACON2 location.");
                 }
                 break;
