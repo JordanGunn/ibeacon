@@ -1,18 +1,21 @@
 #include "db.h"
+#define _XOPEN_SOURCE_EXTENDED 1
+#define DB_DBM_HSEARCH 1
 
 int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *value, uint8_t type)
 {
     int ret_val;
-    datum key = {name, strlen(name)};
-    datum value_to_add = {value, strlen(value)};
+    datum key = {name, strlen(name) + 1};
+    datum value_to_add = {value, strlen(value) + 1};
 
     ret_val = dc_dbm_store(env, err, db, key, value_to_add, type);
+
     return ret_val; //returns 0 if successful, negative value if failed.
 }
 
 datum fetch_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name)
 {
-    datum key = {name, (int)strlen(name)}; //This should not have additional new line.
+    datum key = {name, (size_t) strlen(name) + 1}; //This should not have additional new line.
     datum content;
     content = dc_dbm_fetch(env, err, db, key);
     return content;
@@ -34,7 +37,7 @@ struct Database* initialize_database(const struct dc_posix_env *env, struct dc_e
     if (databasePtr == NULL) {
         return NULL;
     }
-    databasePtr->dbmPtr = dc_dbm_open(env, err, fileName, O_RDWR | O_CREAT, 0600);
+    databasePtr->dbmPtr = dc_dbm_open(env, err, fileName, O_RDWR | O_CREAT, 0666);
 
     if (dc_error_has_error(err)) {
         exit(EXIT_CODE_INITIALIZE_FAIL);
@@ -49,4 +52,17 @@ void deinitialize_database(const struct dc_posix_env *env, struct dc_error *err,
     databasePtr = (struct Database*)database;
     dc_dbm_close(env, err, databasePtr->dbmPtr);
     free(databasePtr);
+}
+
+//void getAllData(const struct dc_posix_env *env, DBM *db, char db_buffer[static 50][100])
+void getAllData(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char buffer[static 1024])
+{
+    datum key;
+    char * value = buffer;
+    for (key = dc_dbm_firstkey(env, err, db); key.dptr !=NULL; key = dc_dbm_nextkey(env, err, db)) {
+        dc_memcpy(env, value, key.dptr, key.dsize - 1);
+        value += key.dsize - 1;
+        dc_memcpy(env, value, "\r\n", 2);
+        value += 2;
+    }
 }

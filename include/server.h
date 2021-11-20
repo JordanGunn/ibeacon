@@ -8,13 +8,14 @@
 #include <dc_posix/dc_signal.h>
 #include <dc_posix/sys/dc_socket.h>
 #include "common.h"
-#include "dc_fsm/fsm.h"
+//#include "dc_fsm/fsm.h"
+#include <dc_fsm/fsm.h>
 #include "http/http_response.h"
 #include "http/http_request.h"
 #include "db.h"
 #include "netdb.h"
 
-char db_name[9] = "./deebee";
+char db_name[9] = "./hello";
 
 
 struct server_params

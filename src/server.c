@@ -106,6 +106,7 @@ int main(int argc, char * argv[])
 
         ret_val = dc_fsm_run(&env, &err, fsm_info, &from_state, &to_state, serv, transitions);
         dc_fsm_info_destroy(&env, &fsm_info);
+        deinitialize_database(&env, &err, serv->db);
     }
 
     return ret_val;
@@ -328,14 +329,22 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct server_params * serv;
     serv = (struct server_params *) arg;
+    char buffer[1024] = {0};
 
     struct Query query;
     if (dc_error_has_no_error(err))
     {
         parse_query(get_url(serv->request), &query);
-        serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query.key);
-        serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
-        memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
+        if(dc_strcmp(env, query.key, "DUMP") != 0) {
+            serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query.key);
+            serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
+            memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
+        } else {
+            getAllData(env, err, serv->db->dbmPtr, buffer);
+            serv->content = calloc((unsigned long) (dc_strlen(env, buffer)), sizeof(char));
+            memcpy(serv->content, buffer, (unsigned long) (dc_strlen(env, buffer)));
+            serv->fetched.dsize = dc_strlen(env, buffer);
+        }
         destroy_query(&query);
 
         if (!(*serv->content))
@@ -343,7 +352,6 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
             serv->error = ERROR_404;
         }
     }
-
     return BUILD_RESPONSE;
 }
 
@@ -364,7 +372,6 @@ int http_post(const struct dc_posix_env *env, struct dc_error *err, void *arg)
         serv->error = ERROR_404;
         return ERROR_404;
     }
-
     return BUILD_RESPONSE;
 }
 

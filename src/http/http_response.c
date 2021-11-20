@@ -231,6 +231,8 @@ HttpResponsePtr parse_http_response(const char * http_message)
 
     char * header_lines = status_line_end + 1;
     parse_response_lines(http, header_lines);
+
+    return http;
 }
 
 
