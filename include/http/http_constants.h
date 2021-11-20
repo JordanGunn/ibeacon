@@ -45,7 +45,7 @@ static const char response_msg_version_not_supported[27] = "HTTP Version Not Sup
 
 
 enum CODE_MAP_KEYS {
-    OK,
+    OKAY,
     FILE_NOT_FOUND,
     BAD_REQUEST,
     SERVER_ERROR,

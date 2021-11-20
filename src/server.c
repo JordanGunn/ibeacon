@@ -112,12 +112,12 @@ int main(int argc, char * argv[])
     return ret_val;
 }
 
-static void error_reporter(const struct dc_error *err)
+void error_reporter(const struct dc_error *err)
 {
     fprintf(stderr, "Error: \"%s\" - %s : %s @ %zu\n", err->message, err->file_name, err->function_name, err->line_number);
 }
 
-static void trace_reporter(const struct dc_posix_env *env, const char *file_name,
+void trace_reporter(const struct dc_posix_env *env, const char *file_name,
                            const char *function_name, size_t line_number)
 {
     fprintf(stderr, "Entering: %s : %s @ %zu\n", file_name, function_name, line_number);
@@ -435,8 +435,8 @@ void response_construct_handler(const struct dc_error *err, struct server_params
         else
         {
             // OK :)
-            response_code   = status_code_map[ OK ].code;
-            response_status = status_code_map[ OK ].status;
+            response_code   = status_code_map[ OKAY ].code;
+            response_status = status_code_map[ OKAY ].status;
         }
 
         serv->response = http_response_constructor
@@ -502,7 +502,7 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
         }
 
 
-        destroy_http_request(serv->request);
+//        destroy_http_request(serv->request);
 //        destroy_http_response(serv->response);
     }
 }

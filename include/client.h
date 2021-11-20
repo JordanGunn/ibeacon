@@ -8,6 +8,10 @@
 #include "./http/http_constants.h"
 #include "./http/http_request.h"
 #include "./http/http_response.h"
+#include "common.h"
+#include <dc_posix/sys/dc_socket.h>
+#include "netdb.h"
+#include <dc_posix/dc_signal.h>
 
 struct client_params
 {
@@ -35,6 +39,15 @@ struct userInput
  * @param arg this is the data we will parse into.
  */
 void initializeClient(struct client_params* clientParams); //the arg in this case will be the ibeacon info.
+void build_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+
+
+
+
+
+
+
 
 void sendPUTrequest(const struct dc_posix_env *env, struct dc_error *err, void* args, struct client_params* clientParamsPt);// this happens every time?
 

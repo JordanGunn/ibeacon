@@ -22,6 +22,9 @@ set(HEADER_LIST
 
 set(SOURCE_LIST
         "${ibeacon_SOURCE_DIR}/src/common.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http_request.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http_response.c"
         )
 
 set(CLIENT_SOURCE
@@ -31,10 +34,7 @@ set(CLIENT_SOURCE
 
 set(SERVER_SOURCE
         "${ibeacon_SOURCE_DIR}/src/server.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http.c"
         "${ibeacon_SOURCE_DIR}/src/db.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http_request.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http_response.c"
         )
 
 
