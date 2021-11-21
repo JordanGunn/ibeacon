@@ -6,21 +6,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <client.h>
+#include <dc_posix/dc_poll.h>
 
 void showWelcomePage();
 void showFirstPageOptions(WINDOW *);
 
 void printInTheMiddle(WINDOW *win, char * msg);
 WINDOW * createWindowInTheMiddle();
-bool gettingInput_firstPage(WINDOW *win);
+bool gettingInput_firstPage(WINDOW *win, struct client_params * client);
 static bool confirm();
 
-void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* clientParams);
+void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* client);
 
 
 static void createInputMessage(WINDOW * inputWindow, char* msg);
 WINDOW * createOptionWindow(WINDOW *win);
-bool showIbeaconsList(WINDOW *win);
+bool showIbeaconsList(WINDOW *win, struct client_params * client);
 static WINDOW *createInputWindow(WINDOW * win);
 void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
 void input_with_echo_current_window(WINDOW *win);
@@ -53,14 +54,13 @@ int main() {
     dc_error_init(&err, reporter);
     dc_posix_env_init(&env, tracer);
 
-    struct client_params* clientParams;
-    clientParams = malloc(sizeof(struct client_params));
-    clientParams->userInput = malloc(sizeof(struct userInput));
+    struct client_params* client;
+    client = malloc(sizeof(struct client_params));
+    client->userInput = malloc(sizeof(struct userInput));
 
-    initializeClient(clientParams);
+    initializeClient(client);
 //  grab all the information from the database.
-    getAllListOfBeacons(&env, &err, clientParams);
-    return 0;
+    getAllListOfBeacons(&env, &err, client);
 
     initscr();
     clear();
@@ -76,27 +76,47 @@ int main() {
         show_nav(win);
         showFirstPageOptions(win);
 
-        continue_application = gettingInput_firstPage(win);
+        continue_application = gettingInput_firstPage(win, client);
     }
     endwin();
     return 0;
 }
 
-void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* clientParams){
-    clientParams->userInput->method = "GET";
-    clientParams->userInput->key = "DUMP";
-    clientParams->userInput->value = "DUMP";
+void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* client){
+
+    char get[4] = "GET";
+    char dump[5] = "DUMP";
+
+    struct pollfd * PollFd = malloc(sizeof(struct pollfd));
+
+    client->userInput->method = get;
+    client->userInput->key = dump;
+    client->userInput->value = dump;
 
     char data[1024];
 
-    build_request(env, err, clientParams);
-    send_request(env, err, clientParams);
+    build_request(env, err, client);
+    send_request(env, err, client);
 
-    clientParams->userInput->method = NULL;
-    clientParams->userInput->key = NULL;
-    clientParams->userInput->value = NULL;
+    PollFd->fd = client->socket_fd;
+    PollFd->events = POLLIN;
+    dc_poll(env, err, PollFd, 1, 100);
 
-//    destroy_http_request(clientParams->request);
+    while(dc_read(env, err, client->socket_fd, data, 1024) > 0 && dc_error_has_no_error(err)) { }
+    if (dc_error_has_no_error(err))
+    {
+        client->response = parse_http_response(data);
+    }
+
+    if (dc_error_has_no_error(err))
+    {
+        dc_close(env, err, client->socket_fd);
+    }
+
+    client->userInput->method = NULL;
+    client->userInput->key = NULL;
+    client->userInput->value = NULL;
+//    destroy_http_request(client->request);
 }
 
 
@@ -162,13 +182,36 @@ void showFirstPageOptions(WINDOW *win) {
  * @param win
  * @return true if user selects b
  */
-bool showIbeaconsList(WINDOW *win) {
+bool showIbeaconsList(WINDOW *win, struct client_params * client) {
+
+    int window_index = 0;
+    char current_beacon[50] = {0};
+
+    long content_length = get_content_length_long(client->response) + 3;
+    char content[content_length];
+    memmove(content, get_content(client->response), (unsigned long) (content_length - 3));
+    memmove(content + (content_length - 3), "\r\n\0", 2);
+    content[content_length - 1] = '\0';
+
     bool cont_application = false;
     WINDOW *optionWindow = createOptionWindow(win);
-    mvwprintw(optionWindow, 1, 1, "Beacon 1");
-    mvwprintw(optionWindow, 2, 1, "Beacon 2");
-    //displayIbeacons
-    //selectIbeacon
+    char * beacon_begin = content;
+    char  * beacon_end;
+
+    while (beacon_end && ++window_index)
+    {
+        beacon_begin += 2;
+        beacon_end = strchr(beacon_begin, '\r');
+        memcpy(current_beacon, beacon_begin, (unsigned long) (beacon_end - beacon_begin));
+
+        mvwprintw(optionWindow, window_index, 1, current_beacon);
+        memset(current_beacon, 0, sizeof(current_beacon));
+
+        beacon_begin = beacon_end;
+        beacon_end = (strchr(beacon_begin + 2, '\r')) ? beacon_end : NULL;
+    }
+
+    // display and select iBeacons
     wrefresh(optionWindow);
     WINDOW *inputWindow = createInputWindow(win);
     createInputMessage(inputWindow, "Please select the beacon.");
@@ -271,7 +314,7 @@ WINDOW * createOptionWindow(WINDOW *win) {
     return optionWindow;
 }
 
-bool gettingInput_firstPage(WINDOW *win) {
+bool gettingInput_firstPage(WINDOW *win, struct client_params * client) {
     //creating a window for the input
     WINDOW * inputWindow = createInputWindow(win);
 
@@ -291,7 +334,7 @@ bool gettingInput_firstPage(WINDOW *win) {
                 //press to confirm.
                 if (confirm(win)) {
                     //move on to the next window.
-                    showIbeaconsList(win);
+                    showIbeaconsList(win, client);
                 };
                 break;
             case '2':

@@ -154,13 +154,13 @@ static volatile sig_atomic_t exit_flag;
 //    return EXIT_SUCCESS;
 //}
 
-void close_client(const struct dc_posix_env *env, struct dc_error *err, void* args, struct client_params* clientParamsPt ) {
-    //close all clients clienters,
-    dc_close(env, err, clientParamsPt->socket_fd); //CLOSE
-    free(clientParamsPt);
-    //free any memory allocated for each.
-
-}
+//void close_client(const struct dc_posix_env *env, struct dc_error *err, void* args, struct client_params* clientParamsPt ) {
+//    //close all clients clienters,
+//    dc_close(env, err, clientParamsPt->socket_fd); //CLOSE
+//    free(clientParamsPt);
+//    //free any memory allocated for each.
+//
+//}
 
 static void quit_handler(int sig_num)
 {
@@ -221,10 +221,80 @@ void initializeClient(struct client_params* clientParams) {
                     clientParams->sockaddr_size = 0;
                 }
             }
-        }
 
+            if (dc_error_has_no_error(&err))
+            {
+                dc_connect(&env, &err, clientParams->socket_fd, clientParams->sockaddr, clientParams->sockaddr_size);
+            }
+        }
     }
 }
+
+
+//send_request(const struct dc_posix_env *env, struct dc_error *err, struct client_params* clientParamsPt)
+//{
+//    //            // CONNECT
+//////            struct client_params* clientParams; //need to be initialized.
+////
+////            if(dc_error_has_no_error(&err))
+////            {
+//////                sendPUTrequest(&env, &err, clientParams);
+////
+////
+////                if(dc_error_has_no_error(&err))
+////                {
+////                    struct sigaction old_action;
+////
+////                    dc_sigaction(&env, &err, SIGINT, NULL, &old_action);
+////
+////                    if(old_action.sa_handler != SIG_IGN)
+////                    {
+////                        struct sigaction new_action;
+////                        char data[1024];
+////
+////                        exit_flag = 0;
+////                        new_action.sa_handler = quit_handler;
+////                        sigemptyset(&new_action.sa_mask);
+////                        new_action.sa_flags = 0;
+////                        dc_sigaction(&env, &err, SIGINT, &new_action, NULL);
+////
+////                        //start GUI.
+////                        //get input from the user.
+////                        //build request for specific action.
+////                        //accept response -> parse response.
+////                        //and show the response.
+////                        strcpy(data, "GET / HTTP/1.0 yes\r\n\r\n");
+////
+////                        if(dc_error_has_no_error(&err))
+////                        {
+////                            socket_fd = STDOUT_FILENO; //TESTING
+////
+////                            dc_write(&env, &err, socket_fd, data, strlen(data)); //writing it out to the socket.
+////
+////                            while(dc_read(&env, &err, socket_fd, data, 1024) > 0 && dc_error_has_no_error(&err))
+////                            {
+////                                printf("READ %s\n", data); //reading from the socket.
+////                            }
+////
+////                            if(err.type == DC_ERROR_ERRNO && err.errno_code == EINTR)
+////                            {
+////                                dc_error_reset(&err);
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+////        }
+////
+////    if(dc_error_has_no_error(&err))
+////    {
+////        dc_close(&env, &err, socket_fd); //CLOSE
+////    }
+////    }
+////
+////    return EXIT_SUCCESS;
+////}
+//}
 
 void error_reporter(const struct dc_error *err)
 {
@@ -358,18 +428,35 @@ int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg
                 get_accept(http)
         );
 
-        if (dc_error_has_no_error(err))
+        if(dc_error_has_no_error(err))
         {
-            dc_write(env, err, client->socket_fd, request, sizeof(request));
+            struct sigaction old_action;
 
-            if (dc_error_has_no_error(err))
+            dc_sigaction(env, err, SIGINT, NULL, &old_action);
+
+            if(old_action.sa_handler != SIG_IGN)
             {
-                dc_close(env, err, client->socket_fd);
+                struct sigaction new_action;
+
+                exit_flag = 0;
+                new_action.sa_handler = quit_handler;
+                sigemptyset(&new_action.sa_mask);
+                new_action.sa_flags = 0;
+                dc_sigaction(env, err, SIGINT, &new_action, NULL);
+
+                if(dc_error_has_no_error(err))
+                {
+                    dc_write(env, err, client->socket_fd, request, strlen(request));
+
+                    if(err->type == DC_ERROR_ERRNO && err->errno_code == EINTR)
+                    {
+                        dc_error_reset(err);
+                    }
+                }
             }
         }
-
-
+    }
 //        destroy_http_request(client->request);
 //        destroy_http_response(client->response);
-    }
+
 }
