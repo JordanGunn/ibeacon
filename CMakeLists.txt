@@ -30,10 +30,16 @@ set(SOURCE_LIST
 set(CLIENT_SOURCE
         "${ibeacon_SOURCE_DIR}/src/client.c"
         "${ibeacon_SOURCE_DIR}/src/ib_cli.c"
+        "${ibeacon_SOURCE_DIR}/include/client.h"
+        "${ibeacon_SOURCE_DIR}/include/ib_cli.h"
         )
 
 set(SERVER_SOURCE
         "${ibeacon_SOURCE_DIR}/src/server.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http_request.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http_response.c"
+
         "${ibeacon_SOURCE_DIR}/src/db.c"
         )
 
