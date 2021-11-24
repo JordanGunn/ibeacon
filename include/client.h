@@ -13,8 +13,6 @@
 #include "netdb.h"
 #include <dc_posix/dc_signal.h>
 
-
-
 struct client_params
 {
     int socket_fd;
@@ -26,6 +24,8 @@ struct client_params
     struct userInput* userInput;
     HttpRequestPtr request;
     HttpResponsePtr response;
+
+    char ** arrayOfCurrentBeacon;
 };
 
 struct userInput

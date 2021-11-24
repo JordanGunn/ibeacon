@@ -8,6 +8,9 @@
 #include <client.h>
 #include <dc_posix/dc_poll.h>
 
+#define MAX_NUM_BEACONS 20 //number of ibeacons
+#define MAX_MAJOR_MINOR 35 //This is max length for major + minor for the beacons.
+
 void showWelcomePage();
 void showFirstPageOptions(WINDOW *);
 
@@ -17,7 +20,6 @@ bool gettingInput_firstPage(WINDOW *win, struct client_params * client);
 static bool confirm();
 
 void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* client);
-
 
 static void createInputMessage(WINDOW * inputWindow, char* msg);
 WINDOW * createOptionWindow(WINDOW *win);
@@ -57,6 +59,7 @@ int main() {
     struct client_params* client;
     client = malloc(sizeof(struct client_params));
     client->userInput = malloc(sizeof(struct userInput));
+    client->arrayOfCurrentBeacon = malloc(sizeof(char [MAX_NUM_BEACONS][MAX_MAJOR_MINOR]));
 
     initializeClient(client);
 //  grab all the information from the database.
@@ -87,7 +90,7 @@ void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, s
     char get[4] = "GET";
     char dump[5] = "DUMP";
 
-    struct pollfd * PollFd = malloc(sizeof(struct pollfd));
+//    struct pollfd * PollFd = malloc(sizeof(struct pollfd));
 
     client->userInput->method = get;
     client->userInput->key = dump;
@@ -98,9 +101,9 @@ void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, s
     build_request(env, err, client);
     send_request(env, err, client);
 
-    PollFd->fd = client->socket_fd;
-    PollFd->events = POLLIN;
-    dc_poll(env, err, PollFd, 1, 100);
+//    PollFd->fd = client->socket_fd;
+//    PollFd->events = POLLIN;
+//    dc_poll(env, err, PollFd, 1, 100);
 
     while(dc_read(env, err, client->socket_fd, data, 1024) > 0 && dc_error_has_no_error(err)) { }
     if (dc_error_has_no_error(err))
@@ -196,7 +199,7 @@ bool showIbeaconsList(WINDOW *win, struct client_params * client) {
     bool cont_application = false;
     WINDOW *optionWindow = createOptionWindow(win);
     char * beacon_begin = content;
-    char  * beacon_end;
+    char  * beacon_end = beacon_begin;
 
     while (beacon_end && ++window_index)
     {
@@ -205,6 +208,8 @@ bool showIbeaconsList(WINDOW *win, struct client_params * client) {
         memcpy(current_beacon, beacon_begin, (unsigned long) (beacon_end - beacon_begin));
 
         mvwprintw(optionWindow, window_index, 1, current_beacon);
+        //store into an array at same time and increment with window.
+        memcpy(client->arrayOfCurrentBeacon[window_index], beacon_begin, (unsigned long) (beacon_end - beacon_begin));
         memset(current_beacon, 0, sizeof(current_beacon));
 
         beacon_begin = beacon_end;
@@ -217,6 +222,9 @@ bool showIbeaconsList(WINDOW *win, struct client_params * client) {
     createInputMessage(inputWindow, "Please select the beacon.");
 
     //ShowIbeacon
+
+    //make a switch with arrow keys.
+    //increment/ decrememt window(selection) to select the
     char selection;
     while (((selection = (char) wgetch(inputWindow)) != QUIT_CHAR)) {
         //Highlight the beacons?
