@@ -26,8 +26,9 @@ struct client_params
     HttpResponsePtr response;
 
     char ** arrayOfCurrentBeacon;
+    char * beacon_selection;
     int numberOfBeacons;
-//    struct pages* pages;
+    struct pages* pages;
 };
 
 struct userInput

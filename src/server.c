@@ -295,7 +295,7 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
 
         if(dc_error_has_no_error(err))
         {
-            dc_close(env, err, server_socket_fd);
+//            dc_close(env, err, server_socket_fd);
         }
 
 
