@@ -30,6 +30,7 @@ set(SOURCE_LIST
 set(CLIENT_SOURCE
         "${ibeacon_SOURCE_DIR}/src/client.c"
         "${ibeacon_SOURCE_DIR}/src/ib_cli.c"
+        "${ibeacon_SOURCE_DIR}/src/ncurse_cli.c"
         )
 
 set(SERVER_SOURCE

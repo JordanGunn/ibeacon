@@ -167,64 +167,64 @@ static void quit_handler(int sig_num)
     exit_flag = 1;
 }
 
-void initializeClient(struct client_params* clientParams) {
+void initializeClient(const struct dc_posix_env* env, struct dc_error* err, struct client_params* clientParams) {
     dc_error_reporter reporter;
-    dc_posix_tracer tracer;
-    struct dc_error err;
-    struct dc_posix_env env;
+//    dc_posix_tracer tracer;
+//    struct dc_error err;
+//    struct dc_posix_env env;
     const char *host_name;
     struct addrinfo hints;
     struct addrinfo *result;
 
-    reporter = error_reporter;
-    tracer = trace_reporter;
-    tracer = NULL;
-    dc_error_init(&err, reporter);
-    dc_posix_env_init(&env, tracer);
+//    reporter = error_reporter;
+//    tracer = trace_reporter;
+//    tracer = NULL;
+//    dc_error_init(err, reporter);
+//    dc_posix_env_init(env, NULL);
 
     host_name = "localhost";
-    dc_memset(&env, &clientParams->hints, 0, sizeof(clientParams->hints));
-    clientParams->hints.ai_family = PF_INET; // PF_INET6;
-    clientParams->hints.ai_socktype = SOCK_STREAM;
-    clientParams->hints.ai_flags = AI_CANONNAME;
-    dc_getaddrinfo(&env, &err, host_name, NULL, &(clientParams->hints), &(clientParams->result));
+    dc_memset(env, &hints, 0, sizeof(hints));
+    hints.ai_family = PF_INET; // PF_INET6;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_CANONNAME;
+    dc_getaddrinfo(env, err, host_name, NULL, &(hints), &(result));
 
-    if (dc_error_has_no_error(&err)) {
+    if (dc_error_has_no_error(err)) {
 //        int socket_fd;
-        clientParams->socket_fd = dc_socket(&env, &err, clientParams->result->ai_family, clientParams->result->ai_socktype, clientParams->result->ai_protocol);
+        clientParams->socket_fd = dc_socket(env, err, result->ai_family, result->ai_socktype, result->ai_protocol);
 
-        if (dc_error_has_no_error(&err)) {
-//            struct sockaddr *sockaddr;
+        if (dc_error_has_no_error(err)) {
+            struct sockaddr *sockaddr;
             in_port_t port;
             in_port_t converted_port;
-//            socklen_t sockaddr_size;
+            socklen_t sockaddr_size;
 
-            clientParams->sockaddr = clientParams->result->ai_addr;
+            sockaddr = result->ai_addr;
             port = 8080;
             converted_port = htons(port);
 
-            if (clientParams->sockaddr->sa_family == AF_INET) {
+            if (sockaddr->sa_family == AF_INET) {
                 struct sockaddr_in *addr_in;
 
-                addr_in = (struct sockaddr_in *) clientParams->sockaddr;
+                addr_in = (struct sockaddr_in *) sockaddr;
                 addr_in->sin_port = converted_port;
-                clientParams->sockaddr_size = sizeof(struct sockaddr_in);
+                sockaddr_size = sizeof(struct sockaddr_in);
             } else {
-                if (clientParams->sockaddr->sa_family == AF_INET6) {
+                if (sockaddr->sa_family == AF_INET6) {
                     struct sockaddr_in6 *addr_in;
 
-                    addr_in = (struct sockaddr_in6 *) clientParams->sockaddr;
+                    addr_in = (struct sockaddr_in6 *) sockaddr;
                     addr_in->sin6_port = converted_port;
-                    clientParams->sockaddr_size = sizeof(struct sockaddr_in6);
+                    sockaddr_size = sizeof(struct sockaddr_in6);
                 } else {
-                    DC_ERROR_RAISE_USER(&err, "sockaddr->sa_family is invalid", -1);
-                    clientParams->sockaddr_size = 0;
+                    DC_ERROR_RAISE_USER(err, "sockaddr->sa_family is invalid", -1);
+                    sockaddr_size = 0;
                 }
             }
 
-            if (dc_error_has_no_error(&err))
+            if (dc_error_has_no_error(err))
             {
-                dc_connect(&env, &err, clientParams->socket_fd, clientParams->sockaddr, clientParams->sockaddr_size);
+                dc_connect(env, err, clientParams->socket_fd, sockaddr, sockaddr_size);
             }
         }
     }
@@ -295,17 +295,17 @@ void initializeClient(struct client_params* clientParams) {
 ////    return EXIT_SUCCESS;
 ////}
 //}
-
-void error_reporter(const struct dc_error *err)
-{
-    fprintf(stderr, "Error: \"%s\" - %s : %s @ %zu\n", err->message, err->file_name, err->function_name, err->line_number);
-}
-
-void trace_reporter(const struct dc_posix_env *env, const char *file_name,
-                    const char *function_name, size_t line_number)
-{
-    fprintf(stderr, "Entering: %s : %s @ %zu\n", file_name, function_name, line_number);
-}
+//
+//void error_reporter(const struct dc_error *err)
+//{
+//    fprintf(stderr, "Error: \"%s\" - %s : %s @ %zu\n", err->message, err->file_name, err->function_name, err->line_number);
+//}
+//
+//void trace_reporter(const struct dc_posix_env *env, const char *file_name,
+//                    const char *function_name, size_t line_number)
+//{
+//    fprintf(stderr, "Entering: %s : %s @ %zu\n", file_name, function_name, line_number);
+//}
 
 void sendPUTrequest(const struct dc_posix_env *env, struct dc_error *err, void* args, struct client_params* clientParamsPt)// this happens every time?
 {
@@ -347,17 +347,6 @@ void sendPUTrequest(const struct dc_posix_env *env, struct dc_error *err, void* 
         }
     }
 }
-
-
-
-
-
-void build_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-void request_construct_handler(const struct dc_error *err, struct client_params *client);
-
-
-
-
 
 void build_request(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
@@ -403,13 +392,13 @@ int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg
     {
         char request[
                 // ============================================================================
-                dc_strlen(env, get_method(http)) +                         // REQUEST LINE
-                dc_strlen(env, get_url(http)) +                         // REQUEST LINE
-                dc_strlen(env, get_version(http)) + 4 +                          // REQUEST LINE
+                strlen(get_method(http)) +                         // REQUEST LINE
+                strlen( get_url(http)) +                         // REQUEST LINE
+                strlen( get_version(http)) + 4 +                          // REQUEST LINE
                 // =============================================================================
-                5  + dc_strlen(env, get_host(http))               + 3 +         // HEADER LINES
-                11  + dc_strlen(env, get_user_agent(http))         + 3 +         // HEADER LINES
-                7 + dc_strlen(env, get_accept(http))            + 3 + 2     // HEADER LINES
+                5  + strlen( get_host(http))               + 3 +         // HEADER LINES
+                11  + strlen( get_user_agent(http))         + 3 +         // HEADER LINES
+                7 + strlen( get_accept(http))            + 3 + 2     // HEADER LINES
                 // ============================================================================
         ];
 
@@ -459,4 +448,10 @@ int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg
 //        destroy_http_request(client->request);
 //        destroy_http_response(client->response);
 
+}
+
+
+void error_reporter(const struct dc_error *err)
+{
+    fprintf(stderr, "Error: \"%s\" - %s : %s @ %zu\n", err->message, err->file_name, err->function_name, err->line_number);
 }

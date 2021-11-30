@@ -48,7 +48,7 @@ int main(void)
     tracer = trace_reporter;
     tracer = NULL;
     dc_error_init(&err, reporter);
-    dc_posix_env_init(&env, tracer);
+    dc_posix_env_init(&env, NULL);
 
     struct server_params * serv = malloc(sizeof (struct server_params));
 
@@ -502,10 +502,14 @@ void receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd, 
     ssize_t count;
     while(!(exit_flag) && (count = dc_read(env, err, fd, data, max_request_size)) > 0 && dc_error_has_no_error(err))
     {
+        //maybe moving out to the while loop? so that it will parse after the whole thing is read.
+        //in order to do the above, we will have to append to the data?? or have another buffer for the actual request.
         serv->request = parse_http_request(data);
         memcpy( check_end, &data[count - 4], 4 );
 
         if (!dc_strcmp(env, check_end, "\r\n\r\n")) { break; }
+        //is the content length given? do we read until the content length is done?
+        //so the rnrn doesn't actually end the entire the request?
     }
 }
 
