@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <style>
+        body {
+            background-color: #202124;
+            border-radius: 10px;
+        }
+
+        #container {
+            margin: auto;
+            padding: 20px;
+            background-color: #313235;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            flex-grow: 1;
+        }
+
+        #header {
+            margin-bottom: 15px;
+        }
+
+
+        #description, #created-by, #header {
+            padding: 10px;
+            background-color: rgba(66, 67, 70, 0.99);
+            border-radius: 10px;
+            width: 95%;
+        }
+
+        body > * {
+            font-family: "JetBrains Mono",sans-serif;
+        }
+
+        .sub-title, .text-block, h1 {
+            color: limegreen;
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+
+    <div id="about">
+        <div id="header">
+            <h1>A Simple HTTP Server :)</h1>
+        </div>
+        <div id="description">
+            <h2 class="sub-title">
+                <strong>Description</strong>
+            </h2>
+            <p class="text-block">
+                A simple HTTP server used to handle requests
+                <br>
+                for iBeacon data from local ndbm database.
+                <br>
+                <br>
+                Created as an assignment for Protocol Design &
+                <br>
+                Implementation class in the 3rd year of the CST
+                <br>
+                program at BCIT (Data Communications Option).
+            </p>
+        </div>
+        <br>
+        <div id="created-by">
+            <h2 class="sub-title">
+                <strong>Created by:</strong>
+            </h2>
+            <p class="text-block">
+                Giwoun Bae
+                <br>
+                Jordan Godau
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
