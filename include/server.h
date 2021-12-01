@@ -8,7 +8,6 @@
 #include <dc_posix/dc_signal.h>
 #include <dc_posix/sys/dc_socket.h>
 #include "common.h"
-//#include "dc_fsm/fsm.h"
 #include <dc_fsm/fsm.h>
 #include "http/http_response.h"
 #include "http/http_request.h"
@@ -44,8 +43,10 @@ enum application_states
     ERROR_500
 };
 
-
-
+bool is_query(char * url);
+bool is_html(const struct dc_posix_env *env, char * url);
+int get_html(const struct dc_posix_env *env, struct dc_error *err, void * arg);
+void response_construct_handler(const struct dc_posix_env *env, struct dc_error *err, struct server_params *serv);
 int init_server(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 int http_post(const struct dc_posix_env *env, struct dc_error *err, void *arg);

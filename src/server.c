@@ -34,9 +34,6 @@ static void bad_change_state(const struct dc_posix_env *env,
                              int from_state_id,
                              int to_state_id);
 
-
-void response_construct_handler(const struct dc_error *err, struct server_params *serv);
-
 int main(void)
 {
     dc_error_reporter reporter;
@@ -343,25 +340,35 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
     struct server_params * serv;
     serv = (struct server_params *) arg;
     char buffer[1024] = {0};
+    int return_value;
 
     struct Query query;
     if (dc_error_has_no_error(err))
     {
-        parse_query(get_url(serv->request), &query);
-        if(dc_strcmp(env, query.key, "DUMP") != 0) {
-            serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query.key);
-            serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
-            memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
-        } else {
-            getAllData(env, err, serv->db->dbmPtr, buffer);
-            serv->content = calloc((unsigned long) (dc_strlen(env, buffer)), sizeof(char));
-            memcpy(serv->content, buffer, (unsigned long) (dc_strlen(env, buffer)));
-            serv->fetched.dsize = dc_strlen(env, buffer);
-        }
-        destroy_query(&query);
-
-        if (!(*serv->content))
+        if (is_html(env, get_url(serv->request)))
         {
+            return_value = get_html(env, err, serv);
+        }
+        else if (is_query(get_url(serv->request)))
+        {
+            parse_query(get_url(serv->request), &query);
+            if(dc_strcmp(env, query.key, "DUMP") != 0) {
+                serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query.key);
+                serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
+                memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
+            } else {
+                getAllData(env, err, serv->db->dbmPtr, buffer);
+                serv->content = calloc((unsigned long) (dc_strlen(env, buffer)), sizeof(char));
+                memcpy(serv->content, buffer, (unsigned long) (dc_strlen(env, buffer)));
+                serv->fetched.dsize = (int) dc_strlen(env, buffer);
+            }
+            destroy_query(&query);
+        }
+
+        if (!(serv->fetched.dptr) || return_value < 0)
+        {
+            dc_error_reset(err);
+            dc_error_init(err, NULL);
             serv->error = ERROR_404;
         }
     }
@@ -401,10 +408,8 @@ int build_response(const struct dc_posix_env *env, struct dc_error *err, void *a
     struct server_params * serv;
     serv = (struct server_params *) arg;
 
+    response_construct_handler(env, err, serv);
     sprintf(content_length, "%d", serv->fetched.dsize);
-
-    response_construct_handler(err, serv);
-
     res_date            = malloc( sizeof(date)           );
     res_server          = malloc( sizeof(server)         );
     res_last_modified   = malloc( sizeof(last_modified)  );
@@ -427,7 +432,7 @@ int build_response(const struct dc_posix_env *env, struct dc_error *err, void *a
     return SEND_RESPONSE;
 }
 
-void response_construct_handler(const struct dc_error *err, struct server_params *serv) {
+void response_construct_handler(const struct dc_posix_env *env, struct dc_error *err, struct server_params *serv) {
     const char * response_code;
     const char * response_status;
 
@@ -444,6 +449,7 @@ void response_construct_handler(const struct dc_error *err, struct server_params
             // file not found
             response_code   = status_code_map[ FILE_NOT_FOUND ].code;
             response_status = status_code_map[ FILE_NOT_FOUND ].status;
+            get_html(env, err, serv);
         }
         else
         {
@@ -477,7 +483,7 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
                 7  + dc_strlen(env, get_server(http))             + 3 +         // HEADER LINES
                 14 + dc_strlen(env, get_last_modified(http))      + 3 +         // HEADER LINES
                 15 + dc_strlen(env, get_content_length_str(http)) + 3 +         // HEADER LINES
-                13 + dc_strlen(env, get_content_type(http))       + 3 +         // HEADER LINES
+                13 + dc_strlen(env, get_content_type(http))       + 3 +  2 +    // HEADER LINES
                 // ============================================================================
 
                 get_content_length_long(http)
@@ -489,7 +495,7 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
                       "Server: %s\r\n" \
                       "Last-Modified: %s\r\n" \
                       "Content-Length: %s\r\n" \
-                      "Content-Type: %s\r\n" \
+                      "Content-Type: %s\r\n\r\n" \
                       "%s",
 
                     get_res_version         ( http ),
@@ -514,7 +520,6 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
     }
 
     return SERVER_INIT;
-
 }
 
 // Look at the code in the client, you could do the same thing
@@ -528,16 +533,94 @@ void receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd, 
     ssize_t count;
     while(!(exit_flag) && (count = dc_read(env, err, fd, data, max_request_size)) > 0 && dc_error_has_no_error(err))
     {
-        //maybe moving out to the while loop? so that it will parse after the whole thing is read.
-        //in order to do the above, we will have to append to the data?? or have another buffer for the actual request.
         serv->request = parse_http_request(data);
         memcpy( check_end, &data[count - 4], 4 );
 
         if (!dc_strcmp(env, check_end, "\r\n\r\n")) { break; }
-        //is the content length given? do we read until the content length is done?
-        //so the rnrn doesn't actually end the entire the request?
     }
 }
+
+int get_html(const struct dc_posix_env *env, struct dc_error *err, void * arg)
+{
+    struct server_params * serv;
+    serv = (struct server_params *) arg;
+    char * filename_start, * filename_end, * filename;
+
+    size_t  BUFFER = 8192;
+    int     fd;
+    char    chars[BUFFER];
+    int return_value = EXIT_SUCCESS;
+
+    char abs_path[80] = {0};
+
+    filename_start = strchr( get_url(serv->request), '/' );
+    filename_end = strchr( filename_start, 'l' );
+
+    if (serv->error == ERROR_404)
+    {
+
+        filename = malloc(9);
+        memmove( filename, "404.html", 8 );
+    }
+    else
+    {
+        filename = malloc((unsigned long) (filename_end - filename_start) + 1);
+        memmove( filename, filename_start + 1, (unsigned long) ( filename_end - filename_start) );
+    }
+
+    if (*filename)
+    {
+        sprintf(
+                abs_path,
+                "/home/jordan/work/protocol/projects/ibeacon/html/%s",
+                filename
+        );
+    }
+
+    fd = dc_open(env, err, abs_path, DC_O_RDONLY, 0);
+    if(dc_error_has_no_error(err)) {
+        ssize_t nread;
+
+        while ((nread = dc_read(env, err, fd, chars, BUFFER)) > 0)
+        {
+            if (dc_error_has_error(err))
+            {
+                return_value = -1;
+                break;
+            }
+        }
+
+        if (dc_error_has_no_error(err))
+        {
+            serv->content = malloc((unsigned long) strlen(chars) + 1);
+            memmove(serv->content, chars, (unsigned long) strlen(chars));
+            serv->fetched.dsize = (int)(strlen(chars) + 1);
+            dc_close(env, err, fd);
+        }
+    }
+    return_value = fd;
+
+    return return_value;
+}
+
+bool is_html(const struct dc_posix_env *env, char * url)
+{
+    char ext[5] = "html";
+    char html_ext_buff[5] = {0};
+    char * ext_start = strchr(url, '.');
+    memcpy(html_ext_buff, ext_start + 1, sizeof(html_ext_buff) - 1);
+
+    return (!dc_strcmp(env, html_ext_buff, ext));
+}
+
+bool is_query(char * url)
+{
+    char * question = strchr(url, '?');
+    char * equals = strchr(url, '=');
+
+    return (*question && *equals);
+}
+
 
 static void quit_handler(int sig_num)
 {
