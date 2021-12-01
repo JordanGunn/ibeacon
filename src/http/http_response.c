@@ -270,8 +270,8 @@ char * parse_response_line(HttpResponsePtr http, char * header_line, void (sette
 
 void parse_content(HttpResponsePtr http, char * header_line)
 {
-    char * content = malloc((unsigned long) (get_content_length_long(http) + 1));
-    memmove(content, header_line, (unsigned long) get_content_length_long(http));
+    char * content = malloc((unsigned long) (get_content_length_long(http) + 3));
+    memmove(content, header_line, (unsigned long) get_content_length_long(http) + 1);
     set_content(http, content);
 }
 

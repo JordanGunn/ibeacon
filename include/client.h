@@ -24,6 +24,11 @@ struct client_params
     struct userInput* userInput;
     HttpRequestPtr request;
     HttpResponsePtr response;
+
+    char ** arrayOfCurrentBeacon;
+    char * beacon_selection;
+    int numberOfBeacons;
+    struct pages* pages;
 };
 
 struct userInput
@@ -38,7 +43,7 @@ struct userInput
  *
  * @param arg this is the data we will parse into.
  */
-void initializeClient(struct client_params* clientParams); //the arg in this case will be the ibeacon info.
+void initializeClient(const struct dc_posix_env* env, struct dc_error* err, struct client_params* clientParams) ;
 void build_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 

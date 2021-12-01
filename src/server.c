@@ -9,19 +9,8 @@
 #include <dc_posix/dc_unistd.h>
 
 #include <dc_posix/dc_string.h>
-#include <dc_posix/dc_stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-
-#include <stdio.h>
-
-#include <dc_posix/dc_time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-
-#define MAX_ARG_COUNT 1
 
 static volatile sig_atomic_t exit_flag;
 
@@ -48,7 +37,7 @@ static void bad_change_state(const struct dc_posix_env *env,
 
 void response_construct_handler(const struct dc_error *err, struct server_params *serv);
 
-int main(int argc, char * argv[])
+int main(void)
 {
     dc_error_reporter reporter;
     dc_posix_tracer tracer;
@@ -59,7 +48,7 @@ int main(int argc, char * argv[])
     tracer = trace_reporter;
     tracer = NULL;
     dc_error_init(&err, reporter);
-    dc_posix_env_init(&env, tracer);
+    dc_posix_env_init(&env, NULL);
 
     struct server_params * serv = malloc(sizeof (struct server_params));
 
@@ -108,6 +97,10 @@ int main(int argc, char * argv[])
         ret_val = dc_fsm_run(&env, &err, fsm_info, &from_state, &to_state, serv, transitions);
         dc_fsm_info_destroy(&env, &fsm_info);
         deinitialize_database(&env, &err, serv->db);
+        if (dc_error_has_no_error(&err))
+        {
+            dc_close(&env, &err, serv->client_socket_fd);
+        }
     }
 
     return ret_val;
@@ -345,9 +338,6 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
     }
 }
 
-
-
-
 int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct server_params * serv;
@@ -487,7 +477,7 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
                 7  + dc_strlen(env, get_server(http))             + 3 +         // HEADER LINES
                 14 + dc_strlen(env, get_last_modified(http))      + 3 +         // HEADER LINES
                 15 + dc_strlen(env, get_content_length_str(http)) + 3 +         // HEADER LINES
-                13 + dc_strlen(env, get_content_type(http))       + 3 + 2 +     // HEADER LINES
+                13 + dc_strlen(env, get_content_type(http))       + 3 +         // HEADER LINES
                 // ============================================================================
 
                 get_content_length_long(http)
@@ -500,7 +490,6 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
                       "Last-Modified: %s\r\n" \
                       "Content-Length: %s\r\n" \
                       "Content-Type: %s\r\n" \
-                      "\r\n" \
                       "%s",
 
                     get_res_version         ( http ),
@@ -517,11 +506,6 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
         if (dc_error_has_no_error(err))
         {
             dc_write(env, err, serv->client_socket_fd, response, sizeof(response));
-
-            if (dc_error_has_no_error(err))
-            {
-                dc_close(env, err, serv->client_socket_fd);
-            }
         }
 
 
@@ -544,10 +528,14 @@ void receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd, 
     ssize_t count;
     while(!(exit_flag) && (count = dc_read(env, err, fd, data, max_request_size)) > 0 && dc_error_has_no_error(err))
     {
+        //maybe moving out to the while loop? so that it will parse after the whole thing is read.
+        //in order to do the above, we will have to append to the data?? or have another buffer for the actual request.
         serv->request = parse_http_request(data);
         memcpy( check_end, &data[count - 4], 4 );
 
         if (!dc_strcmp(env, check_end, "\r\n\r\n")) { break; }
+        //is the content length given? do we read until the content length is done?
+        //so the rnrn doesn't actually end the entire the request?
     }
 }
 
@@ -555,216 +543,3 @@ static void quit_handler(int sig_num)
 {
     exit_flag = 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// =============================================================
-// S E T U P     C O N N E C T I O N
-// =============================================================
-//static volatile sig_atomic_t exit_flag;
-//
-//
-//int main(void)
-//{
-
-//
-
-
-// ==============================================================================================
-
-//
-//            if(dc_error_has_no_error(&err))
-//            {
-//                dc_bind(&env, &err, server_socket_fd, sockaddr, sockaddr_size);
-//
-//                if(dc_error_has_no_error(&err))
-//                {
-//                    int backlog;
-//
-//                    backlog = 5;
-//                    dc_listen(&env, &err, server_socket_fd, backlog);
-//
-//                    if(dc_error_has_no_error(&err))
-//                    {
-//                        struct sigaction old_action;
-//
-//                        dc_sigaction(&env, &err, SIGINT, NULL, &old_action);
-//
-//                        if(old_action.sa_handler != SIG_IGN)
-//                        {
-//                            struct sigaction new_action;
-//
-//                            exit_flag = 0;
-//                            new_action.sa_handler = quit_handler;
-//                            sigemptyset(&new_action.sa_mask);
-//                            new_action.sa_flags = 0;
-//                            dc_sigaction(&env, &err, SIGINT, &new_action, NULL);
-//
-//                            while(!(exit_flag) && dc_error_has_no_error(&err))
-//                            {
-//                                int client_socket_fd;
-//
-//                                client_socket_fd = dc_accept(&env, &err, server_socket_fd, NULL, NULL);
-//
-//                                if(dc_error_has_no_error(&err))
-//                                {
-//                                    receive_data(&env, &err, client_socket_fd, 1024);
-//                                    dc_close(&env, &err, client_socket_fd);
-//                                }
-//                                else
-//                                {
-//                                    if(err.type == DC_ERROR_ERRNO && err.errno_code == EINTR)
-//                                    {
-//                                        dc_error_reset(&err);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        if(dc_error_has_no_error(&err))
-//        {
-//            dc_close(&env, &err, server_socket_fd);
-//        }
-//    }
-//
-//    return EXIT_SUCCESS;
-//}
-//
-//// Look at the code in the client, you could do the same thing
-//void receive_data(struct dc_posix_env *env, struct dc_error *err, int fd, size_t size)
-//{
-//    // more efficient would be to allocate the buffer in the caller (main) so we don't have to keep
-//    // mallocing and freeing the same data over and over again.
-//    char *data;
-//    ssize_t count;
-//
-//    data = dc_malloc(env, err, size);
-//
-//    while(!(exit_flag) && (count = dc_read(env, err, fd, data, size)) > 0 && dc_error_has_no_error(err))
-//    {
-//        dc_write(env, err, STDOUT_FILENO, data, (size_t)count);
-//    }
-//
-//    dc_free(env, data, size);
-//}
-//
-//static void quit_handler(int sig_num)
-//{
-//    exit_flag = 1;
-//}
-//
-//static void error_reporter(const struct dc_error *err)
-//{
-//    fprintf(stderr, "Error: \"%s\" - %s : %s : %d @ %zu\n", err->message, err->file_name, err->function_name, err->errno_code, err->line_number);
-//}
-//
-//static void trace_reporter(const struct dc_posix_env *env, const char *file_name,
-//                           const char *function_name, size_t line_number)
-//{
-//    fprintf(stderr, "Entering: %s : %s @ %zu\n", file_name, function_name, line_number);
-//}
