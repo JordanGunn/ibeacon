@@ -88,7 +88,8 @@ int main(int argc, char * argv[])
 
             {BUILD_RESPONSE, SEND_RESPONSE, send_response},
 
-            {SEND_RESPONSE, DC_FSM_EXIT, NULL}
+            {SEND_RESPONSE, SERVER_INIT, init_server},
+            {SERVER_INIT, DC_FSM_EXIT, NULL}
     };
 
     dc_error_init(&err, error_reporter);
@@ -168,6 +169,7 @@ int init_server(const struct dc_posix_env *env, struct dc_error *err, void *arg)
     // server arguments for fsm
     struct server_params * serv;
     serv = (struct server_params *) arg;
+    memset(serv, 0, sizeof(struct server_params));
 
 
     // server connection
@@ -206,6 +208,9 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
 
     struct server_params * serv;
     serv = (struct server_params *) arg;
+    struct timeval timeout;
+    timeout.tv_sec = 6 * 60 * 60;
+    timeout.tv_usec = 0;
 
     if(dc_error_has_no_error(err))
     {
@@ -216,6 +221,12 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
                  serv->AddressInfoPtr->ai_socktype,
                  serv->AddressInfoPtr->ai_protocol
              );
+
+        dc_setsockopt(
+            env, err, server_socket_fd,
+            SOL_SOCKET, SO_REUSEADDR,
+            &(int){1}, sizeof(int)
+        );
 
         if (dc_error_has_no_error(err))
         {
@@ -253,21 +264,22 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
             if(dc_error_has_no_error(err))
             {
                 dc_bind(env, err, server_socket_fd, sockaddr, sockaddr_size);
-
+                puts("bind");
                 if(dc_error_has_no_error(err))
                 {
                     int backlog;
 
                     backlog = 5;
+
                     dc_listen(env, err, server_socket_fd, backlog);
 
-                    if(dc_error_has_no_error(err))
+                    if ( dc_error_has_no_error(err) )
                     {
                         struct sigaction old_action;
 
                         dc_sigaction(env, err, SIGINT, NULL, &old_action);
 
-                        if(old_action.sa_handler != SIG_IGN)
+                        if ( old_action.sa_handler != SIG_IGN )
                         {
                             struct sigaction new_action;
 
@@ -280,11 +292,17 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
                             while(!(exit_flag) && dc_error_has_no_error(err))
                             {
                                 serv->client_socket_fd = dc_accept(env, err, server_socket_fd, NULL, NULL);
+                                if ( setsockopt(serv->client_socket_fd, SOL_SOCKET,
+                                                SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0 )
+                                {
+                                    return DC_FSM_EXIT;
+                                }
 
                                 if(dc_error_has_no_error(err))
                                 {
                                     receive_data(env, err, serv->client_socket_fd, 8192, serv);
-                                    exit_flag = 1;
+                                    exit_flag = (serv->request)
+                                    ? 1 : 0;
                                 }
                                 else
                                 {
@@ -298,14 +316,23 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
                     }
                 }
             }
+            else
+            {
+                // otherwise, return an error
+                serv->error = ERROR_500;
+                return ERROR_500;
+            }
+        }
+        if ( setsockopt(server_socket_fd, SOL_SOCKET,
+                        SO_SNDTIMEO, &timeout, sizeof(timeout)) < 0 )
+        {
+            return DC_FSM_EXIT;
         }
 
         if(dc_error_has_no_error(err))
         {
             dc_close(env, err, server_socket_fd);
         }
-
-
 
         if (!dc_strcmp(env, get_method(serv->request), REQUEST_GET))
         {
@@ -316,10 +343,6 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
             return HTTP_POST;
         }
     }
-
-    // otherwise, return an error
-    serv->error = ERROR_500;
-    return ERROR_500;
 }
 
 
@@ -502,9 +525,12 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
         }
 
 
-//        destroy_http_request(serv->request);
-//        destroy_http_response(serv->response);
+        destroy_http_request(serv->request);
+        destroy_http_response(serv->response);
     }
+
+    return SERVER_INIT;
+
 }
 
 // Look at the code in the client, you could do the same thing
