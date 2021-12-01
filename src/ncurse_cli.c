@@ -63,10 +63,6 @@ static void bad_change_state(const struct dc_posix_env *env,
                              const struct dc_fsm_info *info,
                              int from_state_id,
                              int to_state_id);
-static int red(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-static int green(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-static int yellow(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-static int change_colour(const struct dc_posix_env *env, struct dc_error *err, const char *name, const struct timespec *time, int next_state);
 static int state_error(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 
 
@@ -118,13 +114,14 @@ int main(void)
     static struct dc_fsm_transition transitions[] = {
             {DC_FSM_INIT,   LANDPAGE,    landingPage}, //first welcome page.
             {LANDPAGE,   GET_ALL,    getAllListOfBeacons}, //initial dump
-            {LANDPAGE,   INPUT_BEACON,    showAddPage},
+//            {LANDPAGE,   INPUT_BEACON,    showAddPage},
 //            {INPUT_BEACON,  SEND_INFO,  }
 
             {GET_ALL,   SHOW_ALL,    showAllBeacons}, //initial dump
             {SHOW_ALL,   GET_ONE,    getOneBeacon}, //initial dump
             {GET_ONE,   SHOW_ONE,    showOneBeacon}, //initial dump
-            {SHOW_ONE,   LANDPAGE,    landingPage}, //initial dump
+//            {SHOW_ONE,   LANDPAGE,    landingPage}, //initial dump
+            {SHOW_ONE,   DC_FSM_EXIT,    NULL}, //initial dump
 
 //            {LANDPAGE,   EXIT,    clean_up}, //initial dump
             {EXIT,   DC_FSM_EXIT,    NULL}, //initial dump
@@ -207,7 +204,7 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
         case '1':
             createInputMessage(inputWindow, "YOU HAVE PRESSED TO FIND IBEACONS.");
             dc_memcpy(env, method, REQUEST_GET, sizeof (REQUEST_GET) + 1);
-            ret_val = SHOW_ALL;
+            ret_val = GET_ALL;
             break;
         case '2':
             createInputMessage(createInputWindow(win), "YOU HAVE PRESSED TO ADD NEW IBEACON");
@@ -218,7 +215,7 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
 
     client->userInput->method = dc_malloc(env, err, sizeof (method) + 1);
     dc_memcpy(env, client->userInput->method, method, sizeof (method) + 1);
-    delay_output(DELAY_BETWEEN_PAGES);
+//    delay_output(DELAY_BETWEEN_PAGES);
     return ret_val;
 }
 
@@ -310,7 +307,7 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
     // display and select iBeacons
     wrefresh(client->pages->optionpage);
 
-    delay_output(DELAY_BETWEEN_PAGES);
+//    delay_output(DELAY_BETWEEN_PAGES);
 
     return LANDPAGE;
 }
@@ -344,18 +341,23 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
 
     build_request(env, err, client);
     send_request(env, err, client);
+    long temp;
 
-    while(dc_read(env, err, client->socket_fd, data, 1024) > 0 && dc_error_has_no_error(err))
+    while((temp = dc_read(env, err, client->socket_fd, data, 1024)) > 0 && dc_error_has_no_error(err))
     {
             //need to keep on appending to buffer.
+            puts("Helloworld");
     }
     if (dc_error_has_no_error(err))
     {
         client->response = parse_http_response(data);
+        puts("bytebyet");
+
     }
 
     if (dc_error_has_no_error(err))
     {
+        puts("is this");
         dc_close(env, err, client->socket_fd);
         client->userInput->key = NULL;
         client->userInput->value = NULL;
