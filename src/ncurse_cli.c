@@ -14,24 +14,21 @@
 #define DELAY_BETWEEN_PAGES 1000
 #define GET_ALL_LIST_OF_BEACONS "DUMP" //key
 
-
-static void initiateNCURSES();
-static void closeWindow();
+static void initiateNCURSES(void);
+static void closeWindow(void);
 
 static int landingPage(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-void showWelcomePage();
-void printInTheMiddle(WINDOW *win, char * msg);
-int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WINDOW *win, struct client_params* client);
-int firstSelection(WINDOW *win, struct client_params * client);
-
+static void showWelcomePage(void);
+static void printInTheMiddle(WINDOW *win, char * msg);
+static int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WINDOW *win, struct client_params* client);
 
 static void show_nav(WINDOW *win);
-WINDOW * createOptionWindow(WINDOW *win);
+static WINDOW * createOptionWindow(WINDOW *win);
 static WINDOW *createInputWindow(WINDOW * win);
 static void createInputMessage(WINDOW * inputWindow, char* msg);
 static int showAddPage(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-void ask_info(char * temp, WINDOW *optionWindow, WINDOW * inputWindow, char * question);
-void input_with_echo_current_window(char * input, WINDOW *win);
+static void ask_info(char * temp, WINDOW *optionWindow, WINDOW * inputWindow, char * question);
+static void input_with_echo_current_window(char * input, WINDOW *win);
 
 static bool keyExistInServer(const struct dc_posix_env *env, char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR], char* buffer, int num);
 
@@ -39,11 +36,8 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
 
 static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-WINDOW * createWindowInTheMiddle();
+static WINDOW * createWindowInTheMiddle(void);
 static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-
-
-
 
 
 
@@ -52,18 +46,18 @@ static void will_change_state(const struct dc_posix_env *env,
                               const struct dc_fsm_info *info,
                               int from_state_id,
                               int to_state_id);
-static void did_change_state(const struct dc_posix_env *env,
+void did_change_state(const struct dc_posix_env *env,
                              struct dc_error *err,
                              const struct dc_fsm_info *info,
                              int from_state_id,
                              int to_state_id,
                              int next_id);
-static void bad_change_state(const struct dc_posix_env *env,
+void bad_change_state(const struct dc_posix_env *env,
                              struct dc_error *err,
                              const struct dc_fsm_info *info,
                              int from_state_id,
                              int to_state_id);
-static int state_error(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int state_error(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 
 
 enum application_states
@@ -161,7 +155,7 @@ static int landingPage(const struct dc_posix_env *env, struct dc_error *err, voi
 
     clientParams->pages = dc_malloc(env, err, sizeof(struct pages));
 
-//    showWelcomePage();
+    showWelcomePage();
 
     while (selection_made < 0) { //trying this to keep the window open until quit.
         clientParams->pages->homepage = createWindowInTheMiddle(); //this is the master window.
@@ -173,14 +167,12 @@ static int landingPage(const struct dc_posix_env *env, struct dc_error *err, voi
 
 int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WINDOW * win, struct client_params* client)
 {
-    WINDOW * optionWindow;
     int selection;
 
     client->pages->optionpage = createOptionWindow(win);
     int ret_val;
 
     char method[MAX_METHOD_LENGTH] ={0};
-    char * method_begin = method;
 
     //option 1: FIND_ibeacon
     do
@@ -193,9 +185,6 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
 
     printf("landing page: before input window?");
 
-    //displayIbeacons
-    //selectIbeacon
-    //ShowIbeacon
     client->userInput = malloc(sizeof(struct userInput));
 
     WINDOW *inputWindow = createInputWindow(win);
@@ -239,24 +228,20 @@ static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, 
     long content_length = get_content_length_long(client->response) + 3;
     char content[content_length];
     memmove(content, get_content(client->response), (unsigned long) (content_length - 3));
-    memmove(content + (content_length - 3), "\r\n\0", 2);
+    memmove(content + (content_length - 3), "\r\n", 2);
     content[content_length - 1] = '\0';
 
-    bool cont_application = false;
-//    WINDOW *optionWindow = createOptionWindow(client->pages->homepage);
     client->pages->optionpage = createOptionWindow(client->pages->homepage);
     char * beacon_begin = content;
     char  * beacon_end = beacon_begin;
     int numberOfBeacons = 0;
 
-//    client->arrayOfCurrentBeacon = dc_malloc(env, err, (sizeof (char*) * MAX_NUM_BEACONS));
-//    char ** test = dc_malloc(env, err, (MAX_NUM_BEACONS) * (MAX_MAJOR_MINOR + 1) * sizeof(char *));
     char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR] = {0};
     while (beacon_end && ++window_index)
     {
         beacon_begin += 2;
         beacon_end = strchr(beacon_begin, '\r');
-        memcpy(current_beacon, beacon_begin, (unsigned long) (beacon_end - beacon_begin));
+        memcpy(current_beacon, beacon_begin, (unsigned long) (beacon_end - beacon_begin) + 1);
 
         mvwprintw(client->pages->optionpage, window_index, 1, current_beacon);
         //store into an array at same time and increment with window.
@@ -293,7 +278,6 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
 {
     struct client_params* client;
     client = (struct client_params*) arg;
-    char current_beacon[MAX_MAJOR_MINOR] = {0};
 
     int window_index = 0;
 
@@ -303,9 +287,8 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
     memmove(content + (content_length - 2), "\r\n", 2);
     content[content_length - 1] = '\0';
 
-    bool cont_application = false;
     client->pages->optionpage = createOptionWindow(client->pages->homepage);
-//    mvwprintw(client->pages->optionpage, window_index, 1, content);
+    mvwprintw(client->pages->optionpage, window_index, 1, content);
     createInputMessage(client->pages->inputpage, content);
     // display and select iBeacons
     wrefresh(client->pages->optionpage);
@@ -313,8 +296,8 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
     while (wgetch(client->pages->inputpage) != 'q') {
 
     }
-//    return 82;
-    return LANDPAGE;
+
+    return DC_FSM_EXIT;
 }
 
 
@@ -342,7 +325,7 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
     client->userInput->key = dump;
     client->userInput->value = dump;
 
-    char data[1024];
+    char data[1024] = {0};
 
     build_request(env, err, client);
     send_request(env, err, client);
@@ -385,8 +368,6 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
 
     client->userInput->method = dc_malloc(env, err, dc_strlen(env, REQUEST_GET) + 1);
     client->userInput->key = dc_malloc(env, err, dc_strlen(env, client->beacon_selection) + 1);
-//    size_t length = dc_strlen(env, client->userInput->key);
-//    dc_memset(env, client->userInput->key, 0,  length + 1);
     memmove(client->userInput->key, client->beacon_selection, dc_strlen(env, client->beacon_selection) + 1);
     memcpy(client->userInput->method, REQUEST_GET, dc_strlen(env, REQUEST_GET) + 1);
     client->userInput->value = NULL;
@@ -416,7 +397,7 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
 
     if (dc_error_has_no_error(err))
     {
-//        dc_close(env, err, client->socket_fd);
+        dc_close(env, err, client->socket_fd);
     }
 
     if (dc_error_has_error(err))
@@ -433,7 +414,7 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
 // ============================================
 
 
-static void will_change_state(const struct dc_posix_env *env,
+void will_change_state(const struct dc_posix_env *env,
                               struct dc_error *err,
                               const struct dc_fsm_info *info,
                               int from_state_id,
@@ -442,7 +423,7 @@ static void will_change_state(const struct dc_posix_env *env,
     printf("%s: will change %d -> %d\n", dc_fsm_info_get_name(info), from_state_id, to_state_id);
 }
 
-static void did_change_state(const struct dc_posix_env *env,
+void did_change_state(const struct dc_posix_env *env,
                              struct dc_error *err,
                              const struct dc_fsm_info *info,
                              int from_state_id,
@@ -452,7 +433,7 @@ static void did_change_state(const struct dc_posix_env *env,
     printf("%s: did change %d -> %d moving to %d\n", dc_fsm_info_get_name(info), from_state_id, to_state_id, next_id);
 }
 
-static void bad_change_state(const struct dc_posix_env *env,
+void bad_change_state(const struct dc_posix_env *env,
                              struct dc_error *err,
                              const struct dc_fsm_info *info,
                              int from_state_id,
@@ -462,7 +443,7 @@ static void bad_change_state(const struct dc_posix_env *env,
 }
 
 
-static int state_error(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+int state_error(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     printf("ERROR\n");
 
@@ -476,7 +457,7 @@ static int state_error(const struct dc_posix_env *env, struct dc_error *err, voi
 // ============================================
 
 
-static void initiateNCURSES()
+void initiateNCURSES()
 {
     initscr();
     clear();
@@ -485,13 +466,13 @@ static void initiateNCURSES()
     curs_set(0); //0 - invisible
 }
 
-static void closeWindow()
+void closeWindow()
 {
     endwin();
 }
 
 #define DELAY_MS 2000
-void showWelcomePage()
+static void showWelcomePage()
 {
     printInTheMiddle(stdscr, "Welcome");
     refresh();
@@ -584,7 +565,7 @@ static void createInputMessage(WINDOW * inputWindow, char* msg)
     wrefresh(inputWindow);
 }
 
-void printInTheMiddle(WINDOW *win, char * msg)
+static void printInTheMiddle(WINDOW *win, char * msg)
 {
     int y, x, yBeg, xBeg, yMax, xMax;
     getyx(win, y, x);
@@ -602,16 +583,16 @@ void trace_reporter(const struct dc_posix_env *env, const char *file_name,
     fprintf(stderr, "Entering: %s : %s @ %zu\n", file_name, function_name, line_number);
 }
 //no need for nav bar.
-//static void show_nav(WINDOW *win)
-//{
-//    int y, x, yBeg, xBeg, yMax, xMax;
-//    getyx(win, y, x);
-//    getbegyx(win, yBeg, xBeg);
-//    getmaxyx(win, yMax, xMax);
-//
-//    mvprintw(yBeg, xBeg + 1, "q: QUIT   h: HOME");
-//    wrefresh(win);
-//}
+static void show_nav(WINDOW *win)
+{
+    int y, x, yBeg, xBeg, yMax, xMax;
+    getyx(win, y, x);
+    getbegyx(win, yBeg, xBeg);
+    getmaxyx(win, yMax, xMax);
+
+    mvprintw(yBeg, xBeg + 1, "q: QUIT   h: HOME");
+    wrefresh(win);
+}
 
 
 
@@ -629,8 +610,8 @@ static int showAddPage(const struct dc_posix_env *env, struct dc_error *err, voi
 //    //and get input.
 //    ask_info(optionWindow, inputWindow, "Please enter MAJOR: ");
 //    ask_info(optionWindow, inputWindow, "Please enter MINOR: ");
-    char temp_major[MAX_MAJOR_MINOR];
-    char temp_minor[MAX_MAJOR_MINOR];
+    char temp_major[MAX_MAJOR_MINOR] = {0};
+    char temp_minor[MAX_MAJOR_MINOR] = {0};
 
     ask_info(temp_major, client->pages->optionpage, client->pages->inputpage, "Please enter MAJOR: ");
     ask_info(temp_minor, client->pages->optionpage, client->pages->inputpage,  "Please enter MINOR: ");
@@ -644,13 +625,12 @@ static int showAddPage(const struct dc_posix_env *env, struct dc_error *err, voi
 #define DELAY_ASK_INFO 3000
 void ask_info(char *temp, WINDOW *optionWindow, WINDOW * inputWindow, char * question)
 {
-    char *temp_val;
     createInputMessage(optionWindow, question);
     wrefresh(inputWindow);
     if (optionWindow == inputWindow) {
         //need delay
 //        while(wgetch(inputWindow) != '\n') {}
-//        delay_output(DELAY_ASK_INFO);
+        delay_output(DELAY_ASK_INFO);
     }
     //ask a question an and return an answer...???? or save an answer.
     //eventually we want to create a client's request to send to the server to save.
@@ -661,7 +641,7 @@ void ask_info(char *temp, WINDOW *optionWindow, WINDOW * inputWindow, char * que
 void input_with_echo_current_window(char * input, WINDOW *win)
 {
     createInputMessage(win, "");
-    char temp[100];
+    char temp[100] = {0};
     int begY, begX;
     getbegyx(win, begY, begX);
     move(begY + 1, begX + 1);
@@ -692,7 +672,7 @@ static bool confirm(WINDOW *parentBox)
     bool response = false;
     createInputMessage(confirmationBox, "PRESS Y to confirm.");
     bool yes_no_flag = false;
-    char confirmation;
+    char confirmation = '0';
     do {
         confirmation = (char)wgetch(confirmationBox);
         if (confirmation == 'Y') {

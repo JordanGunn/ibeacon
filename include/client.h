@@ -54,15 +54,6 @@ int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg
 
 
 
-void sendPUTrequest(const struct dc_posix_env *env, struct dc_error *err, void* args, struct client_params* clientParamsPt);// this happens every time?
-
-void createPUTrequest();
-void sendPUTrequest();
-
-void createGETrequest();
-void receiveGETmessage();
-void parseGETmessage();
-
 //Create request string to send.
     //It will be a string composed of major and minor
     //need to get rid of all string and new lines??

@@ -44,16 +44,16 @@ struct application_settings
  * @param err
  * @return
  */
-static struct dc_application_settings *create_settings(
+struct dc_application_settings *create_settings(
         const struct dc_posix_env *env, struct dc_error *err
 );
 
-static int destroy_settings(
+int destroy_settings(
         const struct dc_posix_env *env, struct dc_error *err,
         struct dc_application_settings **psettings
 );
 
-static int run(
+int run(
         const struct dc_posix_env *env, struct dc_error *err,
         struct dc_application_settings *settings
 );

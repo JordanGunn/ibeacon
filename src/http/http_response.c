@@ -96,16 +96,19 @@ char * get_content_type(HttpResponsePtr http)
     }
 }
 
+//Giwoun trying to initialize values for mac.
 ssize_t get_content_length_long(HttpResponsePtr http)
 {
+    long content_length = 0;
     if (http)
     {
         size_t len = strlen(http->content_length);
         char * end = http->content_length + len;
-        long content_length =strtol(http->content_length, &end,10);
+        content_length = strtol(http->content_length, &end,10);
 
-        return content_length;
     }
+    return content_length;
+
 }
 
 char * get_content_length_str(HttpResponsePtr http)
