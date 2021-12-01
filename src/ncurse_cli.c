@@ -21,6 +21,8 @@ static int landingPage(const struct dc_posix_env *env, struct dc_error *err, voi
 static void showWelcomePage(void);
 static void printInTheMiddle(WINDOW *win, char * msg);
 static int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WINDOW *win, struct client_params* client);
+static int clean_up(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+
 
 static void show_nav(WINDOW *win);
 static WINDOW * createOptionWindow(WINDOW *win);
@@ -115,7 +117,7 @@ int main(void)
             {SHOW_ALL,   GET_ONE,    getOneBeacon}, //initial dump
             {GET_ONE,   SHOW_ONE,    showOneBeacon}, //initial dump
 //            {SHOW_ONE,   LANDPAGE,    landingPage}, //initial dump
-            {SHOW_ONE,   DC_FSM_EXIT,    NULL}, //initial dump
+            {SHOW_ONE,   EXIT,    clean_up}, //initial dump
 
 //            {LANDPAGE,   EXIT,    clean_up}, //initial dump
             {EXIT,   DC_FSM_EXIT,    NULL}, //initial dump
@@ -208,6 +210,26 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
     return ret_val;
 }
 
+static int clean_up(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+{
+    //free members of the struct.
+    struct client_params* clientParams;
+    clientParams = (struct client_params*) arg;
+
+    free(clientParams->pages->homepage);
+    free(clientParams->pages->inputpage);
+    free(clientParams->pages->optionpage);
+
+    free(clientParams->beacon_selection);
+    free(clientParams->userInput->method);
+    free(clientParams->userInput->key);
+
+    free(clientParams->userInput);
+    free(clientParams->pages);
+    free(clientParams);
+
+    return DC_FSM_EXIT;
+}
 
 /**
  * Creates the window and display.
@@ -331,7 +353,8 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
     send_request(env, err, client);
     ssize_t temp;
 
-    while((temp = dc_read(env, err, client->socket_fd, data, 1024)) > 0 && dc_error_has_no_error(err))
+//    while(((temp = dc_read(env, err, client->socket_fd, data, 1024)) > 0) && dc_error_has_no_error(err))
+    temp = dc_read(env, err, client->socket_fd, data, 1024);
     {
         client->response = parse_http_response(data);
         long content_length = get_content_length_long(client->response);
@@ -340,10 +363,8 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
 
         if (!(check - (unsigned long) content_length))
         {
-            break;
+//            break;
         }
-
-
     }
     if (dc_error_has_no_error(err))
     {
