@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <string.h>
+#include <client.h>
 
 void showWelcomePage();
 void showFirstPageOptions(WINDOW *);
@@ -13,6 +14,10 @@ void printInTheMiddle(WINDOW *win, char * msg);
 WINDOW * createWindowInTheMiddle();
 bool gettingInput_firstPage(WINDOW *win);
 static bool confirm();
+
+void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* clientParams);
+
+
 static void createInputMessage(WINDOW * inputWindow, char* msg);
 WINDOW * createOptionWindow(WINDOW *win);
 bool showIbeaconsList(WINDOW *win);
@@ -21,14 +26,6 @@ void ask_info(WINDOW *optionWindow, WINDOW * inputWindow, char * question);
 void input_with_echo_current_window(WINDOW *win);
 void showIbeaconLocation(WINDOW *inputWindow);
 static void show_nav(WINDOW *win);
-
-struct ibeaconInfo {
-    char* major;
-    char* minor;
-    char* location;
-    char* timestamp;
-    char* list;
-};
 
 //initialization
 //deinialization
@@ -41,6 +38,29 @@ int main() {
     //Client-side initialization code??
     //How to send messages??
     // can I use those code from Client.h?
+
+    dc_error_reporter reporter;
+    dc_posix_tracer tracer;
+    struct dc_error err;
+    struct dc_posix_env env;
+    const char *host_name;
+//    struct addrinfo hints;
+//    struct addrinfo *result;
+
+    reporter = error_reporter;
+    tracer = trace_reporter;
+    tracer = NULL;
+    dc_error_init(&err, reporter);
+    dc_posix_env_init(&env, tracer);
+
+    struct client_params* clientParams;
+    clientParams = malloc(sizeof(struct client_params));
+    clientParams->userInput = malloc(sizeof(struct userInput));
+
+    initializeClient(clientParams);
+//  grab all the information from the database.
+    getAllListOfBeacons(&env, &err, clientParams);
+    return 0;
 
     initscr();
     clear();
@@ -55,10 +75,28 @@ int main() {
         WINDOW *win = createWindowInTheMiddle(); //this is the master window.
         show_nav(win);
         showFirstPageOptions(win);
+
         continue_application = gettingInput_firstPage(win);
     }
     endwin();
     return 0;
+}
+
+void getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, struct client_params* clientParams){
+    clientParams->userInput->method = "GET";
+    clientParams->userInput->key = "DUMP";
+    clientParams->userInput->value = "DUMP";
+
+    char data[1024];
+
+    build_request(env, err, clientParams);
+    send_request(env, err, clientParams);
+
+    clientParams->userInput->method = NULL;
+    clientParams->userInput->key = NULL;
+    clientParams->userInput->value = NULL;
+
+//    destroy_http_request(clientParams->request);
 }
 
 
@@ -126,7 +164,7 @@ void showFirstPageOptions(WINDOW *win) {
  */
 bool showIbeaconsList(WINDOW *win) {
     bool cont_application = false;
-    WINDOW * optionWindow = createOptionWindow(win);
+    WINDOW *optionWindow = createOptionWindow(win);
     mvwprintw(optionWindow, 1, 1, "Beacon 1");
     mvwprintw(optionWindow, 2, 1, "Beacon 2");
     //displayIbeacons
@@ -150,14 +188,17 @@ bool showIbeaconsList(WINDOW *win) {
                 //should I keep a list somewhere in the database?
                 //or at the initializing state grab all?? //no good....
                 createInputMessage(inputWindow, "selected beacon 1");
-                if(confirm(win)) {
+                if (confirm(win)) {
                     showIbeaconLocation(win);
+                    //SEND REQUEST TO GET DATA.
+//                    sendPUTrequest();
+//                    showData(client);
                     createInputMessage(inputWindow, "IBEACON1 location.");
                 }
                 break;
             case '2':
                 createInputMessage(inputWindow, "selected beacon 2");
-                if(confirm(win)) {
+                if (confirm(win)) {
                     createInputMessage(inputWindow, "IBEACON2 location.");
                 }
                 break;
@@ -333,3 +374,4 @@ void showWelcomePage() {
     refresh();
     delay_output(DELAY_MS);
 }
+

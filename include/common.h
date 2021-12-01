@@ -58,9 +58,9 @@ static int run(
         struct dc_application_settings *settings
 );
 
-static void error_reporter(const struct dc_error *err);
+void error_reporter(const struct dc_error *err);
 
-static void trace_reporter(
+void trace_reporter(
         const struct dc_posix_env *env, const char *file_name, const char *function_name, size_t line_number
 );
 

@@ -12,6 +12,12 @@ static const char server[16] = "MegaFucker 5000";
 static const char last_modified[8] = "unknown";
 static const char content_type[10] = "text/html";
 
+// REQUEST ATTRIBUTES
+static const char version[9] = "HTTP/1.1";
+static const char host[10] = "localhost";
+static const char user_agent[12] = "Mozilla/5.0";
+static const char accept_type[10] = "text/html";
+
 static const int PORT = 8080;
 
 //static const char test_request_message[400] = "GET /path/to/file/index.html HTTP/1.1\n\rHost: www.educative.io\n\rConnection: close\n\rUser-agent: Mozilla/5.0\n\rAccept-language: fr\n\rAccept: text/html\n\r";
@@ -37,8 +43,9 @@ static const char response_msg_server_error[27] = "HTTP Internal Server Error";
 static const char response_msg_version_not_supported[27] = "HTTP Version Not Supported";
 
 
+
 enum CODE_MAP_KEYS {
-    OK,
+    OKAY,
     FILE_NOT_FOUND,
     BAD_REQUEST,
     SERVER_ERROR,

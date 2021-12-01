@@ -5,6 +5,7 @@
 #ifndef IBEACON_DB_H //what's this??
 #define IBEACON_DB_H
 
+
 //Main purpose of this thing is: to handle HTTP requests, and responses.
 //This is to interact with DB.
 //use the ndbm.
@@ -98,6 +99,9 @@ void test_display(const char *name, datum *content);
  * @param name key
  * @return 0 if successful.
  */
-int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name)
+int delete_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char *name);
+
+void getAllData(const struct dc_posix_env *env, struct dc_error *err, DBM *db, char buffer[static 1024]);
+
 
 #endif //IBEACON_DB_H

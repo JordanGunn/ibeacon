@@ -5,6 +5,7 @@
 #ifndef IBEACON_IB_CLI_H
 #define IBEACON_IB_CLI_H
 
+
 //What do I need in the client.c?
 //1. showWelcomePage?
 //2. Need data.
@@ -12,10 +13,10 @@
 //4. the client code will grab whatever..?
 
 struct ibeaconInfo {
-    char * major;
-    char * minor;
-    char * location,
-    char * timeStamp;
+    char* major;
+    char* minor;
+    char* location;
+    char* timestamp;
 };
 
 //Maybe I need init_ncurses() to initialize the screen inside the client??

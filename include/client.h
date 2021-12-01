@@ -5,6 +5,59 @@
 #ifndef IBEACON_CLIENT_H
 #define IBEACON_CLIENT_H
 
+#include "./http/http_constants.h"
+#include "./http/http_request.h"
+#include "./http/http_response.h"
+#include "common.h"
+#include <dc_posix/sys/dc_socket.h>
+#include "netdb.h"
+#include <dc_posix/dc_signal.h>
+
+struct client_params
+{
+    int socket_fd;
+    struct sockaddr *sockaddr;
+    socklen_t sockaddr_size;
+    struct addrinfo hints;
+    struct addrinfo *result;
+
+    struct userInput* userInput;
+    HttpRequestPtr request;
+    HttpResponsePtr response;
+};
+
+struct userInput
+{
+    char *key;
+    char *value;
+    char *method;
+};
+
+/**
+ * initializes the client side.
+ *
+ * @param arg this is the data we will parse into.
+ */
+void initializeClient(struct client_params* clientParams); //the arg in this case will be the ibeacon info.
+void build_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int send_request(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+
+
+
+
+
+
+
+
+void sendPUTrequest(const struct dc_posix_env *env, struct dc_error *err, void* args, struct client_params* clientParamsPt);// this happens every time?
+
+void createPUTrequest();
+void sendPUTrequest();
+
+void createGETrequest();
+void receiveGETmessage();
+void parseGETmessage();
+
 //Create request string to send.
     //It will be a string composed of major and minor
     //need to get rid of all string and new lines??

@@ -207,17 +207,22 @@ void set_content(HttpResponsePtr http, char * content)
  */
 void destroy_http_response(HttpResponsePtr http)
 {
-    if (http->version)        { free(http->version);        }
-    if (http->status_code)    { free(http->status_code);    }
-    if (http->status)         { free(http->status);         }
-    if (http->date)           { free(http->date);           }
-    if (http->server)         { free(http->server);         }
-    if (http->last_modified)  { free(http->last_modified);  }
-    if (http->content_length) { free(http->content_length); }
-    if (http->content_type)   { free(http->content_type);   }
-    if (http->content)        { free(http->content);        }
+    if ( *(http->date) )           { free(http->date);           }
+    if ( *(http->server) )         { free(http->server);         }
+    if ( *(http->last_modified) )  { free(http->last_modified);  }
+    if ( *(http->content_length) ) { free(http->content_length); }
+    if ( *(http->content_type) )   { free(http->content_type);   }
+
+    if ( http->content )
+    {
+        if ( *(http->content_type) )
+        {
+            free(http->content);
+        }
+    }
 
     free(http);
+    memset(http, 0, sizeof(*http));
 }
 
 HttpResponsePtr parse_http_response(const char * http_message)
@@ -231,6 +236,8 @@ HttpResponsePtr parse_http_response(const char * http_message)
 
     char * header_lines = status_line_end + 1;
     parse_response_lines(http, header_lines);
+
+    return http;
 }
 
 
