@@ -31,10 +31,15 @@ set(CLIENT_SOURCE
         "${ibeacon_SOURCE_DIR}/src/client.c"
         "${ibeacon_SOURCE_DIR}/src/ib_cli.c"
         "${ibeacon_SOURCE_DIR}/src/ncurse_cli.c"
+
         )
 
 set(SERVER_SOURCE
         "${ibeacon_SOURCE_DIR}/src/server.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http_request.c"
+        "${ibeacon_SOURCE_DIR}/src/http/http_response.c"
+
         "${ibeacon_SOURCE_DIR}/src/db.c"
         )
 
