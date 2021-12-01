@@ -8,21 +8,22 @@ project(ibeacon
         DESCRIPTION "Project"
         LANGUAGES C)
 
+
 set(HEADER_LIST
-        "${ibeacon_SOURCE_DIR}/include/common.h"
-        "${ibeacon_SOURCE_DIR}/include/server.h"
-        "${ibeacon_SOURCE_DIR}/include/client.h"
-        "${ibeacon_SOURCE_DIR}/include/http/http_request.h"
-        "${ibeacon_SOURCE_DIR}/include/http/http.h"
-        "${ibeacon_SOURCE_DIR}/include/http/http_constants.h"
-        "${ibeacon_SOURCE_DIR}/include/http/http_response.h"
-        "${ibeacon_SOURCE_DIR}/include/db.h"
-        "${ibeacon_SOURCE_DIR}/include/ib_cli.h"
-        )
+    "${ibeacon_SOURCE_DIR}/include/common.h"
+    "${ibeacon_SOURCE_DIR}/include/server.h"
+    "${ibeacon_SOURCE_DIR}/include/client.h"
+    "${ibeacon_SOURCE_DIR}/include/http/http_request.h"
+    "${ibeacon_SOURCE_DIR}/include/http/http.h"
+    "${ibeacon_SOURCE_DIR}/include/http/http_constants.h"
+    "${ibeacon_SOURCE_DIR}/include/http/http_response.h"
+    "${ibeacon_SOURCE_DIR}/include/db.h"
+    "${ibeacon_SOURCE_DIR}/include/ib_cli.h"
+)
+
 
 set(SOURCE_LIST
         "${ibeacon_SOURCE_DIR}/src/common.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http.c"
         "${ibeacon_SOURCE_DIR}/src/http/http_request.c"
         "${ibeacon_SOURCE_DIR}/src/http/http_response.c"
         )
@@ -31,15 +32,10 @@ set(CLIENT_SOURCE
         "${ibeacon_SOURCE_DIR}/src/client.c"
         "${ibeacon_SOURCE_DIR}/src/ib_cli.c"
         "${ibeacon_SOURCE_DIR}/src/ncurse_cli.c"
-
         )
 
 set(SERVER_SOURCE
         "${ibeacon_SOURCE_DIR}/src/server.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http_request.c"
-        "${ibeacon_SOURCE_DIR}/src/http/http_response.c"
-
         "${ibeacon_SOURCE_DIR}/src/db.c"
         )
 

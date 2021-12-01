@@ -13,7 +13,7 @@ static const char last_modified[8] = "unknown";
 static const char content_type[10] = "text/html";
 
 // REQUEST ATTRIBUTES
-static const char version[9] = "HTTP/1.1";
+static const char version[9] = "HTTP/1.0";
 static const char host[10] = "localhost";
 static const char user_agent[12] = "Mozilla/5.0";
 static const char accept_type[10] = "text/html";

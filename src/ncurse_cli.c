@@ -251,7 +251,7 @@ static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, 
 
 //    client->arrayOfCurrentBeacon = dc_malloc(env, err, (sizeof (char*) * MAX_NUM_BEACONS));
 //    char ** test = dc_malloc(env, err, (MAX_NUM_BEACONS) * (MAX_MAJOR_MINOR + 1) * sizeof(char *));
-    char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR];
+    char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR] = {0};
     while (beacon_end && ++window_index)
     {
         beacon_begin += 2;
@@ -275,6 +275,8 @@ static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, 
     client->beacon_selection = dc_malloc(env, err, MAX_MAJOR_MINOR + 1);
     size_t size = 0;
 
+    destroy_http_request(client->request);
+
     while (size == 0 || !keyExistInServer(env, temp_array, client->beacon_selection, numberOfBeacons)){
         if (size == 0) {
             ask_info(client->beacon_selection, client->pages->inputpage, client->pages->inputpage, "Please enter the beacon you want to see. Press enter to see.");
@@ -297,18 +299,21 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
 
     long content_length = get_content_length_long(client->response) + 3;
     char content[content_length];
-    memmove(content, get_content(client->response), (unsigned long) (content_length - 3));
-    memmove(content + (content_length - 3), "\r\n", 2);
+    memmove(content, get_content(client->response), (unsigned long) (content_length - 2));
+    memmove(content + (content_length - 2), "\r\n", 2);
     content[content_length - 1] = '\0';
 
     bool cont_application = false;
     client->pages->optionpage = createOptionWindow(client->pages->homepage);
-    mvwprintw(client->pages->optionpage, window_index, 1, current_beacon);
+//    mvwprintw(client->pages->optionpage, window_index, 1, content);
+    createInputMessage(client->pages->inputpage, content);
     // display and select iBeacons
     wrefresh(client->pages->optionpage);
 
-//    delay_output(DELAY_BETWEEN_PAGES);
+    while (wgetch(client->pages->inputpage) != 'q') {
 
+    }
+//    return 82;
     return LANDPAGE;
 }
 
@@ -341,26 +346,25 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
 
     build_request(env, err, client);
     send_request(env, err, client);
-    long temp;
+    ssize_t temp;
 
     while((temp = dc_read(env, err, client->socket_fd, data, 1024)) > 0 && dc_error_has_no_error(err))
     {
-            //need to keep on appending to buffer.
-            puts("Helloworld");
-    }
-    if (dc_error_has_no_error(err))
-    {
         client->response = parse_http_response(data);
-        puts("bytebyet");
+        long content_length = get_content_length_long(client->response);
+        char * content_start = &(data[temp - content_length]);
+        size_t check = strlen(content_start);
+
+        if (!(check - (unsigned long) content_length))
+        {
+            break;
+        }
+
 
     }
-
     if (dc_error_has_no_error(err))
     {
-        puts("is this");
         dc_close(env, err, client->socket_fd);
-        client->userInput->key = NULL;
-        client->userInput->value = NULL;
     }
 
     if (dc_error_has_error(err))
@@ -387,14 +391,23 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
     memcpy(client->userInput->method, REQUEST_GET, dc_strlen(env, REQUEST_GET) + 1);
     client->userInput->value = NULL;
 
-    char data[1024];
+    char data[1024] = {0};
 
     build_request(env, err, client);
     send_request(env, err, client);
+    ssize_t len;
 
-    while(dc_read(env, err, client->socket_fd, data, 1024) > 0 && dc_error_has_no_error(err))
+    while((len = dc_read(env, err, client->socket_fd, data, 1024)) > 0 && dc_error_has_no_error(err))
     {
-        //need to keep on appending to buffer.
+        client->response = parse_http_response(data);
+        long content_length = get_content_length_long(client->response);
+        char * content_start = &(data[len - content_length]);
+        size_t check = strlen(content_start) + 1;
+
+        if (!(check - (unsigned long) content_length))
+        {
+            break;
+        }
     }
     if (dc_error_has_no_error(err))
     {
@@ -403,7 +416,7 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
 
     if (dc_error_has_no_error(err))
     {
-        dc_close(env, err, client->socket_fd);
+//        dc_close(env, err, client->socket_fd);
     }
 
     if (dc_error_has_error(err))
@@ -637,7 +650,7 @@ void ask_info(char *temp, WINDOW *optionWindow, WINDOW * inputWindow, char * que
     if (optionWindow == inputWindow) {
         //need delay
 //        while(wgetch(inputWindow) != '\n') {}
-        delay_output(DELAY_ASK_INFO);
+//        delay_output(DELAY_ASK_INFO);
     }
     //ask a question an and return an answer...???? or save an answer.
     //eventually we want to create a client's request to send to the server to save.
