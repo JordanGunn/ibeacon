@@ -192,11 +192,11 @@ void initializeClient(const struct dc_posix_env* env, struct dc_error* err, stru
     if (dc_error_has_no_error(err)) {
 //        int socket_fd;
         clientParams->socket_fd = dc_socket(env, err, result->ai_family, result->ai_socktype, result->ai_protocol);
-        dc_setsockopt(
-                env, err, clientParams->socket_fd,
-                SOL_SOCKET, SO_REUSEADDR,
-                &(int){1}, sizeof(int)
-        );
+//        dc_setsockopt(
+//                env, err, clientParams->socket_fd,
+//                SOL_SOCKET, SO_REUSEADDR,
+//                &(int){1}, sizeof(int)
+//        );
 
         if (dc_error_has_no_error(err)) {
             struct sockaddr *sockaddr;

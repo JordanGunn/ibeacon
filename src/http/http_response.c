@@ -293,7 +293,6 @@ char * parse_response_line(HttpResponsePtr http, char * header_line, void (sette
     memmove(copy, attr_start,(unsigned long) (end - attr_start));
 
     setter(http, copy);
-    free(copy);
     return (end);
 }
 
@@ -303,8 +302,6 @@ void parse_content(HttpResponsePtr http, char * header_line)
     char * content = malloc(strlen(header_line) + 3);
     memmove(content, header_line, strlen(header_line)+ 1);
     set_content(http, content);
-
-    free(content + (strlen(content) + 1));
 }
 
 
@@ -333,9 +330,6 @@ HttpResponsePtr parse_status_line(char * request_line)
     memmove(status, status_start, (unsigned long) (status_end - status_start));
 
     http = http_response_constructor(version, status_code, status);
-    free(version + ((version_end - version_start) + 1));
-    free(status_code + ((status_code_end - status_code_start) + 1));
-    free(status + ((status_end - status_start) + 1));
 
     return http;
 }
