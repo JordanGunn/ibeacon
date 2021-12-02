@@ -5,6 +5,28 @@
 #ifndef IBEACON_SERVER_H
 #define IBEACON_SERVER_H
 
+#define PATH_BUFF_SIZE 80
+
+#define END_CHECK_BUFF 5
+
+#define SPACE_RN_LEN 3
+
+#define STATUS_LINE_SPACE 4
+
+#define DATE_LEN 5
+
+#define SERV_LEN 7
+
+#define LAST_MOD_LEN 14
+
+#define CONTENT_LENGTH_LEN 15
+
+#define CONTENT_TYPE_LEN 13
+
+#define RN_LEN 2
+
+#define LARGE_BUFF 8192
+
 #include <dc_posix/dc_signal.h>
 #include <dc_posix/sys/dc_socket.h>
 #include "common.h"
@@ -13,6 +35,7 @@
 #include "http/http_request.h"
 #include "db.h"
 #include "netdb.h"
+#include "http/http_constants.h"
 
 
 char db_name[9] = "./hello";

@@ -5,6 +5,8 @@
 #ifndef IBEACON_HTTP_REQUEST_H
 #define IBEACON_HTTP_REQUEST_H
 
+#define REQ_LINE_BUFF 50
+
 #include "common.h"
 
 typedef struct HttpRequest * HttpRequestPtr;
