@@ -14,7 +14,10 @@
 
 static volatile sig_atomic_t exit_flag;
 
-static void quit_handler(int sig_num);
+static void quit_handler ( int signum ) {
+
+    signum = 1;
+}
 
 
 static void will_change_state(const struct dc_posix_env *env,
@@ -37,19 +40,18 @@ static void bad_change_state(const struct dc_posix_env *env,
 int main(void)
 {
     dc_error_reporter reporter;
-    dc_posix_tracer tracer;
     struct dc_error err;
     struct dc_posix_env env;
 
     reporter = NULL;
-    tracer = trace_reporter;
-    tracer = NULL;
     dc_error_init(&err, reporter);
     dc_posix_env_init(&env, NULL);
+    struct server_params * serv;
 
-    struct server_params * serv = malloc(sizeof (struct server_params));
+    //HERE !!!!!!!!!!!!!!!!!!!!!!!!!!
+    serv = malloc(sizeof (struct server_params));
 
-
+    dc_signal(&env, &err, SIGINT, quit_handler);
 
     int ret_val;
     struct dc_fsm_info *fsm_info;
@@ -80,7 +82,6 @@ int main(void)
 
     dc_error_init(&err, error_reporter);
     dc_posix_env_init(&env, trace_reporter);
-    ret_val = EXIT_SUCCESS;
     fsm_info = dc_fsm_info_create(&env, &err, "traffic");
     dc_fsm_info_set_will_change_state(fsm_info, will_change_state);
     dc_fsm_info_set_did_change_state(fsm_info, did_change_state);
@@ -88,6 +89,7 @@ int main(void)
 
     if(dc_error_has_no_error(&err))
     {
+        ret_val = EXIT_SUCCESS;
         int from_state;
         int to_state;
 
@@ -99,7 +101,12 @@ int main(void)
             dc_close(&env, &err, serv->client_socket_fd);
         }
     }
+    else
+    {
+        ret_val = 1;
+    }
 
+    free(serv);
     return ret_val;
 }
 
@@ -140,13 +147,6 @@ static void bad_change_state(const struct dc_posix_env *env,
                              int to_state_id)
 {
     printf("%s: bad change %d -> %d\n", dc_fsm_info_get_name(info), from_state_id, to_state_id);
-}
-
-static int state_error(const struct dc_posix_env *env, struct dc_error *err, void *arg)
-{
-    printf("ERROR\n");
-
-    return DC_FSM_EXIT;
 }
 
 
@@ -195,7 +195,7 @@ int init_server(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
 
-
+    int return_value;
     struct server_params * serv;
     serv = (struct server_params *) arg;
     struct timeval timeout;
@@ -290,7 +290,7 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
 
                                 if(dc_error_has_no_error(err))
                                 {
-                                    receive_data(env, err, serv->client_socket_fd, 8192, serv);
+                                    receive_data(env, err, serv->client_socket_fd, LARGE_BUFF, serv);
                                     exit_flag = (serv->request)
                                     ? 1 : 0;
                                 }
@@ -313,26 +313,28 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
                 return ERROR_500;
             }
         }
-        if ( setsockopt(server_socket_fd, SOL_SOCKET,
-                        SO_SNDTIMEO, &timeout, sizeof(timeout)) < 0 )
-        {
-            return DC_FSM_EXIT;
-        }
+
 
         if(dc_error_has_no_error(err))
         {
             dc_close(env, err, server_socket_fd);
-        }
 
-        if (!dc_strcmp(env, get_method(serv->request), REQUEST_GET))
-        {
-            return HTTP_GET;
-        }
-        else if (!dc_strcmp(env, get_method(serv->request), REQUEST_POST))
-        {
-            return HTTP_POST;
+
+            if (!dc_strcmp(env, get_method(serv->request), REQUEST_GET))
+            {
+                return_value = HTTP_GET;
+            }
+            else if (!dc_strcmp(env, get_method(serv->request), REQUEST_POST))
+            {
+                return_value = HTTP_POST;
+            }
+            else
+            {
+                return_value = DC_FSM_EXIT;
+            }
         }
     }
+    return return_value;
 }
 
 int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
@@ -340,35 +342,50 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
     struct server_params * serv;
     serv = (struct server_params *) arg;
     char buffer[1024] = {0};
-    int return_value;
+
 
     struct Query query;
     if (dc_error_has_no_error(err))
     {
+        int return_value = 1;
         if (is_html(env, get_url(serv->request)))
         {
             return_value = get_html(env, err, serv);
+            if (return_value < 0)
+            {
+                dc_error_reset(err);
+                dc_error_init(err, NULL);
+                serv->error = ERROR_404;
+            }
         }
         else if (is_query(get_url(serv->request)))
         {
             parse_query(get_url(serv->request), &query);
-            if(dc_strcmp(env, query.key, "DUMP") != 0) {
+            if(dc_strcmp(env, query.key, "DUMP") != 0)
+            {
                 serv->fetched = fetch_data(env, err, serv->db->dbmPtr, query.key);
                 serv->content = calloc((unsigned long) (serv->fetched.dsize), sizeof(char));
                 memcpy(serv->content, serv->fetched.dptr, (unsigned long) serv->fetched.dsize);
-            } else {
+            }
+            else
+            {
                 getAllData(env, err, serv->db->dbmPtr, buffer);
                 serv->content = calloc((unsigned long) (dc_strlen(env, buffer)), sizeof(char));
                 memcpy(serv->content, buffer, (unsigned long) (dc_strlen(env, buffer)));
                 serv->fetched.dsize = (int) dc_strlen(env, buffer);
             }
-            destroy_query(&query);
-        }
 
-        if (!(serv->fetched.dptr) || return_value < 0)
+            if (!(serv->fetched.dptr))
+            {
+                dc_error_reset(err);
+                dc_error_init(err, NULL);
+                serv->error = ERROR_404;
+            }
+            destroy_query(&query);
+
+        }
+        else
         {
-            dc_error_reset(err);
-            dc_error_init(err, NULL);
             serv->error = ERROR_404;
         }
     }
@@ -384,7 +401,7 @@ int http_post(const struct dc_posix_env *env, struct dc_error *err, void *arg)
     if (dc_error_has_no_error(err))
     {
         parse_query(get_url(serv->request), &query);
-        store_data(env, err, serv->db->dbmPtr, query.key, query.value, DBM_INSERT);
+        store_data(env, err, serv->db->dbmPtr, query.key, query.value, DBM_REPLACE);
         destroy_query(&query);
     }
     else
@@ -403,24 +420,24 @@ int build_response(const struct dc_posix_env *env, struct dc_error *err, void *a
     char *  res_last_modified;
     char *  res_content_type;
     char *  res_content_length;
-    char    content_length[12];
+    char    content_length[12] = {0};
 
     struct server_params * serv;
     serv = (struct server_params *) arg;
 
     response_construct_handler(env, err, serv);
     sprintf(content_length, "%d", serv->fetched.dsize);
-    res_date            = malloc( sizeof(date)           );
-    res_server          = malloc( sizeof(server)         );
-    res_last_modified   = malloc( sizeof(last_modified)  );
+    res_date            = malloc( sizeof(http_date)           );
+    res_server          = malloc( sizeof(http_server)         );
+    res_last_modified   = malloc( sizeof(http_last_modified)  );
     res_content_length  = malloc( sizeof(content_length) );
-    res_content_type    = malloc( sizeof(content_type)   );
+    res_content_type    = malloc( sizeof(http_content_type)   );
 
-    memmove( res_date,           date,           sizeof(date)           );
-    memmove( res_server,         server,         sizeof(server)         );
-    memmove( res_last_modified,  last_modified,  sizeof(last_modified)  );
+    memmove( res_date,           http_date,           sizeof(http_date)           );
+    memmove( res_server,         http_server,         sizeof(http_server)         );
+    memmove( res_last_modified,  http_last_modified,  sizeof(http_last_modified)  );
     memmove( res_content_length, content_length, sizeof(content_length) );
-    memmove( res_content_type,   content_type,   sizeof(content_type)   );
+    memmove( res_content_type,   http_content_type,   sizeof(http_content_type)   );
 
     set_date(           serv->response, res_date           );
     set_server(         serv->response, res_server         );
@@ -470,20 +487,21 @@ int send_response(const struct dc_posix_env *env, struct dc_error *err, void *ar
 {
     struct server_params * serv;
     serv = (struct server_params *) arg;
-    HttpResponsePtr http = serv->response;
+    HttpResponsePtr http;
+    http = serv->response;
     if (dc_error_has_no_error(err))
     {
         char response[
                 // ============================================================================
                 dc_strlen(env, get_res_version(http)) +                         // REQUEST LINE
                 dc_strlen(env, get_status_code(http)) +                         // REQUEST LINE
-                dc_strlen(env, get_status(http)) + 4 +                          // REQUEST LINE
+                dc_strlen(env, get_status(http)) + STATUS_LINE_SPACE +                          // REQUEST LINE
                 // =============================================================================
-                5  + dc_strlen(env, get_date(http))               + 3 +         // HEADER LINES
-                7  + dc_strlen(env, get_server(http))             + 3 +         // HEADER LINES
-                14 + dc_strlen(env, get_last_modified(http))      + 3 +         // HEADER LINES
-                15 + dc_strlen(env, get_content_length_str(http)) + 3 +         // HEADER LINES
-                13 + dc_strlen(env, get_content_type(http))       + 3 +  2 +    // HEADER LINES
+                DATE_LEN  + dc_strlen(env, get_date(http))               + SPACE_RN_LEN +         // HEADER LINES
+                SERV_LEN  + dc_strlen(env, get_server(http))             + SPACE_RN_LEN +         // HEADER LINES
+                LAST_MOD_LEN + dc_strlen(env, get_last_modified(http))      + SPACE_RN_LEN +         // HEADER LINES
+                CONTENT_LENGTH_LEN + dc_strlen(env, get_content_length_str(http)) + SPACE_RN_LEN +         // HEADER LINES
+                CONTENT_TYPE_LEN + dc_strlen(env, get_content_type(http))       + SPACE_RN_LEN +  RN_LEN +    // HEADER LINES
                 // ============================================================================
 
                 get_content_length_long(http)
@@ -527,7 +545,7 @@ void receive_data(const struct dc_posix_env *env, struct dc_error *err, int fd, 
 {
     struct server_params * serv;
     serv = (struct server_params *) arg;
-    char check_end[5] = {0};
+    char check_end[END_CHECK_BUFF] = {0};
 
     char data[max_request_size];
     ssize_t count;
@@ -544,21 +562,21 @@ int get_html(const struct dc_posix_env *env, struct dc_error *err, void * arg)
 {
     struct server_params * serv;
     serv = (struct server_params *) arg;
-    char * filename_start, * filename_end, * filename;
+    char * filename_start;
+    char * filename_end;
+    char * filename;
+    int return_value;
 
-    size_t  BUFFER = 8192;
     int     fd;
-    char    chars[BUFFER];
-    int return_value = EXIT_SUCCESS;
+    char    chars[LARGE_BUFF];
+    return_value = EXIT_SUCCESS;
 
-    char abs_path[80] = {0};
+    char abs_path[PATH_BUFF_SIZE] = {0};
 
     filename_start = strchr( get_url(serv->request), '/' );
     filename_end = strchr( filename_start, 'l' );
-
     if (serv->error == ERROR_404)
     {
-
         filename = malloc(9);
         memmove( filename, "404.html", 8 );
     }
@@ -577,27 +595,26 @@ int get_html(const struct dc_posix_env *env, struct dc_error *err, void * arg)
         );
     }
 
-    fd = dc_open(env, err, abs_path, DC_O_RDONLY, 0);
-    if(dc_error_has_no_error(err)) {
-        ssize_t nread;
 
-        while ((nread = dc_read(env, err, fd, chars, BUFFER)) > 0)
+    if(dc_error_has_no_error(err)) {
+        fd = dc_open(env, err, abs_path, DC_O_RDONLY, 0);
+        while (dc_read(env, err, fd, chars, LARGE_BUFF) > 0)
         {
             if (dc_error_has_error(err))
             {
-                return_value = -1;
                 break;
             }
         }
 
         if (dc_error_has_no_error(err))
         {
-            serv->content = malloc((unsigned long) strlen(chars) + 1);
-            memmove(serv->content, chars, (unsigned long) strlen(chars));
+            serv->content = malloc(strlen(chars) + 1);
+            memmove(serv->content, chars, strlen(chars));
             serv->fetched.dsize = (int)(strlen(chars) + 1);
             dc_close(env, err, fd);
         }
     }
+    free(filename);
     return_value = fd;
 
     return return_value;
@@ -605,12 +622,19 @@ int get_html(const struct dc_posix_env *env, struct dc_error *err, void * arg)
 
 bool is_html(const struct dc_posix_env *env, char * url)
 {
+    bool result;
     char ext[5] = "html";
     char html_ext_buff[5] = {0};
     char * ext_start = strchr(url, '.');
-    memcpy(html_ext_buff, ext_start + 1, sizeof(html_ext_buff) - 1);
+    if (ext_start)
+    {
+        memcpy(html_ext_buff, ext_start + 1, sizeof(html_ext_buff) - 1);
+        result = (!dc_strcmp(env, html_ext_buff, ext));
+    }
+    else { result = false ; }
 
-    return (!dc_strcmp(env, html_ext_buff, ext));
+
+    return result;
 }
 
 bool is_query(char * url)
@@ -618,11 +642,8 @@ bool is_query(char * url)
     char * question = strchr(url, '?');
     char * equals = strchr(url, '=');
 
-    return (*question && *equals);
+    return (question && equals);
 }
 
 
-static void quit_handler(int sig_num)
-{
-    exit_flag = 1;
-}
+

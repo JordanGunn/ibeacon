@@ -1,6 +1,4 @@
 #include "db.h"
-#define _XOPEN_SOURCE_EXTENDED 1
-#define DB_DBM_HSEARCH 1
 
 int store_data(const struct dc_posix_env *env, struct dc_error *err, DBM *db, const char *name, const char *value, uint8_t type)
 {

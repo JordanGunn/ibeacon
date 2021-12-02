@@ -7,15 +7,15 @@
 
 // RESPONSE ATTRIBUTES
 static const char connection[6] = "close";
-static const char date[8] = "unknown";
-static const char server[16] = "MegaFucker 5000";
-static const char last_modified[8] = "unknown";
-static const char content_type[10] = "text/html";
+static const char http_date[8] = "unknown";
+static const char http_server[16] = "MegaFucker 5000";
+static const char http_last_modified[8] = "unknown";
+static const char http_content_type[10] = "text/html";
 
 // REQUEST ATTRIBUTES
-static const char version[9] = "HTTP/1.0";
-static const char host[10] = "localhost";
-static const char user_agent[12] = "Mozilla/5.0";
+static const char http_version[9] = "HTTP/1.0";
+static const char http_host[10] = "localhost";
+static const char http_user_agent[12] = "Mozilla/5.0";
 static const char accept_type[10] = "text/html";
 
 static const int PORT = 8080;

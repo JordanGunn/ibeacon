@@ -8,7 +8,6 @@
 #include "http/http_response.h"
 #include "http/http_request.h"
 
-
 #include <dc_application/command_line.h>
 #include <dc_application/options.h>
 #include <dc_application/config.h>
@@ -44,19 +43,6 @@ struct application_settings
  * @param err
  * @return
  */
-static struct dc_application_settings *create_settings(
-        const struct dc_posix_env *env, struct dc_error *err
-);
-
-static int destroy_settings(
-        const struct dc_posix_env *env, struct dc_error *err,
-        struct dc_application_settings **psettings
-);
-
-static int run(
-        const struct dc_posix_env *env, struct dc_error *err,
-        struct dc_application_settings *settings
-);
 
 void error_reporter(const struct dc_error *err);
 

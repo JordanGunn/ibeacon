@@ -5,8 +5,9 @@
 #ifndef IBEACON_HTTP_RESPONSE_H
 #define IBEACON_HTTP_RESPONSE_H
 
+#define STAT_LINE_BUFF 50
+
 #include "common.h"
-#include "http_constants.h"
 #include "stdio.h"
 
 

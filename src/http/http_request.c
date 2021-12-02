@@ -33,6 +33,9 @@ HttpRequestPtr http_request_constructor(char * method, char * url, char * versio
 
         return http_request;
     }
+
+    return NULL;
+
 }
 
 /*
@@ -45,6 +48,9 @@ char * get_version(HttpRequestPtr http)
     {
         return http->version;
     }
+
+    return NULL;
+
 }
 
 char * get_method(HttpRequestPtr http)
@@ -53,6 +59,10 @@ char * get_method(HttpRequestPtr http)
     {
         return http->method;
     }
+
+
+    return NULL;
+
 }
 
 char * get_url(HttpRequestPtr http)
@@ -61,6 +71,8 @@ char * get_url(HttpRequestPtr http)
     {
         return http->url;
     }
+
+    return NULL;
 }
 
 char * get_host(HttpRequestPtr http)
@@ -69,6 +81,8 @@ char * get_host(HttpRequestPtr http)
     {
         return http->host;
     }
+
+    return NULL;
 }
 
 char * get_user_agent(HttpRequestPtr http)
@@ -77,6 +91,8 @@ char * get_user_agent(HttpRequestPtr http)
     {
         return http->user_agent;
     }
+
+    return NULL;
 }
 
 char * get_accept(HttpRequestPtr http)
@@ -85,6 +101,8 @@ char * get_accept(HttpRequestPtr http)
     {
         return http->accept;
     }
+
+    return NULL;
 }
 
 /*
@@ -159,14 +177,21 @@ void destroy_http_request(HttpRequestPtr http)
 
 HttpRequestPtr parse_http_request(char * http_message)
 {
-    const char * request_line_start = http_message;
-    char * request_line_end = strchr(http_message, '\n');
 
-    char request_line[(request_line_end - request_line_start) + 1];
+    HttpRequestPtr http;
+    char request_line[REQ_LINE_BUFF];
+    const char * request_line_start;
+    char * request_line_end;
+
+    char * header_lines;
+
+    request_line_start = http_message;
+    request_line_end = strchr(http_message, '\n');
+
     strncpy(request_line, request_line_start, (unsigned long)(request_line_end - request_line_start) + 1);
-    HttpRequestPtr http = parse_request_line(request_line);
+    http = parse_request_line(request_line);
 
-    char * header_lines = request_line_end + 1;
+    header_lines = request_line_end + 1;
     parse_header_lines(http, header_lines);
 
     return http;
@@ -185,10 +210,11 @@ char * parse_header_line(HttpRequestPtr http, char * header_line, void (setter)(
 
     char * attr_start = NULL;
     char * attr_end = NULL;
+    char * attr = NULL;
 
     attr_start = strchr(header_line, ' ');
     attr_end = strchr(attr_start, '\n');
-    char * attr = calloc((unsigned long) ((attr_end - attr_start) + 1), sizeof(char));
+    attr = calloc((unsigned long) ((attr_end - attr_start) + 1), sizeof(char));
     memmove(attr, attr_start, (unsigned long) ((attr_end - attr_start) - 1));
     setter(http, attr);
 
@@ -198,24 +224,38 @@ char * parse_header_line(HttpRequestPtr http, char * header_line, void (setter)(
 
 HttpRequestPtr parse_request_line(char * request_line)
 {
-    const char * method_start = request_line;
-    const char * method_end = strchr(request_line, ' ');
+    HttpRequestPtr http;
 
-    const char * url_start = method_end + 1;
-    const char * url_end = strchr(url_start, ' ');
+    const char * method_start;
+    const char * method_end;
+    const char * url_start;
+    const char * url_end;
+    const char * version_start;
+    const char * version_end;
+    char * method;
+    char * url;
+    char * version;
 
-    const char * version_start = url_end + 1;
-    const char * version_end = strchr(version_start, '\n');
+    method_start = request_line;
+    method_end = strchr(request_line, ' ');
 
-    char * method = calloc((unsigned long) ((method_end - method_start) + 1), sizeof(char));
-    char * url = calloc((unsigned long) ((url_end - url_start) + 1), sizeof(char));
-    char * version = calloc((unsigned long) ((version_end - version_start) + 1), sizeof(char));
+    url_start = method_end + 1;
+    url_end = strchr(url_start, ' ');
+
+    version_start = url_end + 1;
+    version_end = strchr(version_start, '\n');
+
+    method = calloc((unsigned long) ((method_end - method_start) + 1), sizeof(char));
+    url = calloc((unsigned long) ((url_end - url_start) + 1), sizeof(char));
+    version = calloc((unsigned long) ((version_end - version_start) + 1), sizeof(char));
 
     memmove(method, method_start, (unsigned long) (method_end - method_start));
     memmove(url, url_start, (unsigned long) (url_end - url_start));
     memmove(version, version_start, (unsigned long) ((version_end - version_start) - 1));
 
-    return http_request_constructor(method, url, version);
+    http = http_request_constructor(method, url, version);
+
+    return http;
 }
 
 void parse_query(char * url, struct Query * query)

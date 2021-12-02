@@ -356,7 +356,6 @@ void sendPUTrequest(const struct dc_posix_env *env, struct dc_error *err, void* 
 void build_request(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     char *  req_version;
-    char *  req_method;
     char *  req_url;
     char *  req_host;
     char *  req_user_agent;
@@ -365,21 +364,21 @@ void build_request(const struct dc_posix_env *env, struct dc_error *err, void *a
 // for GUI
     struct client_params * client;
     client = (struct client_params *) arg; //key, value, method,
-    req_version         = malloc( sizeof(version));
+    req_version         = malloc( sizeof(http_version));
     req_url             = malloc(2 + sizeof(client->userInput->key) +
                                       1 + sizeof (client->userInput->value) + 1);
     sprintf(req_url, "/?%s=%s", client->userInput->key, client->userInput->value);
 
-    req_host            = malloc( sizeof(host)           );
-    req_user_agent      = malloc( sizeof(user_agent)   );
+    req_host            = malloc( sizeof(http_host)           );
+    req_user_agent      = malloc( sizeof(http_user_agent)   );
     req_accept          = malloc( sizeof(accept_type)   );
 
-    memmove( req_version, version, sizeof(version));
+    memmove( req_version, http_version, sizeof(http_version));
 
     client->request = http_request_constructor(client->userInput->method, req_url, req_version);
 
-    memmove( req_host,           host,           sizeof(host));
-    memmove( req_user_agent,         user_agent,         sizeof(user_agent));
+    memmove( req_host,           http_host,           sizeof(http_host));
+    memmove( req_user_agent,         http_user_agent,         sizeof(http_user_agent));
     memmove( req_accept,  accept_type,  sizeof(accept_type)  );
 
     set_host(           client->request, req_host           );
