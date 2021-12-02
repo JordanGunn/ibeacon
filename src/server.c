@@ -37,7 +37,7 @@ static void bad_change_state(const struct dc_posix_env *env,
                              int from_state_id,
                              int to_state_id);
 
-int main(void)
+int main(int argc, char *argv[])
 {
     dc_error_reporter reporter;
     struct dc_error err;
