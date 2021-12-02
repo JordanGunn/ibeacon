@@ -282,11 +282,6 @@ int accept_request(const struct dc_posix_env *env, struct dc_error *err, void *a
                             while(!(exit_flag) && dc_error_has_no_error(err))
                             {
                                 serv->client_socket_fd = dc_accept(env, err, server_socket_fd, NULL, NULL);
-                                if ( setsockopt(serv->client_socket_fd, SOL_SOCKET,
-                                                SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0 )
-                                {
-                                    return DC_FSM_EXIT;
-                                }
 
                                 if(dc_error_has_no_error(err))
                                 {
@@ -375,7 +370,7 @@ int http_get(const struct dc_posix_env *env, struct dc_error *err, void *arg)
                 serv->fetched.dsize = (int) dc_strlen(env, buffer);
             }
 
-            if (!(serv->fetched.dptr))
+            if (!(serv->fetched.dsize))
             {
                 dc_error_reset(err);
                 dc_error_init(err, NULL);

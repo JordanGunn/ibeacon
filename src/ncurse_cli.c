@@ -27,20 +27,20 @@ int firstSelection(WINDOW *win, struct client_params * client);
 
 static void show_nav(WINDOW *win);
 WINDOW * createOptionWindow(WINDOW *win);
-static WINDOW *createInputWindow(WINDOW * win);
-static void createInputMessage(WINDOW * inputWindow, char* msg);
-static int showAddPage(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+WINDOW *createInputWindow(WINDOW * win);
+void createInputMessage(WINDOW * inputWindow, char* msg);
+int showAddPage(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 void ask_info(char * temp, WINDOW *optionWindow, WINDOW * inputWindow, char * question);
 void input_with_echo_current_window(char * input, WINDOW *win);
 
-static bool keyExistInServer(const struct dc_posix_env *env, char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR], char* buffer, int num);
+bool keyExistInServer(const struct dc_posix_env *env, char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR], char* buffer, int num);
 
-static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 
-static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg);
-static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 WINDOW * createWindowInTheMiddle();
-static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg);
+int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg);
 
 
 
@@ -95,7 +95,6 @@ struct pages
 
 int main(void)
 {
-    //have to ask for host name.
     dc_error_reporter reporter;
     dc_posix_tracer tracer;
     struct dc_error err;
@@ -104,7 +103,7 @@ int main(void)
     reporter = NULL;
     tracer = trace_reporter;
     tracer = NULL;
-    dc_error_init(&err, reporter);
+    dc_error_init(&err, NULL);
     dc_posix_env_init(&env, NULL);
 
     int ret_val;
@@ -129,13 +128,14 @@ int main(void)
             {ERROR_500,   DC_FSM_EXIT,    NULL}, //initial dump
     };
 
-    dc_error_init(&err, error_reporter);
-    dc_posix_env_init(&env, trace_reporter);
+    dc_error_init(&err, NULL);
+    dc_posix_env_init(&env, NULL);
     ret_val = EXIT_SUCCESS;
     fsm_info = dc_fsm_info_create(&env, &err, "traffic");
     dc_fsm_info_set_will_change_state(fsm_info, will_change_state);
     dc_fsm_info_set_did_change_state(fsm_info, did_change_state);
     dc_fsm_info_set_bad_change_state(fsm_info, bad_change_state);
+
 
 
     if(dc_error_has_no_error(&err))
@@ -145,7 +145,7 @@ int main(void)
         int to_state;
 
         initiateNCURSES();
-        ret_val = dc_fsm_run(&env, &err, fsm_info, &from_state, &to_state, &client, transitions);
+        ret_val = dc_fsm_run(&env, &err, fsm_info, &from_state, &to_state, client, transitions);
         closeWindow();
         dc_fsm_info_destroy(&env, &fsm_info);
     }
@@ -196,7 +196,8 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
     //displayIbeacons
     //selectIbeacon
     //ShowIbeacon
-    client->userInput = malloc(sizeof(struct userInput));
+    struct userInput * user_input = malloc(sizeof(struct userInput));
+    client->userInput = user_input;
 
     WINDOW *inputWindow = createInputWindow(win);
     switch (selection)
@@ -204,7 +205,7 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
         case '1':
             createInputMessage(inputWindow, "YOU HAVE PRESSED TO FIND IBEACONS.");
             dc_memcpy(env, method, REQUEST_GET, sizeof (REQUEST_GET) + 1);
-            ret_val = GET_ALL;
+            ret_val = GET_ONE;
             break;
         case '2':
             createInputMessage(createInputWindow(win), "YOU HAVE PRESSED TO ADD NEW IBEACON");
@@ -228,7 +229,7 @@ int landingPageOptions(const struct dc_posix_env *env, struct dc_error *err, WIN
  * @param arg
  * @return
  */
-static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct client_params* client;
     client = (struct client_params*) arg;
@@ -251,7 +252,7 @@ static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, 
 
 //    client->arrayOfCurrentBeacon = dc_malloc(env, err, (sizeof (char*) * MAX_NUM_BEACONS));
 //    char ** test = dc_malloc(env, err, (MAX_NUM_BEACONS) * (MAX_MAJOR_MINOR + 1) * sizeof(char *));
-    char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR] = {0};
+    char temp_array[100][MAX_MAJOR_MINOR] = {0};
     while (beacon_end && ++window_index)
     {
         beacon_begin += 2;
@@ -275,8 +276,6 @@ static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, 
     client->beacon_selection = dc_malloc(env, err, MAX_MAJOR_MINOR + 1);
     size_t size = 0;
 
-    destroy_http_request(client->request);
-
     while (size == 0 || !keyExistInServer(env, temp_array, client->beacon_selection, numberOfBeacons)){
         if (size == 0) {
             ask_info(client->beacon_selection, client->pages->inputpage, client->pages->inputpage, "Please enter the beacon you want to see. Press enter to see.");
@@ -289,7 +288,7 @@ static int showAllBeacons(const struct dc_posix_env *env, struct dc_error *err, 
     return GET_ONE;
 }
 
-static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct client_params* client;
     client = (struct client_params*) arg;
@@ -297,15 +296,15 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
 
     int window_index = 0;
 
-    long content_length = get_content_length_long(client->response) + 3;
-    char content[content_length];
-    memmove(content, get_content(client->response), (unsigned long) (content_length - 2));
-    memmove(content + (content_length - 2), "\r\n", 2);
+    long content_length = get_content_length_long(client->response);
+    char content[content_length + 1];
+    memmove(content, get_content(client->response) + 4, (unsigned long) (content_length - 1));
+    memmove(content + (content_length - 1), "\r\n", 2);
     content[content_length - 1] = '\0';
 
     bool cont_application = false;
     client->pages->optionpage = createOptionWindow(client->pages->homepage);
-//    mvwprintw(client->pages->optionpage, window_index, 1, content);
+    mvwprintw(client->pages->optionpage, window_index, 1, content);
     createInputMessage(client->pages->inputpage, content);
     // display and select iBeacons
     wrefresh(client->pages->optionpage);
@@ -319,7 +318,7 @@ static int showOneBeacon(const struct dc_posix_env *env, struct dc_error *err, v
 
 
 
-static bool keyExistInServer(const struct dc_posix_env *env, char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR], char* buffer, int num)
+bool keyExistInServer(const struct dc_posix_env *env, char temp_array[MAX_NUM_BEACONS][MAX_MAJOR_MINOR], char* buffer, int num)
 {
     for (int i = 0; i < num; i++) {
         if (dc_strcmp(env, temp_array[i], buffer) == 0) {
@@ -329,7 +328,7 @@ static bool keyExistInServer(const struct dc_posix_env *env, char temp_array[MAX
     return false;
 }
 
-static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct client_params* client;
 
@@ -354,7 +353,7 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
         long content_length = get_content_length_long(client->response);
         char * content_start = &(data[temp - content_length]);
         size_t check = strlen(content_start);
-
+        temp = 0;
         if (!(check - (unsigned long) content_length))
         {
             break;
@@ -364,7 +363,7 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
     }
     if (dc_error_has_no_error(err))
     {
-        dc_close(env, err, client->socket_fd);
+        dc_error_reset(err);
     }
 
     if (dc_error_has_error(err))
@@ -376,7 +375,7 @@ static int getAllListOfBeacons(const struct dc_posix_env *env, struct dc_error *
 }
 
 
-static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct client_params* client;
     client = (struct client_params*) arg;
@@ -404,6 +403,7 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
         char * content_start = &(data[len - content_length]);
         size_t check = strlen(content_start) + 1;
 
+        len = 0;
         if (!(check - (unsigned long) content_length))
         {
             break;
@@ -416,7 +416,7 @@ static int getOneBeacon(const struct dc_posix_env *env, struct dc_error *err, vo
 
     if (dc_error_has_no_error(err))
     {
-//        dc_close(env, err, client->socket_fd);
+        dc_close(env, err, client->socket_fd);
     }
 
     if (dc_error_has_error(err))
@@ -560,7 +560,7 @@ WINDOW * createOptionWindow(WINDOW *win)
  * @param win main window pointer
  * @return WINDOW pointer to the input window.
  */
-static WINDOW *createInputWindow(WINDOW * win)
+WINDOW *createInputWindow(WINDOW * win)
 {
     int yMax, xMax, yBeg, xBeg;
     getmaxyx(win, yMax, xMax);
@@ -576,7 +576,7 @@ static WINDOW *createInputWindow(WINDOW * win)
     return inputWindow;
 }
 
-static void createInputMessage(WINDOW * inputWindow, char* msg)
+void createInputMessage(WINDOW * inputWindow, char* msg)
 {
     wclear(inputWindow);
     box(inputWindow, 0, 0);
@@ -616,7 +616,7 @@ void trace_reporter(const struct dc_posix_env *env, const char *file_name,
 
 
 
-static int showAddPage(const struct dc_posix_env *env, struct dc_error *err, void *arg)
+int showAddPage(const struct dc_posix_env *env, struct dc_error *err, void *arg)
 {
     struct client_params* client;
 
