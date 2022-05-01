@@ -39,7 +39,6 @@ void initializeClient(const struct dc_posix_env* env, struct dc_error* err, stru
 
         clientParams->socket_fd = dc_socket(env, err, result->ai_family, result->ai_socktype, result->ai_protocol);
 
-
         if (dc_error_has_no_error(err)) {
             struct sockaddr *sockaddr;
             in_port_t port;
